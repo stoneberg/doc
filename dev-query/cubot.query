@@ -1,0 +1,26 @@
+select * from btb_dag_svc_trgt_rel;
+
+
+
+CREATE SEQUENCE seq_dag_svc_trgt_rel
+INCREMENT BY 1
+MINVALUE 10000
+MAXVALUE 99999999999
+START 7000000;
+
+CREATE SEQUENCE seq_dag_script_result_bas
+INCREMENT BY 1
+MINVALUE 10000
+MAXVALUE 99999999999
+START 7000000;
+
+CREATE SEQUENCE seq_dag_analysis_result_bas
+INCREMENT BY 1
+MINVALUE 10000
+MAXVALUE 99999999999
+START 7000000;
+
+-- seq_dag_script_result_bas
+-- seq_dag_analysis_result_bas
+
+select * from btb_dag_script_result_bas;

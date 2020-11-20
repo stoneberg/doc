@@ -1,0 +1,26 @@
+CREATE TABLE dswc.qesign.tb_common_code (
+	"id" serial NOT NULL,
+	group_code varchar(20) NOT NULL,
+	group_desc varchar(50) NOT NULL,
+	code varchar(20) NOT NULL,
+	code_desc varchar(50) NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	display_order varchar(2),
+	PRIMARY KEY ("id")
+);
+
+
+INSERT INTO dswc.qesign.tb_common_code
+	(group_code, group_desc, code, code_desc, display_order, created_dt,  updated_dt)
+VALUES 
+	('PLEDGE_TYPE', '서명 양식', 'HTML', '일반', '1', now(), now()),
+	('PLEDGE_TYPE', '서명 양식', 'VIDEO', '영상', '2', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'STANDBY', '대기', '1', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'PROCEEDING', '진행 중', '2', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'COMPLETE', '완료', '3', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'STANDBY', '대기', '1', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'PROCEEDING', '진행 중', '2', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'COMPLETE', '완료', '3', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'DELETE', '삭제', '4', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'CANCEL', '취소', '5', now(), now());

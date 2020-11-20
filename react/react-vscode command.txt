@@ -1,0 +1,19 @@
+// react vscode command
+
+# function component
+
+rfce
+
+
+
+# class component
+
+rce
+
+
+
+
+
+
+
+

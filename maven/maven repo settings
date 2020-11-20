@@ -1,0 +1,72 @@
+setting.xml
+​
+<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
+​
+ <mirrors>
+   <mirror>
+     <id>central</id>
+     <name>central</name>
+     <url>http://222.234.124.6:8081/nexus/content/repositories/thirdparty/</url>
+     <mirrorOf>*</mirrorOf>
+   </mirror>
+ </mirrors>
+​
+</settings>
+​
+​
+pom.xml
+​
+<repositories>
+	<repository>
+		<id>public</id>
+		<url>http://222.234.124.6:8081/nexus/content/repositories/thirdparty/</url>
+		<releases>
+			<enabled>true</enabled>
+		</releases>
+		<snapshots>
+			<enabled>true</enabled>
+		</snapshots>
+	</repository>
+</repositories>
+​
+​
+================================================================================
+​
+​
+<settings xmlns="http://maven.apache.org/SETTINGS/1.1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd">
+​
+ <mirrors>
+   <mirror>
+     <id>central</id>
+     <name>central</name>
+     <url>http://10.217.59.89/nexus/content/groups/public</url>
+     <mirrorOf>*</mirrorOf>
+   </mirror>
+ </mirrors>
+​
+</settings>
+​
+​
+<repositories>
+	<repository>
+		<id>public</id>
+		<url>http://10.217.59.89/nexus/content/groups/public</url>
+		<releases>
+			<enabled>true</enabled>
+		</releases>
+	</repository>
+</repositories>
+​
+<pluginRepositories>
+	<pluginRepository>
+		<id>public</id>
+		<url>http://10.217.59.89/nexus/content/groups/public</url>
+		<releases>
+			<enabled>true</enabled>
+		</releases>
+	</pluginRepository>
+</pluginRepositories>

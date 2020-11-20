@@ -1,0 +1,147 @@
+
+CREATE TABLE cubot.play.swrep_bas (
+	swrep_id varchar(14) NOT NULL,
+	atc_file_id varchar(11) NOT NULL,
+	sw_nm varchar(50),
+	patch_ver_val varchar(20),
+	use_yn varchar(1),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	isa_sw_file_lctg_cd varchar(3),
+	isa_sw_file_mctg_cd varchar(3),
+	isa_sw_file_sctg_cd varchar(3),
+	isa_sw_file_div_cd varchar(3),
+	isa_sw_file_ver_div_cd varchar(3),
+	secure_patch_yn varchar(1) DEFAULT 'N'::character varying,
+	latest_yn varchar(1) DEFAULT 'N'::character varying,
+	vendor varchar(30),
+	transfer_id varchar(14),
+	sw_nm_cd varchar(2),
+	del_yn varchar(1) DEFAULT 'N'::character varying,
+	PRIMARY KEY (swrep_id)
+);
+
+
+CREATE TABLE cubot.play.swrep_file_bas (
+	atc_file_id varchar(11) NOT NULL,
+	atc_file_nm varchar(400) NOT NULL,
+	atc_file_path_sbst varchar(400) NOT NULL,
+	atc_file_link_title_nm varchar(400) NOT NULL,
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	atc_file_size numeric(10),
+	transfer_id varchar(11),
+	PRIMARY KEY (atc_file_id)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

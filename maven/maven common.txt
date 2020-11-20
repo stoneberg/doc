@@ -1,0 +1,238 @@
+mvn clean spring-boot:run
+
+mvn compile
+
+mvn clean compile
+
+jdk1.8.0_251
+
+
+
+- lombok 이용(getter/setter, default constructor, all args constructor, builder 등)
+- base entity 상속으로 등록 시 createdAt, 수정 시 updatedAt 이 자동 설정
+- jpa 기반의 entity 구성
+- OneToMany, ManyToOne 등의 annotation 의 엔티티 관계 정의(현 샘플은 post(1) : (n)comment )
+- default fetch 전략은 lazy 정의
+- n+1 문제는 fetch join(graph entity, querydsl), batch size, subquery 등으로 해결(graph entity, querydsl 권장)
+
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder=true)
+@Entity(name="sample_post")
+public class Post extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long   postNo;
+    private String userId;
+    private String title;
+    private String content;
+
+
+    @OneToMany(mappedBy="post", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    private List<Comment> comments;
+}
+
+
+- 서비스 클래스에 @Transactional(readOnly = true) 선언하여 조회성 메서드에는 따로 트랜잭션 관련 어노테이션 선언을 하지않는다.
+- 추가, 수정, 삭제가 일어나는 메서드에는 @Transactional 선언하여 실제 변경이 데이터베이스에 반영되거나 실패 시 롤백될 수 있도록 한다.
+- 조회된 entity 바로 반환하지 않고 dto로 변환하며 mapstruct mapper를 사용한다.
+
+
+@Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
+public class PostService {
+
+    private final PostRepository postRepository;
+
+    public Page<PostDto> getAll(Pageable pageable) {
+        return postRepository.findAll(pageable).map(mapper::toFindAll);
+    }
+
+    public Page<PostDto> getAllByEntityGraph(Pageable pageable) {
+        return postRepository.findAll(pageable).map(mapper::toFindAll);
+    }
+
+    public Page<PostDto> getAllByQueryDsl(Predicate predicate, Pageable pageable) {
+        return mapper.toFindAll(postRepository.findAllByQueryDsl(predicate, pageable));
+    }
+
+    public List<PostDto> getAllByPredicate(Predicate predicate) {
+        return mapper.toFindAll(postRepository.findAll(predicate));
+    }
+
+    public PostDto get(Long postNo) {
+        return mapper.toFindOne(postService.get(postNo));
+    }
+
+    public PostDto get(String userId) {
+        return mapper.toFindOne(postRepository.findByUserId(userId));
+    }
+
+    @Transactional
+    public Long add(Post post) {
+        return postRepository.save(post).getId();
+    }
+
+    @Transactional
+    public Long modify(Long postNo, Post post) {
+        return mapper.modify(post, postRepository.getOne(postNo));
+    }
+
+    @Transactional
+    public void remove(Long postNo) {
+        postRepository.delete(postRepository.getOne(postNo));
+    }
+
+}
+
+
+
+- request/response 사이에서 dtd - entity 매핑
+- mapstruct 사용(reflection 방식이 아닌 build 시 java code 를 생성하도록하는 개념)
+- entity를 바로 화면에 반환할 경우 불필요한 정보 노출이 일어날 수 있고, JSON 변환 시 다른 entity과의 관계로 인해서 
+  순환 참조가 발생하여 stack overflow가 발생할 수 있다.
+
+
+@Mapper(componentModel = "spring")
+public interface PostMapper {
+
+    public Post toEntity(PostDto  postDto);
+
+    public PostDto   toDto(Post post);
+    public List<PostDto> toDtos(Post post);
+
+    @Mapping(target="postNo",    ignore=true)
+    @Mapping(target="createdAt", ignore=true)
+    public Post toEntity(PostDto postDto, @MappingTarget Post entity);
+}
+
+
+
+- jpa repository 기본 기능 사용(findAll, saveAll, deleteAllInBatch, getOne, findOne, save, count, exists 등등..)
+- 일반적인 조건은 Query Method 방식을 사용한다.(findByPostAddressLike)
+- 쿼리 메서드(Query Method) 사용 시 메서드 이름이 길어질 경우 가독성이 떨어지므로 jqpl 또는 QueryDSL 사용을 권장한다.
+- 복잡한 조건의 쿼리는 jqpl 또는 QueryDSL을 사용한다.
+- QueryDSL을 통한 jpql 사용 시 Querydsl4RepositorySupport 유틸을 사용하여 Repository를 구현한다.
+
+
+public interface BoardRepository extends JpaRepository<Board, Integer> {
+
+	Optional<Board> findByName(String name);
+
+    @EntityGraph(attributePaths = { "user", "replies", "replies.user" }, type = EntityGraph.EntityGraphType.LOAD)
+    @Query("select DISTINCT b from Board b where b.id=:id")
+    Optional<Board> findEntityGraphBoardById(@Param("id") Integer id);
+
+    @Query("select DISTINCT b from Board b left join fetch b.user left join fetch b.replies r left join fetch r.user where b.id=:id")
+    Optional<Board> findFetchJoinBoardById(@Param("id") Integer id);
+
+}
+
+
+BooleanExpression
+
+
+- request/response - api - parameter 기준으로 요청/응답 정보 작성
+- javax.validation, org.hibernate.validator 사용하여 필수 파라미터 validation 수행
+- 전체 요청 클래스 안에 static class 형태로 실제 요청 dto를 작성
+
+
+public class BoardReq {
+
+    @NoArgsConstructor
+    @Data
+    public static class BoardDto {
+
+        private String title;
+
+        private String content;
+
+        private Integer count;
+
+        public Board toEntity() {
+            return Board.builder().title(title).content(content).build();
+        }
+
+    }
+
+    @NoArgsConstructor
+    @Data
+    public static class ReplyDto {
+
+        private String content;
+
+        public Reply toEntity() {
+            return Reply.builder().content(content).build();
+        }
+
+    }
+
+}
+
+public class BoardRes {
+
+	@Builder
+	@AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class BoardDto {
+
+        private String title;
+
+        private String content;
+
+        private Integer count;
+
+    }
+
+	@Builder
+	@AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class ReplyDto {
+
+        private String content;
+
+    }
+
+}
+
+
+
+- jpa auditor 기능을 사용하여 자동으로 entity에 생성일, 수정일을 자동으로 추가할 수 있다.
+- SpringSecurity와 연계하여 생성자, 수정자를 자동으로 추가할 수 있다.
+- 일반 entity에 extends하는 방식으로 사용한다.
+
+
+@Getter
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
+public abstract class AuditorBaseEntity<U> {
+
+	@CreatedBy
+	@Column(name = "created_by")
+	protected U createdBy;
+
+	@LastModifiedBy
+	@Column(name = "updated_by")
+	protected U updatedBy;
+
+	@CreatedDate
+	@Column(updatable = false)
+	protected LocalDateTime createdDate;
+
+	@LastModifiedDate
+	protected LocalDateTime updatedDate;
+
+}
+
+
+
+
+
+

@@ -1,0 +1,1 @@
+# 윈도10 환경 변수 설정에서 MAVEN_HOME 경로를 kt-dev/apache-maven-3.6.3 로 설정해주세요.

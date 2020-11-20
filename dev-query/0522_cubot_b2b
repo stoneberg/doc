@@ -1,0 +1,877 @@
+CREATE TABLE athn_hst (
+	isa_athn_hst_id varchar(14) NOT NULL,
+	user_id varchar(11) NOT NULL,
+	athn_dt timestamp NOT NULL,
+	isa_athn_div_cd varchar(30) NOT NULL,
+	suces_yn varchar(1) NOT NULL,
+	conn_ipadr varchar(15) NOT NULL,
+	rmark_sbst varchar(2000),
+	appl_srvr_id varchar(11),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	user_nm varchar(50) NOT NULL,
+	user_email_adr varchar(50) NOT NULL,
+	PRIMARY KEY (isa_athn_hst_id)
+);
+CREATE UNIQUE INDEX athn_hst_pk ON athn_hst USING btree (isa_athn_hst_id);
+
+
+
+CREATE TABLE aut_bas (
+	isa_aut_id varchar(255) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	aut_desc_sbst varchar(255),
+	aut_nm varchar(255),
+	use_yn varchar(255),
+	PRIMARY KEY (isa_aut_id)
+);
+
+
+CREATE TABLE menu_bas (
+	isa_menu_id varchar(255) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	menu_desc_sbst varchar(255),
+	menu_icon_nm_val varchar(255),
+	menu_lvl_seq int4,
+	menu_nm varchar(255),
+	menu_odrg int4,
+	menu_url_adr varchar(255),
+	use_yn varchar(255),
+	up_isa_menu_id varchar(255),
+	PRIMARY KEY (isa_menu_id)
+);
+
+ALTER TABLE menu_bas
+	ADD FOREIGN KEY (up_isa_menu_id) 
+	REFERENCES menu_bas (isa_menu_id);
+
+
+
+
+
+CREATE TABLE aut_menu_rel (
+	isa_aut_menu_id varchar(14) NOT NULL,
+	isa_aut_id varchar(14) NOT NULL,
+	isa_menu_id varchar(14) NOT NULL,
+	use_yn varchar(1),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (isa_aut_menu_id)
+);
+
+ALTER TABLE aut_menu_rel
+	ADD FOREIGN KEY (isa_menu_id) 
+	REFERENCES menu_bas (isa_menu_id);
+
+ALTER TABLE aut_menu_rel
+	ADD FOREIGN KEY (isa_aut_id) 
+	REFERENCES aut_bas (isa_aut_id);
+
+
+CREATE UNIQUE INDEX aut_menu_rel_pk ON aut_menu_rel USING btree (isa_aut_menu_id);
+CREATE UNIQUE INDEX aut_menu_rel_ux01 ON aut_menu_rel USING btree (isa_aut_id, isa_menu_id);
+
+
+CREATE TABLE btb_dag_analysis_result_bas (
+	dag_anal_result_id varchar(14) NOT NULL,
+	isa_dag_sw_lctg_cd varchar(3),
+	isa_dag_sw_sctg_cd varchar(3),
+	isa_dag_ctgry_type_cd varchar(3),
+	host_name varchar(120) NOT NULL,
+	bas_score numeric(5),
+	hit_score numeric(5),
+	dag_anal_reslt_ftns_yn varchar(1),
+	dag_item_nm varchar(120),
+	dag_anal_reslt_val varchar(100),
+	insufficient_val text,
+	isa_reslt_base_id varchar(14),
+	isa_reslt_base_sets_id varchar(14),
+	dag_script_result_id varchar(14),
+	dag_svc_id varchar(14),
+	dag_trgt_id varchar(14),
+	cretr_id varchar(11) NOT NULL,
+	cret_dt timestamp,
+	cret_pgm_id varchar(300) NOT NULL,
+	amdr_id varchar(11),
+	amd_dt timestamp,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (dag_anal_result_id)
+);
+
+ALTER TABLE btb_dag_analysis_result_bas
+	ADD FOREIGN KEY (dag_script_result_id) 
+	REFERENCES btb_dag_script_result_bas (dag_script_result_id);
+
+ALTER TABLE btb_dag_analysis_result_bas
+	ADD FOREIGN KEY (dag_svc_id) 
+	REFERENCES btb_dag_svc_bas (dag_svc_id);
+
+ALTER TABLE btb_dag_analysis_result_bas
+	ADD FOREIGN KEY (dag_trgt_id) 
+	REFERENCES btb_dag_trgt_bas (dag_trgt_id);
+
+
+CREATE TABLE btb_dag_script_result_bas (
+	dag_script_result_id varchar(14) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(300),
+	cretr_id varchar(11) NOT NULL,
+	cret_dt timestamp,
+	cret_pgm_id varchar(300) NOT NULL,
+	amdr_id varchar(11),
+	host_name varchar(120) NOT NULL,
+	file_name varchar(120),
+	json_reslt_sbst text,
+	dag_svc_trgt_id varchar(14),
+	PRIMARY KEY (dag_script_result_id)
+);
+
+ALTER TABLE btb_dag_script_result_bas
+	ADD FOREIGN KEY (dag_svc_trgt_id) 
+	REFERENCES btb_dag_svc_trgt_rel (dag_svc_trgt_id);
+	
+	
+CREATE TABLE btb_dag_trgt_bas (
+	dag_trgt_id varchar(14) NOT NULL,
+	isa_dag_sw_lctg_cd varchar(3) NOT NULL,
+	dag_trgt_sw_nm varchar(50) NOT NULL,
+	dag_trgt_sw_sbst varchar(50),
+	dag_trgt_sw_script_nm varchar(50) NOT NULL,
+	dag_trgt_sw_script_path varchar(200) NOT NULL,
+	dag_trgt_sw_script_ver varchar(5) DEFAULT '1.0'::character varying NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	cret_dt timestamp,
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(300),
+	amdr_id varchar(11),
+	isa_dag_sw_sctg_cd varchar(3) NOT NULL,
+	PRIMARY KEY (dag_trgt_id)
+);
+	
+
+
+CREATE TABLE btb_dag_svc_trgt_rel (
+	dag_svc_trgt_id varchar(14) NOT NULL,
+	dag_svc_id varchar(14),
+	dag_trgt_id varchar(14),
+	cretr_id varchar(11) NOT NULL,
+	cret_dt timestamp,
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(300),
+	amdr_id varchar(11),
+	dag_rslt_upload_sttus_cd varchar(3) DEFAULT '1'::character varying,
+	PRIMARY KEY (dag_svc_trgt_id)
+);
+
+ALTER TABLE btb_dag_svc_trgt_rel
+	ADD FOREIGN KEY (dag_trgt_id) 
+	REFERENCES btb_dag_trgt_bas (dag_trgt_id);
+
+ALTER TABLE btb_dag_svc_trgt_rel
+	ADD FOREIGN KEY (dag_svc_id) 
+	REFERENCES btb_dag_svc_bas (dag_svc_id);
+
+
+CREATE TABLE comcd_bas (
+	cd_group_id int8 NOT NULL,
+	cd_id varchar(255) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	cd_desc_sbst varchar(255),
+	cd_lvl_val int4,
+	cd_nm varchar(255),
+	cd_otput_odrg int4,
+	efct_fns_date timestamp,
+	efct_st_date timestamp,
+	mlga_change_yn varchar(255),
+	mlga_muluse_yn varchar(255),
+	pkg_cd_mappg_yn varchar(255),
+	rfrn_val1 varchar(255),
+	rfrn_val2 varchar(255),
+	rfrn_val3 varchar(255),
+	rfrn_val4 varchar(255),
+	rfrn_val5 varchar(255),
+	rmark varchar(255),
+	siebe_cntry_div_cd varchar(255),
+	std_cd_id varchar(255),
+	sys_comp_id varchar(255),
+	sys_recd_chg_dt timestamp,
+	sys_recd_cret_dt timestamp,
+	sys_svc_id varchar(255),
+	sys_trt_org_id varchar(255),
+	sys_trtr_id varchar(255),
+	up_cd_group_id int8,
+	up_cd_id varchar(255),
+	use_yn varchar(255),
+	PRIMARY KEY (cd_id,cd_group_id)
+);
+
+ALTER TABLE comcd_bas
+	ADD FOREIGN KEY (cd_group_id) 
+	REFERENCES comcd_group_bas (cd_group_id);
+
+
+CREATE TABLE comcd_group_bas (
+	cd_group_id int8 NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	cd_group_desc_sbst varchar(255),
+	cd_group_eng_nm varchar(255),
+	cd_group_nm varchar(255),
+	cd_len_val int8,
+	efct_fns_date timestamp,
+	efct_st_date timestamp,
+	mstr_cd_group_id int8,
+	pkg_cd_group_eng_nm varchar(255),
+	sys_comp_id varchar(255),
+	sys_recd_chg_dt timestamp,
+	sys_recd_cret_dt timestamp,
+	sys_svc_id varchar(255),
+	sys_trt_org_id varchar(255),
+	sys_trtr_id varchar(255),
+	use_yn varchar(255),
+	PRIMARY KEY (cd_group_id)
+);
+
+
+
+CREATE TABLE oauth_access_token (
+	token_id varchar(100),
+	"token" bytea,
+	authentication_id varchar(100) NOT NULL,
+	user_name varchar(20),
+	client_id varchar(50),
+	authentication bytea,
+	refresh_token varchar(100),
+	PRIMARY KEY (authentication_id)
+);
+CREATE UNIQUE INDEX oauth_access_token_pk ON oauth_access_token USING btree (authentication_id);
+
+
+CREATE TABLE oauth_client_details (
+	client_id varchar(50) NOT NULL,
+	resource_ids varchar(50),
+	client_secret varchar(100),
+	"scope" varchar(50),
+	authorized_grant_types varchar(50),
+	web_server_redirect_uri varchar(200),
+	authorities varchar(200),
+	access_token_validity int4,
+	refresh_token_validity int4,
+	additional_information varchar(4096),
+	autoapprove varchar(200),
+	PRIMARY KEY (client_id)
+);
+CREATE UNIQUE INDEX oauth_client_details_pk ON oauth_client_details USING btree (client_id);
+
+
+
+
+CREATE TABLE oauth_refresh_token (
+	token_id varchar(100) NOT NULL,
+	"token" bytea,
+	authentication bytea,
+	PRIMARY KEY (token_id)
+);
+CREATE UNIQUE INDEX oauth_refresh_token_pk ON oauth_refresh_token USING btree (token_id);
+
+
+
+-- qaire_bas
+
+-- qaire_evl_bas
+
+-- qstnr_quei_bas
+
+-- qstnr_quei_ans_bas
+
+
+-- qstnr_reslt_txn  =>std
+
+-- qstnr_reslt_quei_txn
+
+
+-- qstnr_reslt_xpert_opin_txn
+
+
+-- qstnr_reslt_impr_opin_txn
+
+
+-- qstnr_reslt_quei_ans_txn => empty
+
+
+CREATE TABLE qaire_bas (
+	isa_qaire_id varchar(255) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	isa_qaire_ctgry_type_cd varchar(255),
+	qaire_nm varchar(255),
+	use_yn varchar(255),
+	PRIMARY KEY (isa_qaire_id)
+);
+
+
+
+CREATE TABLE qaire_evl_bas (
+	isa_qaire_evl_id varchar(255) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	isa_qstnr_quei_lctg_cd varchar(255),
+	isa_qstnr_quei_mctg_cd varchar(255),
+	isa_qstnr_quei_sctg_cd varchar(255),
+	lctg_nm varchar(255),
+	mctg_nm varchar(255),
+	sctg_nm varchar(255),
+	sort_ordg int4,
+	wvalu_use_yn varchar(255),
+	wvalu_val int4,
+	isa_qaire_id varchar(255),
+	PRIMARY KEY (isa_qaire_evl_id)
+);
+
+ALTER TABLE qaire_evl_bas
+	ADD FOREIGN KEY (isa_qaire_id) 
+	REFERENCES qaire_bas (isa_qaire_id);
+
+
+CREATE TABLE qstnr_quei_bas (
+	isa_qstnr_quei_id varchar(255) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	mand_yn varchar(255),
+	qstnr_quei_sbst varchar(255),
+	sort_ordg int4,
+	isa_qaire_evl_id varchar(255),
+	PRIMARY KEY (isa_qstnr_quei_id)
+);
+
+ALTER TABLE qstnr_quei_bas
+	ADD FOREIGN KEY (isa_qaire_evl_id) 
+	REFERENCES qaire_evl_bas (isa_qaire_evl_id);
+
+
+
+CREATE TABLE qstnr_quei_ans_bas (
+	isa_qstnr_quei_ans_id varchar(14) NOT NULL,
+	isa_qstnr_quei_id varchar(14) NOT NULL,
+	qstnr_quei_ans_sbst varchar(1000),
+	qstnr_quei_ans_score numeric(5),
+	sort_odrg numeric(5),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (isa_qstnr_quei_ans_id)
+);
+
+ALTER TABLE qstnr_quei_ans_bas
+	ADD FOREIGN KEY (isa_qstnr_quei_id) 
+	REFERENCES qstnr_quei_bas (isa_qstnr_quei_id);
+
+
+
+CREATE TABLE qstnr_reslt_txn (
+	isa_qstnr_reslt_id varchar(14) NOT NULL,
+	isa_qaire_id varchar(14) NOT NULL,
+	svc_clas_cd varchar(3),
+	user_id varchar(11) NOT NULL,
+	isa_qstnr_reslt_sttus_cd varchar(3),
+	isa_qaire_ctgry_type_cd varchar(3),
+	qstnr_reslt_reg_dt timestamp,
+	qstnr_reslt_chg_dt timestamp,
+	qstnr_reslt_sttus_chg_dt timestamp,
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (isa_qstnr_reslt_id)
+);
+
+ALTER TABLE qstnr_reslt_txn
+	ADD FOREIGN KEY (isa_qaire_id) 
+	REFERENCES qaire_bas (isa_qaire_id);
+
+
+CREATE UNIQUE INDEX qstnr_reslt_txn_pk ON qstnr_reslt_txn USING btree (isa_qstnr_reslt_id);
+
+
+CREATE TABLE qstnr_reslt_quei_txn (
+	isa_qstnr_reslt_quei_id varchar(14) NOT NULL,
+	isa_qstnr_reslt_id varchar(14) NOT NULL,
+	isa_qaire_evl_id varchar(14) NOT NULL,
+	isa_qstnr_quei_id varchar(14) NOT NULL,
+	isa_qstnr_quei_ans_id varchar(14),
+	isa_qstnr_quei_xpert_ans_id varchar(14),
+	qstnr_rpy_user_score numeric(5),
+	qstnr_xpert_rvs_score numeric(5),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (isa_qstnr_reslt_quei_id)
+);
+
+ALTER TABLE qstnr_reslt_quei_txn
+	ADD FOREIGN KEY (isa_qstnr_quei_xpert_ans_id) 
+	REFERENCES qstnr_quei_ans_bas (isa_qstnr_quei_ans_id);
+
+ALTER TABLE qstnr_reslt_quei_txn
+	ADD FOREIGN KEY (isa_qstnr_quei_ans_id) 
+	REFERENCES qstnr_quei_ans_bas (isa_qstnr_quei_ans_id);
+
+ALTER TABLE qstnr_reslt_quei_txn
+	ADD FOREIGN KEY (isa_qstnr_quei_id) 
+	REFERENCES qstnr_quei_bas (isa_qstnr_quei_id);
+
+ALTER TABLE qstnr_reslt_quei_txn
+	ADD FOREIGN KEY (isa_qaire_evl_id) 
+	REFERENCES qaire_evl_bas (isa_qaire_evl_id);
+
+ALTER TABLE qstnr_reslt_quei_txn
+	ADD FOREIGN KEY (isa_qstnr_reslt_id) 
+	REFERENCES qstnr_reslt_txn (isa_qstnr_reslt_id);
+
+
+CREATE UNIQUE INDEX qstnr_reslt_quei_txn_pk ON qstnr_reslt_quei_txn USING btree (isa_qstnr_reslt_quei_id);
+
+
+
+CREATE TABLE qstnr_reslt_xpert_opin_txn (
+	isa_qstnr_reslt_xpert_opin_id varchar(14) NOT NULL,
+	isa_qstnr_reslt_id varchar(14) NOT NULL,
+	isa_qaire_ctgry_type_cd varchar(3),
+	qstnr_reslt_splmn_rqt_sbst text,
+	qstnr_reslt_whole_evl_sbst text,
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (isa_qstnr_reslt_xpert_opin_id)
+);
+
+ALTER TABLE qstnr_reslt_xpert_opin_txn
+	ADD FOREIGN KEY (isa_qstnr_reslt_id) 
+	REFERENCES qstnr_reslt_txn (isa_qstnr_reslt_id);
+
+
+CREATE UNIQUE INDEX qstnr_reslt_xpert_opin_txn_pk ON qstnr_reslt_xpert_opin_txn USING btree (isa_qstnr_reslt_xpert_opin_id);
+
+
+
+CREATE TABLE qstnr_reslt_impr_opin_txn (
+	isa_qstnr_reslt_impr_opin_id varchar(14) NOT NULL,
+	isa_qstnr_reslt_xpert_opin_id varchar(14) NOT NULL,
+	isa_qstnr_reslt_opin_div_cd varchar(3),
+	qstnr_reslt_stats_input_sbst text,
+	qstnr_reslt_chg_rqt_input_sbst text,
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (isa_qstnr_reslt_impr_opin_id)
+);
+
+ALTER TABLE qstnr_reslt_impr_opin_txn
+	ADD FOREIGN KEY (isa_qstnr_reslt_xpert_opin_id) 
+	REFERENCES qstnr_reslt_xpert_opin_txn (isa_qstnr_reslt_xpert_opin_id);
+
+
+CREATE UNIQUE INDEX qstnr_reslt_impr_opin_txn_pk ON qstnr_reslt_impr_opin_txn USING btree (isa_qstnr_reslt_impr_opin_id);
+
+
+
+CREATE TABLE qstnr_reslt_quei_ans_txn (
+	isa_qstnr_reslt_quei_ans_id varchar(14) NOT NULL,
+	isa_qstnr_reslt_quei_id varchar(14) NOT NULL,
+	isa_qstnr_quei_id varchar(14) NOT NULL,
+	isa_qstnr_quei_ans_id varchar(14) NOT NULL,
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (isa_qstnr_reslt_quei_ans_id)
+);
+
+ALTER TABLE qstnr_reslt_quei_ans_txn
+	ADD FOREIGN KEY (isa_qstnr_quei_id) 
+	REFERENCES qstnr_quei_bas (isa_qstnr_quei_id);
+
+ALTER TABLE qstnr_reslt_quei_ans_txn
+	ADD FOREIGN KEY (isa_qstnr_quei_ans_id) 
+	REFERENCES qstnr_quei_ans_bas (isa_qstnr_quei_ans_id);
+
+ALTER TABLE qstnr_reslt_quei_ans_txn
+	ADD FOREIGN KEY (isa_qstnr_reslt_quei_id) 
+	REFERENCES qstnr_reslt_quei_txn (isa_qstnr_reslt_quei_id);
+
+
+CREATE UNIQUE INDEX qstnr_reslt_quei_ans_txn_pk ON qstnr_reslt_quei_ans_txn USING btree (isa_qstnr_reslt_quei_ans_id);
+
+
+
+CREATE TABLE reslt_base_bas (
+	isa_reslt_base_id varchar(14) NOT NULL,
+	isa_reslt_base_sets_id varchar(14) NOT NULL,
+	isa_dag_ctgry_type_cd varchar(3) NOT NULL,
+	dag_chk_item_base_val varchar(120),
+	dag_chk_base_val varchar(100),
+	dag_chk_max_val varchar(100),
+	dag_chk_min_val varchar(100),
+	isa_dag_chk_div_cd varchar(3) NOT NULL,
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	help_sbst text,
+	isa_base_var_type_div_cd varchar(3) NOT NULL,
+	isa_dag_sw_lctg_cd varchar(3),
+	isa_dag_sw_mctg_cd varchar(3),
+	isa_dag_sw_sctg_cd varchar(3),
+	isa_dag_ctgry_dtl_type_cd varchar(3),
+	bas_score numeric(5),
+	reslt_scope_sbst varchar(1000),
+	chg_why_sbst varchar(1000),
+	PRIMARY KEY (isa_reslt_base_id)
+);
+
+ALTER TABLE reslt_base_bas
+	ADD FOREIGN KEY (isa_reslt_base_sets_id) 
+	REFERENCES reslt_base_sets_bas (isa_reslt_base_sets_id);
+
+ALTER TABLE reslt_base_bas
+	ADD FOREIGN KEY (isa_reslt_base_sets_id) 
+	REFERENCES reslt_base_sets_bas (isa_reslt_base_sets_id);
+
+
+CREATE UNIQUE INDEX reslt_base_bas_pk ON reslt_base_bas USING btree (isa_reslt_base_id);
+
+
+CREATE TABLE reslt_base_sets_bas (
+	isa_reslt_base_sets_id varchar(255) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	isa_exe_wrk_type_cd varchar(255),
+	isa_reslt_base_sets_nm varchar(255),
+	reg_user_id varchar(255),
+	use_yn varchar(255),
+	PRIMARY KEY (isa_reslt_base_sets_id)
+);
+
+
+
+CREATE TABLE ri_bas (
+	isa_ri_id varchar(255) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	ri_desc_sbst varchar(255),
+	ri_nm varchar(255),
+	ri_url_adr varchar(255),
+	rqt_type_cd varchar(255),
+	use_yn varchar(255),
+	PRIMARY KEY (isa_ri_id)
+);
+
+
+CREATE TABLE ri_aut_rel (
+	isa_ri_aut_id varchar(14) NOT NULL,
+	isa_aut_id varchar(14) NOT NULL,
+	isa_ri_id varchar(14) NOT NULL,
+	use_yn varchar(1),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (isa_ri_aut_id)
+);
+
+ALTER TABLE ri_aut_rel
+	ADD FOREIGN KEY (isa_ri_id) 
+	REFERENCES ri_bas (isa_ri_id);
+
+ALTER TABLE ri_aut_rel
+	ADD FOREIGN KEY (isa_aut_id) 
+	REFERENCES aut_bas (isa_aut_id);
+
+
+CREATE UNIQUE INDEX ri_aut_rel_pk ON ri_aut_rel USING btree (isa_ri_aut_id);
+CREATE UNIQUE INDEX ri_aut_rel_ux01 ON ri_aut_rel USING btree (isa_aut_id, isa_ri_id);
+
+
+
+CREATE TABLE swrep_bas (
+	swrep_id varchar(14) NOT NULL,
+	atc_file_id varchar(11) NOT NULL,
+	sw_nm varchar(50),
+	patch_ver_val varchar(20),
+	use_yn varchar(1),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	isa_sw_file_lctg_cd varchar(3),
+	isa_sw_file_mctg_cd varchar(3),
+	isa_sw_file_sctg_cd varchar(3),
+	isa_sw_file_div_cd varchar(3),
+	isa_sw_file_ver_div_cd varchar(3),
+	secure_patch_yn varchar(1) DEFAULT 'N'::character varying,
+	latest_yn varchar(1) DEFAULT 'N'::character varying,
+	vendor varchar(30),
+	transfer_id varchar(14),
+	sw_nm_cd varchar(2),
+	del_yn varchar(1) DEFAULT 'N'::character varying,
+	PRIMARY KEY (swrep_id)
+);
+
+ALTER TABLE swrep_bas
+	ADD FOREIGN KEY (atc_file_id) 
+	REFERENCES swrep_file_bas (atc_file_id);
+
+
+CREATE UNIQUE INDEX swrep_bas_pk ON swrep_bas USING btree (swrep_id);
+CREATE UNIQUE INDEX swrep_bas_ux01 ON swrep_bas USING btree (swrep_id, atc_file_id);
+
+
+
+
+CREATE TABLE swrep_file_bas (
+	atc_file_id varchar(11) NOT NULL,
+	atc_file_nm varchar(400) NOT NULL,
+	atc_file_path_sbst varchar(400) NOT NULL,
+	atc_file_link_title_nm varchar(400) NOT NULL,
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	atc_file_size numeric(10),
+	transfer_id varchar(11),
+	PRIMARY KEY (atc_file_id)
+);
+CREATE UNIQUE INDEX swrep_file_bas_pk ON swrep_file_bas USING btree (atc_file_id);
+
+
+CREATE TABLE user_bas (
+	user_id varchar(255) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	active_token varchar(255),
+	dag_svc_use_cnt int4,
+	ip_athn_except_yn varchar(255),
+	login_fail_tmscnt int4,
+	pos_dept_nm varchar(255),
+	trt_yn varchar(255),
+	user_email_adr varchar(255),
+	user_login_dt timestamp,
+	user_mphon_no varchar(255),
+	user_nm varchar(255),
+	user_pwd varchar(255),
+	user_sttus_cd varchar(255),
+	user_type_cd varchar(255),
+	PRIMARY KEY (user_id)
+);
+
+
+CREATE TABLE user_aut_rel (
+	isa_user_aut_id varchar(14) NOT NULL,
+	user_id varchar(11) NOT NULL,
+	isa_aut_id varchar(14) NOT NULL,
+	use_yn varchar(1),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (isa_user_aut_id)
+);
+
+ALTER TABLE user_aut_rel
+	ADD FOREIGN KEY (isa_aut_id) 
+	REFERENCES aut_bas (isa_aut_id);
+
+ALTER TABLE user_aut_rel
+	ADD FOREIGN KEY (user_id) 
+	REFERENCES user_bas (user_id);
+
+
+CREATE UNIQUE INDEX user_aut_rel_pk ON user_aut_rel USING btree (isa_user_aut_id);
+CREATE UNIQUE INDEX user_aut_rel_ux01 ON user_aut_rel USING btree (user_id, isa_aut_id);
+
+
+CREATE TABLE user_aut_rel_hst (
+	isa_hst_tbl_data_seq int8 NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	isa_aut_id varchar(255),
+	isa_data_chg_type_cd varchar(255),
+	isa_user_aut_id varchar(255),
+	user_id varchar(255),
+	PRIMARY KEY (isa_hst_tbl_data_seq)
+);
+
+
+
+CREATE TABLE user_email_dsp_txn (
+	email_dsp_seq numeric(10) NOT NULL,
+	email_dsp_user_id varchar(11),
+	email_dsp_dt timestamp NOT NULL,
+	email_title_nm varchar(90),
+	email_dsp_sbst text,
+	dsp_email_adr varchar(50),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (email_dsp_seq)
+);
+
+ALTER TABLE user_email_dsp_txn
+	ADD FOREIGN KEY (email_dsp_user_id) 
+	REFERENCES user_bas (user_id);
+
+
+CREATE UNIQUE INDEX user_email_dsp_txn_pk ON user_email_dsp_txn USING btree (email_dsp_seq);
+
+
+CREATE TABLE user_email_rcv_txn (
+	email_rcv_seq numeric(10) NOT NULL,
+	email_dsp_seq numeric(10) NOT NULL,
+	email_dsp_dt timestamp NOT NULL,
+	email_rcvr_type_cd varchar(3),
+	email_rcv_user_id varchar(11),
+	rcv_email_adr varchar(50),
+	email_dsp_reslt_id varchar(5),
+	email_dsp_reslt_nm varchar(150),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11),
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (email_rcv_seq)
+);
+
+ALTER TABLE user_email_rcv_txn
+	ADD FOREIGN KEY (email_rcv_user_id) 
+	REFERENCES user_bas (user_id);
+
+ALTER TABLE user_email_rcv_txn
+	ADD FOREIGN KEY (email_dsp_seq) 
+	REFERENCES user_email_dsp_txn (email_dsp_seq);
+
+
+CREATE UNIQUE INDEX user_email_rcv_txn_pk ON user_email_rcv_txn USING btree (email_rcv_seq);
+
+
+
+CREATE TABLE user_ipadr_bas (
+	isa_user_ip_idfy_id varchar(255) NOT NULL,
+	amd_dt timestamp,
+	amd_pgm_id varchar(255),
+	cretr_id varchar(255),
+	cret_dt timestamp,
+	cret_pgm_id varchar(255),
+	amdr_id varchar(255),
+	user_ipadr varchar(255),
+	user_id varchar(255),
+	PRIMARY KEY (isa_user_ip_idfy_id)
+);
+
+ALTER TABLE user_ipadr_bas
+	ADD FOREIGN KEY (user_id) 
+	REFERENCES user_bas (user_id);
+
+
+
+CREATE TABLE user_ipadr_bas_hst (
+	isa_hst_tbl_data_seq numeric(30) NOT NULL,
+	isa_data_chg_type_cd varchar(3),
+	isa_user_ip_idfy_id varchar(14),
+	user_id varchar(11),
+	user_ipadr varchar(15),
+	cret_dt timestamp NOT NULL,
+	cretr_id varchar(11) NOT NULL,
+	amd_dt timestamp,
+	amdr_id varchar(11),
+	cret_pgm_id varchar(300) NOT NULL,
+	amd_pgm_id varchar(300),
+	PRIMARY KEY (isa_hst_tbl_data_seq)
+);
+CREATE UNIQUE INDEX user_ipadr_bas_hst_pk ON user_ipadr_bas_hst USING btree (isa_hst_tbl_data_seq);

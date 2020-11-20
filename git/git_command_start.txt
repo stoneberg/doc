@@ -1,0 +1,48 @@
+
+
+-- 브랜치 생성 후 원격 저장소에 업로드
+git push --set-upstream orgin remote_branch_name
+이후 
+git push
+
+
+-- 원격 브랜치 삭제
+git push origin --delete branch_name
+
+-- 로컬 브랜치 삭제
+git branch -d branch_name
+
+
+-- 리모트의 모든 브랜치 정보 가지고 오기
+git fetch --all
+git branch -a // 모든 로컬/리모트 브랜치 조회
+git branch -r // 모든 리모트 브랜치 조회
+git checkout orgin/branch_name
+git checkout -b local_branch_name orgin/remote_branch_name
+
+-- 기존 리모트 오리진 제거
+git remote remove origin
+
+-- 새로운 리모트 오리진 연결
+git remote add origin https://github.com/stoneberg/jap-traps.git
+
+
+-- git 되돌리기 #1
+
+이전 작업 모드 commit 함 (git commit -m "user update commit"
+추가 작업 함
+추가 작업 사항을 모두 리셋 시키고 싶음
+git reset --hard
+==> user update commit 초기 상태로 되돌아감
+
+-- 특정 커밋 시점으로 되돌리기
+git log -p -5  // 최근 5개의 커밋의 diff 결과를 보여둠
+git reset --hard commit-hash
+
+git merge working_branch
+
+
+git pull origin dev
+
+
+git push

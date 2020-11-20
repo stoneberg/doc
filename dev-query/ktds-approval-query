@@ -1,0 +1,126 @@
+INSERT INTO approval.tb_role( role_type)
+VALUES ('ROLE_USER'),
+('ROLE_FORM'),
+('ROLE_PLEDGE'),
+('ROLE_SYSTEM');
+
+
+INSERT INTO approval.tb_company(company_id, company_name, display_order, created_dt, updated_dt)
+VALUES ('1001', 'KT', '0', '2020-09-01 09:38:11.471826', '2020-09-01 09:38:11.471826'),
+('1002', 'KTF', '999', '2020-09-01 09:38:11.471826', '2020-09-01 09:38:11.471826'),
+('2001', '협력사', '998', '2020-09-01 09:38:11.471826', '2020-09-01 09:38:11.471826');
+
+
+INSERT INTO approval.tb_user(user_id, company_id, dept_id, emp_no, username, email, phone, dept_name, user_type, sign_file_name, sign_file_path, delete_yn, created_dt, updated_dt)
+VALUES
+('90000001', '2001', '', '', '박주식', '90000001@kt.com', '000-0000-1111', '', 'PARTNER', '', '', 'f', '2020-09-01 13:08:46.4741', '2020-09-01 13:08:46.4741'),
+('90000003', '2001', '', '', '이유평', '90000003@kt.com', '000-0000-0000', '', 'PARTNER', '', '', 'f', '2020-09-01 13:08:46.4741', '2020-09-01 13:08:46.4741');
+
+
+INSERT INTO approval.tb_user_role(user_id, company_id, role_id) VALUES
+('90000001', '2001', 4),
+('90000003', '2001', 1),
+('90000003', '2001', 2),
+('90000003', '2001', 3),
+('90000003', '2001', 4);
+
+
+
+select * from approval.tb_role;
+
+delete from approval.tb_approval_file;
+
+select * from approval.tb_approval_file;
+
+drop table approval.tb_approver;
+
+select * from approval.tb_approver;
+
+
+create table approval.tb_approver (
+     approver_id  bigserial not null,
+     company_id varchar(75),
+     user_id varchar(75),
+     approval_order varchar(10),
+     approval_sttus varchar(20),
+     approved_dt timestamp,
+     comments varchar(300),
+     progs_sttus varchar(20) default 'STANDBY' not null,
+     created_by varchar(75),
+     created_dt timestamp,
+     updated_by varchar(75),
+     updated_dt timestamp,
+     approval_id int8,
+     primary key (approver_id)
+);
+
+
+
+ALTER TABLE approval.tb_approver ADD CONSTRAINT fk_tb_approver_approval_id FOREIGN KEY (approval_id) REFERENCES approval.tb_approval;
+
+ALTER TABLE approval.tb_approver ADD CONSTRAINT fk_tb_approver_user_pk FOREIGN KEY (company_id, user_id) REFERENCES approval.tb_user;
+
+select * from approval.tb_approver;
+
+select * from approval.tb_approval;
+
+DELETE FROM approval.tb_approval WHERE approval_id = 4;
+
+
+
+select * from approval.tb_user  where user_id in ('90000002', '90000004');
+
+
+UPDATE approval.tb_user SET delegator_company_id = '2001', delegator_user_id = '90000003' WHERE company_id = '2001' AND user_id = '90000002';
+UPDATE approval.tb_user SET delegator_company_id = '2001', delegator_user_id = '90000003' WHERE company_id = '2001' AND user_id = '90000004';
+
+
+
+
+
+alter table approval.tb_delegate alter column dismiss_dt drop not null;
+alter table approval.tb_delegate alter column empower_dt drop not null;
+
+select * from approval.tb_user where user_id = '90000003';
+
+select * from approval.tb_delegate;
+
+DELETE FROM approval.tb_delegate WHERE delegate_id = 5;
+DELETE FROM approval.tb_delegate WHERE delegate_id = 6;
+DELETE FROM approval.tb_delegate WHERE delegate_id = 7;
+DELETE FROM approval.tb_delegate WHERE delegate_id = 8;
+
+
+alter table approval.tb_delegate add column delegate_company_id varchar(75);
+alter table approval.tb_delegate add column mandate_company_id varchar(75);
+
+alter table approval.tb_delegate add column mandate_user_id varchar(75);
+alter table approval.tb_delegate add column mandate_username varchar(75);
+alter table approval.tb_delegate add column mandate_dept_nm varchar(75);
+
+alter table approval.tb_delegate drop column delegate_company_id;
+alter table approval.tb_delegate drop column delegate_dept_id;
+
+
+select * from approval.tb_user where user_id = '90000003';
+
+select * from approval.tb_approval;
+
+select * from approval.tb_approver where approval_id = 1;
+
+select * from approval.tb_delegate;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,124 @@
+
+
+alter table tb_pledge add column progs_sttus varchar(20) default 'STANDBY' not null;
+alter table tb_pledge_user add column progs_sttus varchar(20) default 'STANDBY' not null;
+
+alter table tb_pledge drop column progs_sttus_type;
+alter table tb_pledge_user drop column progs_sttus_type;
+
+
+fk_ex_user_cmpn_id
+uk_ex_user_emp_no
+
+-- tb_form
+alter table tb_form add column form_desc varchar(255);
+alter table tb_form add column video_file_url varchar(255);
+
+alter table tb_form drop column use_yn;
+alter table tb_form add column use_yn char(1) default 'Y' not null;
+
+alter table tb_form drop column delete_yn;
+alter table tb_form add column delete_yn char(1) default 'N' not null;
+
+-- tb_pledge
+alter table tb_pledge drop column delete_yn;
+alter table tb_pledge add column delete_yn char(1) default 'N' not null;
+
+
+-- tb_user
+alter table tb_user drop column delete_yn;
+alter table tb_user add column delete_yn char(1) default 'N' not null;
+
+alter table tb_user add column sign_file_url varchar(255);
+
+-- tb_pledge_user
+alter table tb_pledge_user drop column video_play_yn;
+alter table tb_pledge_user add column video_play_yn char(1) default 'N' not null;
+
+
+유니크 컬럼 제약 조건 걸기
+
+
+ALTER TABLE ex_user ADD CONSTRAINT uk_ex_user_emp_no UNIQUE (emp_no);
+ALTER TABLE ex_user ADD CONSTRAINT uk_ex_user_email UNIQUE (email);
+
+alter table esign.tb_user add column position varchar(255);
+
+
+
+ALTER TABLE ex_user DROP CONSTRAINT ex_user_unqiue_emp_no;
+
+
+
+
+    alter table tb_company add column created_by varchar(255);
+
+    alter table tb_company add column updated_by varchar(255);
+
+
+    alter table tb_form add column created_by varchar(255);
+
+    alter table tb_form add column updated_by varchar(255);
+
+ 
+    alter table tb_form_user add column created_by varchar(255);
+
+    alter table tb_form_user add column updated_by varchar(255);
+
+
+    alter table tb_pledge add column created_by varchar(255);
+ 
+    alter table tb_pledge add column updated_by varchar(255);
+ 
+
+    alter table tb_pledge_item add column created_by varchar(255);
+
+    alter table tb_pledge_item add column updated_by varchar(255);
+
+
+    alter table tb_pledge_user add column created_by varchar(255);
+
+    alter table tb_pledge_user add column updated_by varchar(255);
+
+ 
+    alter table tb_role add column created_by varchar(255);
+
+    alter table tb_role add column updated_by varchar(255);
+
+
+    alter table tb_user add column created_by varchar(255);
+
+    alter table tb_user add column updated_by varchar(255);
+
+
+    alter table tb_user_noti add column created_by varchar(255);
+
+    alter table tb_user_noti add column updated_by varchar(255);
+
+
+
+alter table tb_company drop column update_dt;
+alter table tb_form drop column update_dt;
+alter table tb_form_user drop column update_dt;
+alter table tb_pledge drop column update_dt;
+alter table tb_pledge_user drop column update_dt;
+alter table tb_role drop column update_dt;
+alter table tb_user drop column update_dt;
+alter table tb_user_noti drop column update_dt;
+
+
+
+DROP SCHEMA qesign CASCADE;
+CREATE SCHEMA qesign;
+alter role devops in database dswc set search_path to qesign;
+grant connect on database dswc to devops;
+grant usage on schema qesign to devops;
+grant all privileges on all tables in schema qesign to devops;
+grant all privileges on all sequences in schema qesign to devops;
+
+
+
+
+
+
+

@@ -1,0 +1,65 @@
+displayed in H2 DB
+
+create data.sql in src/main/resources
+- H2 Console: http://localhost:8080/h2-console
+- JDBC URL: jdbc:h2:mem:testdb
+
+
+
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.use_sql_comments=true
+logging.level.org.hibernate.type.descriptor.sql=trace
+spring.jpa.hibernate.ddl-auto=create
+
+
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+
+logging:
+  level:
+    org.hibernate.type.descriptor.sql: trace
+
+
+
+insert into users (user_name, first_name, last_name, email, role, age, ssn) values ('stoneberg', 'Lee', 'YuPyeong', 'stoneberg@gmail.com', 'admin', '47', 'ssn-1134-3214');
+insert into users (user_name, first_name, last_name, email, role, age, ssn) values ('03president', 'Kim', 'YoungSam', 'youngsam@gmail.com', 'user', '88', 'ssn-5214-8521');
+insert into users (user_name, first_name, last_name, email, role, age, ssn) values ('hong2020', 'Hong', 'ManHee', 'hong2014@gmail.com', 'admin', '16', 'ssn-3652-6354');
+insert into users (user_name, first_name, last_name, email, role, age, ssn) values ('zetlee', 'Yoon', 'JaeHo', 'zetlee@gmail.com', 'admin', '35', 'ssn-6321-5421');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

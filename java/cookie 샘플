@@ -1,0 +1,35 @@
+안녕하세요 여동준입니다.
+
+ 
+
+포털에서 제공하는 SSO 암호화 토큰 샘플과 AES 공유키 전달드립니다.
+
+ 
+
+공유키 : 12345678901234567890123456789012
+
+ 
+
+원본 암호화 토큰=
+
+2Mc8NliDc4pt937uBhCFh+3ZTCcZ5lrG6fbb6pRoL1XPsG1ANBTc0FLuzdAHHnYgZtaQTpRyPhnxZTNgywTmC0kpMe5OGzyHuRWlwluugPjNQzWgtEN4GkdbAzM92LAQlD+WkwoUidgF0/PeOjGnS6dbIkaQsSn1jzMcRjuItZp3a0rz/vl5ep5GTiGk5yqIDyzuj5BU8ln7GwqHEuSt8uy+8YPl1ynI2bfFjCmBKgth1X5lQi/7u29qDscs++CJ8TPrGFn8woJsccfmth5iA261gXh29Txh7onFY7TcDFM=
+
+ 
+
+urlencoding 암호화 토큰(쿠키에 저장된 토큰=
+
+2Mc8NliDc4pt937uBhCFh%2B3ZTCcZ5lrG6fbb6pRoL1XPsG1ANBTc0FLuzdAHHnYgZtaQTpRyPhnxZTNgywTmC0kpMe5OGzyHuRWlwluugPjNQzWgtEN4GkdbAzM92LAQlD%2BWkwoUidgF0%2FPeOjGnS6dbIkaQsSn1jzMcRjuItZp3a0rz%2Fvl5ep5GTiGk5yqIDyzuj5BU8ln7GwqHEuSt8uy%2B8YPl1ynI2bfFjCmBKgth1X5lQi%2F7u29qDscs%2B%2BCJ8TPrGFn8woJsccfmth5iA261gXh29Txh7onFY7TcDFM%3D
+
+ 
+
+복호화된 값=
+
+userId:82023166||displayName:여동준 (케이티)||email:ydj007@kt.com||userName:여동준||empNo:82023166||deptId:000001||deptName:케이티||companyId:1001||companyName:kt||titleName:사장||expired:20200904094201
+
+ 
+
+ 
+
+감사합니다.
+
+ 

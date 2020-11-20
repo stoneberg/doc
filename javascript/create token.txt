@@ -1,0 +1,48 @@
+// valid cookie (90000003)
+(function(name, value) {
+	var date = new Date();
+	date.setTime(date.getTime() + 30 * 60 * 60 * 24 * 1000);
+	document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+})
+(
+ 'SSO_TOKEN', 
+ 'vQWNmfOtips4YNMjSCaWFzARl5xK9bkPlo0Rr%2B4ZkJBDKmh17GIAVI%2BX%2FQrVVE%2FAfivecX9SE3AzVIKhhdJ26p87kmsBBsYpY%2F0ASPo%2BvP55PnjmVwckz6V1Qs6L2fkdYlBUCIgu0dVRxDgkU%2BmyS4I2usdg8PgzTdmshlxcsoEslEr9YMtUSDBAYFKGtA2OWJZlmSrD9lLtjlBjE%2BFdFrqt6qvATugC7QcB4tevyIprB1wXUumiYXc2QUeYlYus4HYd5DlJAeUOG9ugiUJxrFHoEjtcyYx3kGrwQZPe8yuQyE5aO2jh4qNgnl9K5zCQ'
+);
+
+// valid cookie (90000004)
+(function(name, value) {
+	var date = new Date();
+	date.setTime(date.getTime() + 30 * 60 * 60 * 24 * 1000);
+	document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+})
+(
+ 'SSO_TOKEN', 
+ '7C6Mv7bHD4AkQkYLM3WR9T20z5rGKZN3kZvGWnnjry59jdZd%2BA6%2FAiDjeZ1Ffb8K0s3BFEVJ4osNn8OeQJ21iCZbo9jWVsc%2F%2FtVFGMgpeqzwnHFWkLaX7DAumoEYfvvujtXTAEcJtomh%2Bj9ofqveiDWf3Ve1Cl9FHln8CZgAGl4RCIlUAcfuBuGEjABfUX6%2Bo%2FRHA0MkSp2bR2FyWqC%2FXKF2CEdHf%2BCfZb%2Fy6VnkoJaCu0s8Q6rJUVrDBphYKWVP1dVXTWYhDBiSF%2BeA7gPFLdDTrdxEFTWHz0IMHqGebK8%3D'
+);
+
+
+// expired cookie
+(function(name, value) {
+	var date = new Date();
+	date.setTime(date.getTime() + 30 * 60 * 60 * 24 * 1000);
+	document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';path=/';
+})
+(
+ 'SSO_TOKEN', 
+ 'vQWNmfOtips4YNMjSCaWFzARl5xK9bkPlo0Rr%2B4ZkJBDKmh17GIAVI%2BX%2FQrVVE%2FAfivecX9SE3AzVIKhhdJ26p87kmsBBsYpY%2F0ASPo%2BvP55PnjmVwckz6V1Qs6L2fkdYlBUCIgu0dVRxDgkU%2BmyS4I2usdg8PgzTdmshlxcsoEslEr9YMtUSDBAYFKGtA2OWJZlmSrD9lLtjlBjE%2BFdFrqt6qvATugC7QcB4tevyIprB1wXUumiYXc2QUeYlYus4HYd5DlJAeUOG9ugiUJxrEzt6aTf1XUnP2NRM%2Bxz1oZfWwf8mrbbrBiXG%2Bt%2FmPV4'
+);
+
+	
+// domain cookie
+(function(name, value) {
+	var date = new Date();
+	date.setTime(date.getTime() + 30 * 60 * 60 * 24 * 1000);
+	document.cookie = name + '=' + value + ';expires=' + date.toUTCString() + ';domain=.kt.com;path=/';
+})
+(
+ 'SSO_TOKEN', 
+ 'vQWNmfOtips4YNMjSCaWFzARl5xK9bkPlo0Rr%2B4ZkJBDKmh17GIAVI%2BX%2FQrVVE%2FAfivecX9SE3AzVIKhhdJ26p87kmsBBsYpY%2F0ASPo%2BvP55PnjmVwckz6V1Qs6L2fkdYlBUCIgu0dVRxDgkU%2BmyS4I2usdg8PgzTdmshlxcsoEslEr9YMtUSDBAYFKGtA2OWJZlmSrD9lLtjlBjE%2BFdFrqt6qvATugC7QcB4tevyIprB1wXUumiYXc2QUeYlYus4HYd5DlJAeUOG9ugiUJxrFHoEjtcyYx3kGrwQZPe8yuQyE5aO2jh4qNgnl9K5zCQ'
+);
+
+
+

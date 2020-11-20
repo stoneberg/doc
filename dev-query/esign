@@ -1,0 +1,761 @@
+
+CREATE TABLE dswc.qesign.tb_users (
+	"id" serial NOT NULL,
+	created_at timestamp,
+	updated_at timestamp,
+	cmpn_id varchar(75) NOT NULL,
+	cmpn_name varchar(75) NOT NULL,
+	dept_id varchar(75),
+	dept_name varchar(75),
+	email varchar(75),
+	emp_name varchar(75) NOT NULL,
+	emp_no varchar(75) NOT NULL,
+	is_deleted bool DEFAULT false NOT NULL,
+	is_partner bool DEFAULT false NOT NULL,
+	phone varchar(75),
+	position_id varchar(75),
+	position_name varchar(75),
+	sign_file_name varchar(40),
+	sign_file_path varchar(100),
+	PRIMARY KEY ("id")
+);
+CREATE INDEX tb_users_index ON qesign.tb_users USING btree (emp_no, cmpn_id);
+CREATE UNIQUE INDEX tb_users_unique ON qesign.tb_users USING btree (emp_no, cmpn_id, dept_id, email);
+
+DROP TABLE qesign.tb_user_role;
+DROP TABLE qesign.tb_role;
+DROP TABLE qesign.tb_user;
+DROP TABLE qesign.tb_department;
+DROP TABLE qesign.tb_company;
+
+
+select * from example_board;
+select * from example_images;
+
+
+DELETE FROM dswc.qesign.example_user_pledge ;
+
+
+
+SELECT
+	*
+FROM
+	dswc.qesign.example_user_pledge;
+
+
+DROP TABLE if exists example_user_pledge;
+
+CREATE TABLE example_user_pledge (
+	"id" serial NOT NULL,
+	pledge_name varchar(60) NOT NULL,
+	pledge_type varchar(20),
+	pledge_user_status varchar(20),
+	req_dept varchar(20) NOT NULL,
+	req_user varchar(30) NOT NULL,
+	start_dt timestamp,
+	end_dt timestamp,
+	PRIMARY KEY ("id")
+);
+
+select * from example_user_pledge where pledge_user_status not in ('PROCEED', 'COMPLETE', 'STANDBY');
+
+select * from example_user_pledge where pledge_type not in ('HTML', 'VIDEO');
+
+select * from example_user_pledge order by id;
+
+UPDATE example_user_pledge SET req_dept = 'Contracts Office' WHERE  req_dept = '행정지원실';
+
+UPDATE example_user_pledge SET pledge_user_status = 'PROCEEDING' WHERE pledge_user_status = 'PROCEED';
+
+
+DELETE FROM example_user_pledge WHERE "id" = 200;
+
+CREATE TABLE dswc.qesign.example_user_pledge (
+	"id" serial NOT NULL,
+	pledge_name varchar(60) NOT NULL,
+	pledge_type varchar(20),
+	user_pledge_status varchar(20),
+	req_dept varchar(20) NOT NULL,
+	req_user varchar(30) NOT NULL,
+	start_dt timestamp,
+	end_dt timestamp,
+	PRIMARY KEY ("id")
+);
+
+UPDATE example_user_pledge SET user_pledge_status = 'STANDBY' WHERE user_pledge_status = 'standby';
+UPDATE example_user_pledge SET user_pledge_status = 'COMPLETE' WHERE user_pledge_status = 'complete';
+UPDATE example_user_pledge SET user_pledge_status = 'PROCEEDING' WHERE user_pledge_status = 'proceeding';
+
+select * from example_user_pledge order by id desc;
+
+select * from  example_user_pledge WHERE "id" = 5;
+
+
+drop table tb_common_code;
+
+
+CREATE TABLE dswc.qesign.tb_common_code (
+	"id" serial NOT NULL,
+	group_code varchar(20) NOT NULL,
+	group_desc varchar(50) NOT NULL,
+	code varchar(20) NOT NULL,
+	code_desc varchar(50) NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	display_order varchar(2),
+	PRIMARY KEY ("id")
+);
+
+
+INSERT INTO dswc.qesign.tb_common_code
+	(group_code, group_desc, code, code_desc, display_order, created_dt,  updated_dt)
+VALUES 
+	('PLEDGE_TYPE', '서명 양식', 'HTML', '일반', '1', now(), now()),
+	('PLEDGE_TYPE', '서명 양식', 'VIDEO', '영상', '2', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'STANDBY', '대기', '1', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'PROCEEDING', '진행 중', '2', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'COMPLETE', '완료', '3', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'STANDBY', '대기', '1', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'PROCEEDING', '진행 중', '2', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'COMPLETE', '완료', '3', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'DELETE', '삭제', '4', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'CANCEL', '취소', '5', now(), now()),
+	('NOTI_TYPE', '사용자 공지 유형', 'SMS', 'SMS', '1', now(), now()),
+	('NOTI_TYPE', '사용자 공지 유형', 'EMAIL', 'EMAIL', '2', now(), now()),	
+	('NOTI_TYPE', '사용자 공지 유형', 'PUSH', 'PUSH', '3', now(), now()),
+	('NOTI_DIRECTION', '공지 방향', 'SEND', '발송', '1', now(), now()),
+	('NOTI_DIRECTION', '공지 방형', 'RECEIVE', '수신', '2', now(), now());
+	
+	
+
+INSERT INTO dswc.qesign.example_noti
+	(noti_type)
+VALUES 
+	('SMS'),
+	('EMAIL'),	
+	('PUSH');	
+	
+CREATE TABLE tb_cd_group_info (
+	cd_group_id varchar(30) NOT NULL,
+	cd_group_nm varchar(100) NOT NULL,
+	sys_trtr_id varchar(15) NOT NULL,
+	sys_svc_id varchar(50),
+	sys_recd_cret_dt timestamp DEFAULT now() NOT NULL,
+	sys_recd_chg_dt timestamp,
+	PRIMARY KEY (cd_group_id)
+);
+
+
+CREATE TABLE tb_cd_info (
+	cd_id varchar(20) NOT NULL,
+	cd_group_id varchar(30) NOT NULL,
+	cd_desc varchar(200) NOT NULL,
+	cd_val1 varchar(2000) NOT NULL,
+	cd_val2 varchar(100),
+	cd_val3 varchar(100),
+	otput_prirt int2 DEFAULT 1 NOT NULL,
+	use_yn bool DEFAULT true NOT NULL,
+	sys_trtr_id varchar(15) NOT NULL,
+	sys_svc_id varchar(50),
+	sys_recd_cret_dt timestamp DEFAULT now() NOT NULL,
+	sys_recd_chg_dt timestamp,
+	PRIMARY KEY (cd_id,cd_group_id)
+);	
+	
+select * from tb_cd_group_info;	
+select * from tb_cd_group_info  WHERE cd_group_id = 'ExRateCurrency';
+select * from tb_cd_info;		
+
+
+select	cd_id, cd_val1 FROM tb_cd_info	WHERE cd_group_id = 'ExRateCurrency';	
+
+delete from tb_common_code;
+
+select * from tb_common_code;
+
+select count(*) from tb_common_code;
+
+
+DELETE FROM example_user_pledge WHERE "id" = 1;
+
+select * from example_user_pledge WHERE "id" = 3;
+
+select * from example_user_pledge order by id asc;
+
+select * from example_user_pledge order by id desc;
+
+select count(*) from example_user_pledge;
+
+
+CREATE TABLE dswc.qesign.example_user_pledge (
+	"id" serial NOT NULL,
+	pledge_name varchar(60) NOT NULL,
+	pledge_type varchar(20),
+	pledge_accept_type varchar(20),
+	req_dept varchar(20) NOT NULL,
+	req_user varchar(30) NOT NULL,
+	start_dt timestamp,
+	end_dt timestamp,
+	PRIMARY KEY ("id")
+);
+
+drop table example_user_pledge;
+
+select * from example_user_pledge where req_user = '김정은';
+
+select * from example_user_pledge order by id desc;
+
+    select
+        exuserpled0_.id as id1_4_,
+        exuserpled0_.end_dt as end_dt2_4_,
+        exuserpled0_.pledge_accept_type as pledge_a3_4_,
+        exuserpled0_.pledge_name as pledge_n4_4_,
+        exuserpled0_.pledge_type as pledge_t5_4_,
+        exuserpled0_.req_dept as req_dept6_4_,
+        exuserpled0_.req_user as req_user7_4_,
+        exuserpled0_.start_dt as start_dt8_4_ 
+    from
+        example_user_pledge exuserpled0_ 
+    where
+        exuserpled0_.pledge_accept_type='PROCEEDING' 
+        and (
+            exuserpled0_.start_dt between '2020-03-31T00:00:00.000+0900' and '2020-08-25T00:00:00.000+0900'
+        ) 
+    order by
+        exuserpled0_.start_dt asc;
+
+
+select * from example_board;
+
+
+ALTER TABLE example_user DROP CONSTRAINT uk_dnnnd4i0cwnnocep14vl6esiv;
+ALTER TABLE example_user DROP CONSTRAINT uk_ph1eu1c6tyjn7n74d4y2csf1n;
+
+ALTER TABLE example_user ADD CONSTRAINT uk_ex_user_emp_no UNIQUE (emp_no);
+ALTER TABLE example_user ADD CONSTRAINT uk_ex_user_email UNIQUE (email);
+
+
+CREATE TABLE dswc.qesign.example_company (
+	cmpn_id varchar(75) NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	cmpn_name varchar(75) NOT NULL,
+	diplay_order varchar(75) NOT NULL,
+	PRIMARY KEY (cmpn_id)
+);
+
+
+
+INSERT INTO dswc.qesign.example_company
+	(cmpn_id, created_dt, updated_dt, cmpn_name, diplay_order)
+VALUES 
+	('C123456789', now() , now(), 'KTDS', '1');
+
+select * from example_company;
+
+INSERT INTO dswc.qesign.example_user
+	(user_id, email, emp_name, emp_no, phone, cmpn_id, dept_id,  created_dt, updated_dt)
+VALUES 
+	('U123456789', 'trump-us@gmail.com', '도람푸', 'E123456789', '010-9999-8888', 'C123456789', 'D123456789', now(), now());
+
+drop table example_user;
+
+select * from example_user;
+
+select * from example_user_noti;
+
+
+
+select * from example_noti
+CREATE TABLE dswc.qesign.example_user_noti (
+	"id" serial NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	direction_type varchar(255),
+	noti_id int8,
+	user_id varchar(75),
+	PRIMARY KEY ("id")
+);
+
+ALTER TABLE dswc.qesign.example_user_noti
+	ADD FOREIGN KEY (noti_id) 
+	REFERENCES example_noti ("id");
+
+ALTER TABLE dswc.qesign.example_user_noti
+	ADD FOREIGN KEY (user_id) 
+	REFERENCES example_user (user_id);
+
+
+
+
+
+CREATE TABLE dswc.qesign.example_user (
+	user_id varchar(75) NOT NULL,
+	email varchar(75) NOT NULL,
+	emp_name varchar(75) NOT NULL,
+	emp_no varchar(75) NOT NULL,
+	phone varchar(75),
+	cmpn_id varchar(75),
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY (user_id)
+);
+
+ALTER TABLE dswc.qesign.example_user
+	ADD FOREIGN KEY (cmpn_id) 
+	REFERENCES example_company (cmpn_id);
+
+
+CREATE UNIQUE INDEX uk_dnnnd4i0cwnnocep14vl6esiv ON qesign.example_user USING btree (email);
+CREATE UNIQUE INDEX uk_ph1eu1c6tyjn7n74d4y2csf1n ON qesign.example_user USING btree (emp_no);
+
+
+
+ALTER TABLE dswc.qesign.example_user
+	ADD FOREIGN KEY (cmpn_id) 
+	REFERENCES example_company (cmpn_id);
+
+
+CREATE UNIQUE INDEX uk_dnnnd4i0cwnnocep14vl6esiv ON qesign.example_user USING btree (email);
+CREATE UNIQUE INDEX uk_ph1eu1c6tyjn7n74d4y2csf1n ON qesign.example_user USING btree (emp_no);
+
+
+
+ALTER TABLE dswc.qesign.example_user
+	ADD FOREIGN KEY (cmpn_id) 
+	REFERENCES example_company (cmpn_id);
+
+
+CREATE UNIQUE INDEX ex_user_unique ON qesign.example_user USING btree (emp_no, email);
+CREATE UNIQUE INDEX uk_ex_user_email ON qesign.example_user USING btree (email);
+CREATE UNIQUE INDEX uk_ex_user_emp_no ON qesign.example_user USING btree (emp_no);
+
+
+
+
+INSERT INTO dswc.qesign.example_noti
+	(noti_type)
+VALUES 
+	('SMS');
+
+INSERT INTO dswc.qesign.example_noti
+	(noti_type)
+VALUES 
+	('EMAIL');
+
+INSERT INTO dswc.qesign.example_noti
+	(noti_type)
+VALUES 
+	('PUSH');
+	
+
+select * from example_noti;
+
+select * from tb_common_code;
+
+
+CREATE TABLE dswc.qesign.example_noti (
+	"id" serial NOT NULL,
+	noti_type varchar(255),
+	PRIMARY KEY ("id")
+);
+
+
+select * from example_noti;
+select * from example_user_noti;
+
+DELETE FROM example_user_noti WHERE "id" = 1;
+
+
+CREATE TABLE tb_code (
+	code_id varchar(20) NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	code_desc varchar(50) NOT NULL,
+	display_order varchar(2),
+	code_group_id varchar(20),
+	PRIMARY KEY (code_id)
+);
+
+ALTER TABLE dswc.qesign.tb_code
+	ADD FOREIGN KEY (code_group_id) 
+	REFERENCES tb_code_group (group_code_id);
+	
+	
+
+CREATE TABLE dswc.qesign.tb_code_group (
+	group_code_id varchar(20) NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	group_desc varchar(50) NOT NULL,
+	PRIMARY KEY (group_code_id)
+);
+
+INSERT INTO dswc.qesign.tb_common_code
+	(group_code, group_desc, code, code_desc, display_order, created_dt,  updated_dt)
+VALUES 
+	('PLEDGE_TYPE', '서명 양식', 'HTML', '일반', '1', now(), now()),
+	('PLEDGE_TYPE', '서명 양식', 'VIDEO', '영상', '2', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'STANDBY', '대기', '1', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'PROCEEDING', '진행 중', '2', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'COMPLETE', '완료', '3', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'STANDBY', '대기', '1', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'PROCEEDING', '진행 중', '2', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'COMPLETE', '완료', '3', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'DELETE', '삭제', '4', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'CANCEL', '취소', '5', now(), now()),
+	('NOTI_TYPE', '사용자 공지 유형', 'SMS', 'SMS', '1', now(), now()),
+	('NOTI_TYPE', '사용자 공지 유형', 'EMAIL', 'EMAIL', '2', now(), now()),	
+	('NOTI_TYPE', '사용자 공지 유형', 'PUSH', 'PUSH', '3', now(), now()),
+	('NOTI_DIRECTION', '공지 방향', 'SEND', '발송', '1', now(), now()),
+	('NOTI_DIRECTION', '공지 방형', 'RECEIVE', '수신', '2', now(), now());
+	
+
+drop table tb_code;
+drop table tb_group_code;
+
+
+CREATE TABLE dswc.qesign.tb_group_code (
+	group_code_id varchar(20) NOT NULL,
+	group_desc varchar(50) NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY (group_code_id)
+);
+
+
+CREATE TABLE dswc.qesign.tb_code (
+	code_id varchar(20) NOT NULL,
+	group_code_id varchar(20),
+	code_desc varchar(50) NOT NULL,
+	display_order varchar(2),
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY (code_id)
+);
+
+ALTER TABLE dswc.qesign.tb_code
+	ADD FOREIGN KEY (group_code_id) 
+	REFERENCES tb_group_code (group_code_id);
+
+
+
+INSERT INTO dswc.qesign.tb_group_code
+	(group_code_id, group_desc, created_dt, updated_dt)
+VALUES 
+	('ROLE_TYPE', '권한 유형', now(), now()),
+	('USER_TYPE',  '사용자 구분 유형', now(), now()),	
+	('NOTI_TYPE', '알림 유형', now(), now()),
+	('NOTI_DIRECT_TYPE' , '알림 방향 유형', now(), now()),
+	('FORM_TYPE', '양식 유형', now(), now()),
+	('CONTENTS_TYPE' , '컨텐츠 유형', now(), now()),
+	('PROGS_STTUS_TYPE', '진행 상태 유형', now(), now());
+
+
+
+INSERT INTO dswc.qesign.tb_code
+	(code_id,  group_code_id, code_desc, display_order, created_dt, updated_dt)
+VALUES 
+	('ROLE_USER', 'ROLE_TYPE', '일반 사용자', '1', now(), now()),
+	('ROLE_FORM', 'ROLE_TYPE', '양식 담당자', '2', now(), now()),
+	('ROLE_PLEDGE', 'ROLE_TYPE', '서약 업무 담당자', '3', now(), now()),
+	('ROLE_SYSTEM', 'ROLE_TYPE', '시스템 관리자', '4', now(), now()),
+	
+	('EMAIL', 'NOTI_TYPE', 'Email', '1', now(), now()),
+	('PUSH', 'NOTI_TYPE', 'APP Push', '2', now(), now()),
+	('SNS', 'NOTI_TYPE', 'SNS 수신', '3', now(), now()),
+	
+	('SEND', 'NOTI_DIRECT_TYPE', '송신 메시지 설정', '1', now(), now()),
+	('RECEIVE', 'NOTI_DIRECT_TYPE', '수신 메시지 설정', '2', now(), now()),
+	
+	('STAFF', 'USER_TYPE', '임직원', '1', now(), now()),
+	('PARTNER', 'USER_TYPE', '협력사', '2', now(), now()),
+	
+	('FIXED', 'FORM_TYPE', '고정 양식', '1', now(), now()),
+	('COMMON', 'FORM_TYPE', '공통 양식', '2', now(), now()),
+	('PERSONAL', 'FORM_TYPE', '개인 양식', '3', now(), now()),
+	
+	('HTML', 'CONTENTS_TYPE', '일반', '1', now(), now()),
+	('VIDEO', 'CONTENTS_TYPE', '동영상', '2', now(), now()),
+	
+	('STANDBY', 'PROGS_STTUS_TYPE', '대기', '1', now(), now()),
+	('ONGOING', 'PROGS_STTUS_TYPE', '진행 중', '2', now(), now()),
+	('COMPLETE', 'PROGS_STTUS_TYPE', '완료', '3', now(), now()),
+	('CANCEL', 'PROGS_STTUS_TYPE', '회수', '4', now(), now());
+
+select * from tb_code;
+
+select * from tb_group_code;
+select * from tb_code;
+
+select * from example_user_pledge order by id asc;
+
+UPDATE example_user_pledge SET  progs_sttus_type = 'ONGOING' WHERE progs_sttus_type = 'PROCEEDING';
+
+
+    select
+		*
+    from
+        example_user_pledge exuserpled0_ 
+    where
+        exuserpled0_.progs_sttus_type='ONGOING' 
+        and exuserpled0_.contents_type='VIDEO';
+
+
+
+select * from example_user_pledge order by id desc;
+
+    select
+		*
+    from
+        example_user_pledge
+    where
+        progs_sttus_type='ONGOING' 
+        and contents_type='HTML' ;
+
+
+    select
+        count(exuserpled0_.id) as col_0_0_ 
+    from
+        example_user_pledge exuserpled0_ 
+    where
+        exuserpled0_.progs_sttus_type='STANDBY' 
+        and (
+            exuserpled0_.end_dt between '2020-08-28T00:00:00.00' and '2020-08-28T23:59:00.00'
+        );
+
+
+-- 2020-08-28 16:38:34.527	2020-08-28 16:38:34.527	HTML	2020-08-31 00:00:00	일반 대기 업무 생성.....	STANDBY	우정국	우체부	2020-08-28 00:00:00
+
+select * from example_user;
+
+select * from example_user_noti;
+
+
+
+
+CREATE TABLE dswc.qesign.tb_form (
+	"id" serial NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	contents_type varchar(20) DEFAULT 'HTML'::character varying NOT NULL,
+	delete_yn bool DEFAULT false NOT NULL,
+	form_content text,
+	form_name varchar(100) NOT NULL,
+	form_no varchar(4) NOT NULL,
+	form_type varchar(20) DEFAULT 'PERSONAL'::character varying NOT NULL,
+	video_file_name varchar(255),
+	video_file_path varchar(255),
+	company_id varchar(75),
+	user_id varchar(75),
+	PRIMARY KEY ("id")
+);
+
+ALTER TABLE dswc.qesign.tb_form
+	ADD FOREIGN KEY (company_id,user_id) 
+	REFERENCES tb_user (company_id,user_id);
+
+
+CREATE UNIQUE INDEX uk_rr97iafkouorcsdovsi93rha9 ON qesign.tb_form USING btree (form_no);
+
+
+select * from tb_user_role;
+
+select * from tb_company;
+
+INSERT INTO dswc.qesign.tb_company
+	(company_id, company_name, display_order, created_dt, updated_dt)
+VALUES 
+	('1014', '케이디 디에스 ', '7', now(), now());
+
+
+
+
+INSERT INTO dswc.qesign.tb_user
+	(company_id, user_id, username, email, emp_no, dept_id, dept_name, phone, sign_file_name, sign_file_path, user_type, delete_yn, created_dt, updated_dt)
+VALUES 
+	('1014', '90000003', '이유평', 'stoneberg@gmail.com', '123456789', '987654321', '우주방위부', '01099998888', '', '', 'STAFF', 'N',now() ,now() );
+
+
+select * from tb_user;
+
+
+    select
+        user0_.company_id as company_1_16_0_,
+        user0_.user_id as user_id2_16_0_,
+        user0_.created_dt as created_3_16_0_,
+        user0_.updated_dt as updated_4_16_0_,
+        user0_.delete_yn as delete_y5_16_0_,
+        user0_.dept_id as dept_id6_16_0_,
+        user0_.dept_name as dept_nam7_16_0_,
+        user0_.email as email8_16_0_,
+        user0_.emp_no as emp_no9_16_0_,
+        user0_.phone as phone10_16_0_,
+        user0_.sign_file_name as sign_fi11_16_0_,
+        user0_.sign_file_path as sign_fi12_16_0_,
+        user0_.user_type as user_ty13_16_0_,
+        user0_.username as usernam14_16_0_,
+        roles1_.company_id as company_1_18_1_,
+        roles1_.user_id as user_id2_18_1_,
+        role2_.role_id as role_id3_18_1_,
+        role2_.role_id as role_id1_15_2_,
+        role2_.created_dt as created_2_15_2_,
+        role2_.updated_dt as updated_3_15_2_,
+        role2_.role_type as role_typ4_15_2_ 
+    from
+        tb_user user0_ 
+    left outer join
+        tb_user_role roles1_ 
+            on user0_.company_id=roles1_.company_id 
+            and user0_.user_id=roles1_.user_id 
+    left outer join
+        tb_role role2_ 
+            on roles1_.role_id=role2_.role_id 
+    where
+        user0_.company_id='1014' 
+        and user0_.user_id='90000003';
+
+
+
+
+
+select * from tb_role;
+
+
+
+INSERT INTO dswc.qesign.tb_role
+	(role_type, created_dt, updated_dt)
+VALUES 
+	('ROLE_USER',now() ,now() ),
+	('ROLE_FORM',now() ,now() ),	
+	('ROLE_PLEDGE',now() ,now() ),
+	('ROLE_SYSTEM',now() ,now() );
+
+
+select * from tb_user_role;
+
+INSERT INTO dswc.qesign.tb_user_role
+	(company_id, user_id, role_id)
+VALUES 
+	('1014', '90000003',1 );
+
+INSERT INTO dswc.qesign.tb_user_role
+	(company_id, user_id, role_id)
+VALUES 
+	('1014', '90000003',2 );
+
+
+
+
+INSERT INTO example_company
+	(cmpn_id, created_dt, updated_dt, cmpn_name, diplay_order)
+VALUES
+	('U123456789', now() , now(), 'KTDS', '1');
+
+INSERT INTO example_user
+	(user_id, email, emp_name, emp_no, phone, cmpn_id, dept_id,  created_dt, updated_dt)
+VALUES
+	('U123456789', 'trump-us@gmail.com', '도람푸', 'E123456789', '010-9999-8888', 'C123456789', 'D123456789', now(), now());
+
+
+select * from example_user;
+
+
+
+
+CREATE TABLE wsc_ktds.esign.tb_user (
+	company_id varchar(75) NOT NULL,
+	user_id varchar(75) NOT NULL,
+	username varchar(75) NOT NULL,
+	email varchar(75) NOT NULL,
+	emp_no varchar(75),
+	dept_id varchar(75),
+	dept_name varchar(75),
+	phone varchar(75),
+	sign_file_name varchar(255),
+	sign_file_path varchar(255),
+	user_type varchar(20) DEFAULT 'STAFF'::character varying NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	delete_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	sign_file_url varchar(255),
+	PRIMARY KEY (company_id,user_id)
+);
+
+ALTER TABLE wsc_ktds.esign.tb_user
+	ADD FOREIGN KEY (company_id) 
+	REFERENCES tb_company (company_id);
+
+
+CREATE UNIQUE INDEX uk_tb_user_unique ON esign.tb_user USING btree (emp_no, email);
+
+
+
+
+select * from tb_form;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

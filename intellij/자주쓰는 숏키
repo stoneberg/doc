@@ -1,0 +1,37 @@
+##### 자주 쓰는 인텔리제이 키 ####
+
+
+1. Alt + Enter => hint (static import)
+
+2. Alt + 1 => 좌측이동, Esc=> 원래 우측 이동
+
+3. F2 => 에러간 이동
+
+4. 포맷 Ctrl + Alt + L
+
+5. import 정렬 Ctrl + Alt + O
+- Ctrl + O : override method list
+
+6. Ctrl + D : 선택된 블럭을 복제
+
+7. Ctrl + Y : 라인 삭제
+
+8. 라인 위/아래 이동 : Shift + Alt + UP/DOWN (줄단위)
+   라인 위/아래 이동 : Ctrl + Alt + UP/DOWN (메서드 블록 단위)
+
+9. Ctrl + W : 블록 지정(누를 수록 영역 증가) , ctrl+shift+w 블록 감소
+
+10. Alt + Insert : Generate Code
+
+11. Ctrl + Tab : 에디터 이동
+
+12. 리팩토링 Ctrl + Alt + Shift + T
+
+13. Extract
+    Variable : Ctrl + Alt + V
+	Constant : Ctrl + Alt + C
+	Parameter : Ctrl + Alt + P
+	Fields : Ctrl + Alt + F
+	Method : Ctrl + Alt + M
+	
+14. Ctrl + N : 검색

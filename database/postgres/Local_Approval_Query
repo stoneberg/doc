@@ -1,0 +1,669 @@
+
+
+select * from approval.tb_approval;
+
+
+select * from approval.tb_approval_file;
+
+
+select * from approval.tb_approver;
+
+
+select * from approval.tb_link_system;
+
+
+select * from approval.tb_role;
+
+
+
+select * from approval.tb_system_link_hist;
+
+
+select * from approval.tb_user;
+
+
+
+select * from approval.tb_user;
+
+select * from approval.tb_user where username = '이유평';
+
+select count(*) from approval.tb_user;
+
+
+
+select * from approval.tb_user_access_hist;
+
+
+select * from approval.tb_system_link_hist;
+
+
+
+select * from approval.tb_code;
+
+
+select * from approval.tb_company;
+
+select * from approval.tb_group_code;
+
+
+select * from approval.tb_role;
+
+
+
+select * from approval.tb_user_role;
+
+
+
+select * from approval.tb_approval;
+
+
+select * from approval.tb_user_role;
+
+
+-- drop table
+
+drop table approval.tb_approval_file;
+
+drop table approval.tb_approver;
+
+drop table approval.tb_approval;
+
+drop table approval.tb_link_system;
+
+
+CREATE TABLE approval.tb_link_system (
+	link_system_id bigserial NOT NULL,
+	system_id varchar(30) NOT NULL,
+	system_name varchar(100) NOT NULL,
+	system_key TEXT NOT NULL,
+	use_yn char(1) DEFAULT 'Y' NOT NULL,
+	link_created_dt timestamp NOT NULL,
+	link_removed_dt timestamp,
+	created_by varchar(75),
+	created_dt timestamp,
+	updated_by varchar(75),
+	updated_dt timestamp,
+	PRIMARY KEY (link_system_id)
+);
+
+CREATE TABLE approval.tb_approval (
+	approval_id bigserial NOT NULL, 
+	company_id varchar(75),
+	user_id varchar(75),
+	dept_id varchar(75),
+	src_appr_work_id varchar(40),
+	link_system_id int8,
+	approval_name varchar(60) NOT NULL,
+	approval_contents TEXT NOT NULL,
+	callback_url varchar(300),
+	approval_type varchar(20) DEFAULT 'SERIES' NOT NULL,
+	approval_sttus varchar(20),
+	requested_dt timestamp NOT NULL,
+	approved_dt timestamp,
+	progs_sttus varchar(20) DEFAULT 'ONGOING' NOT NULL,
+	delete_yn char(1) DEFAULT 'N' NOT NULL,
+	created_by varchar(75),
+	created_dt timestamp, 
+	updated_by varchar(75), 
+	updated_dt timestamp, 
+	PRIMARY KEY (approval_id)
+);
+
+CREATE TABLE approval.tb_approval_file (
+	file_id bigserial NOT NULL, 
+	file_name varchar(255) NOT NULL, 
+	file_no varchar(10) NOT NULL, 
+	file_path varchar(255) NOT NULL, 
+	file_url varchar(255) NOT NULL, 
+	file_size bigint NOT NULL, 
+	approval_id int8, 
+	created_by varchar(75), 
+	created_dt timestamp, 
+	updated_by varchar(75), 
+	updated_dt timestamp, 
+	PRIMARY KEY (file_id)
+);
+
+CREATE TABLE approval.tb_approver (
+	approver_id bigserial NOT NULL, 
+	approval_order varchar(10),
+	approval_sttus varchar(20), 
+	approved_dt timestamp,
+	progs_sttus varchar(20) DEFAULT 'ONGOING' NOT NULL, 
+	comments varchar(300) NOT NULL,
+	approval_id int8, 
+	company_id varchar(75), 
+	user_id varchar(75), 
+	created_by varchar(75), 
+	created_dt timestamp, 
+	updated_by varchar(75), 
+	updated_dt timestamp, 
+	PRIMARY KEY (approver_id)
+);
+
+
+
+ALTER TABLE approval.tb_approval ADD CONSTRAINT fk_tb_approval_link_system_id FOREIGN KEY (link_system_id) REFERENCES approval.tb_link_system;
+
+ALTER TABLE approval.tb_approval ADD CONSTRAINT fk_tb_approval_user_pk FOREIGN KEY (company_id, user_id) REFERENCES approval.tb_user;
+
+ALTER TABLE approval.tb_approval_file ADD CONSTRAINT fk_tb_approval_file_approval_id FOREIGN KEY (approval_id) REFERENCES approval.tb_approval;
+
+ALTER TABLE approval.tb_approver ADD CONSTRAINT fk_tb_approver_approval_id FOREIGN KEY (approval_id) REFERENCES approval.tb_approval;
+
+ALTER TABLE approval.tb_approver ADD CONSTRAINT fk_tb_approver_user_pk FOREIGN KEY (company_id, user_id) REFERENCES approval.tb_user;
+
+alter table approval.tb_user add column position varchar(255);
+
+alter table approval.tb_user add column sign_file_name varchar(255);
+
+alter table approval.tb_user add column sign_file_path varchar(255);
+
+alter table approval.tb_user add column sign_file_url varchar(255);
+
+
+alter table approval.tb_user_role rename column use_role_id to user_role_id; 
+
+
+drop table approval.tb_user_role;
+
+
+
+CREATE TABLE approval.tb_user_role (
+	user_role_id bigserial NOT NULL, 
+	role_id int8,
+	company_id varchar(75),
+	user_id varchar(75),
+	created_by varchar(75),
+	created_dt timestamp, 
+	updated_by varchar(75), 
+	updated_dt timestamp, 
+	PRIMARY KEY (user_role_id)
+);
+
+
+ALTER TABLE approval.tb_user_role ADD CONSTRAINT fk_tb_user_role_role_id FOREIGN KEY (role_id) REFERENCES approval.tb_role;
+
+ALTER TABLE approval.tb_user_role ADD CONSTRAINT fk_tb_user_role_user_pk FOREIGN KEY (company_id, user_id) REFERENCES approval.tb_user;
+
+
+
+
+
+select * from tb_code;
+
+
+DELETE FROM tb_code WHERE code_id = 'ONGOING' AND code_id = 'ONGOING';
+
+
+select * from approval.tb_approval;
+
+
+
+
+
+select * from approval.tb_user;
+
+
+select * from approval.tb_approver;
+
+
+alter table approval.tb_approval alter column progs_sttus drop default;
+
+ALTER table approval.tb_approval ALTER column progs_sttus set default 'STANDBY';
+
+
+
+CREATE TABLE wsc_ktds.approval.tb_approval (
+	approval_id serial NOT NULL,
+	created_by varchar(75),
+	created_dt timestamp,
+	updated_by varchar(75),
+	updated_dt timestamp,
+	approval_contents text NOT NULL,
+	approval_name varchar(60) NOT NULL,
+	approval_sttus varchar(20),
+	approval_type varchar(20) DEFAULT 'SERIES'::character varying NOT NULL,
+	approved_dt timestamp,
+	callback_url varchar(300),
+	delete_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	dept_id varchar(75),
+	progs_sttus varchar(20) DEFAULT 'STANDBY'::character varying NOT NULL,
+	requested_dt timestamp NOT NULL,
+	src_appr_work_id varchar(40),
+	link_system_id int8,
+	company_id varchar(75),
+	user_id varchar(75),
+	PRIMARY KEY (approval_id)
+);
+
+ALTER TABLE wsc_ktds.approval.tb_approval
+	ADD FOREIGN KEY (link_system_id) 
+	REFERENCES tb_link_system (link_system_id);
+
+ALTER TABLE wsc_ktds.approval.tb_approval
+	ADD FOREIGN KEY (company_id) 
+	REFERENCES tb_user (company_id);
+
+ALTER TABLE wsc_ktds.approval.tb_approval
+	ADD FOREIGN KEY (user_id) 
+	REFERENCES null (null);
+
+
+
+
+CREATE TABLE wsc_ktds.approval.tb_approver (
+	approver_id serial NOT NULL,
+	created_by varchar(75),
+	created_dt timestamp,
+	updated_by varchar(75),
+	updated_dt timestamp,
+	approval_order varchar(10),
+	approval_sttus varchar(20),
+	approved_dt timestamp,
+	"comments" varchar(300) NOT NULL,
+	progs_sttus varchar(20) DEFAULT 'STANDBY'::character varying NOT NULL,
+	approval_id int8,
+	company_id varchar(75),
+	user_id varchar(75),
+	PRIMARY KEY (approver_id)
+);
+
+ALTER TABLE wsc_ktds.approval.tb_approver
+	ADD FOREIGN KEY (approval_id) 
+	REFERENCES tb_approval (approval_id);
+
+ALTER TABLE wsc_ktds.approval.tb_approver
+	ADD FOREIGN KEY (company_id) 
+	REFERENCES tb_user (company_id);
+
+ALTER TABLE wsc_ktds.approval.tb_approver
+	ADD FOREIGN KEY (user_id) 
+	REFERENCES null (null);
+
+
+
+
+alter table approval.tb_approver drop column comments;
+alter table approval.tb_approver add column comments varchar(300);
+
+select * from approval.tb_approval;
+
+
+select * from approval.tb_approver;
+
+
+INSERT INTO approval.tb_code(code_id, group_code_id, code_desc, code_val, display_order, created_dt, updated_dt)
+VALUES 
+('STANDBY', 'PROGS_STTUS', '대기', '대기', '1', '2020-09-16 19:36:59.613682', '2020-09-16 19:36:59.613682');
+
+
+
+
+select * from approval.tb_code;
+
+
+select * from approval.tb_approver;
+
+
+
+    select
+        count(*) as col_0_0_ 
+    from
+       approval.tb_approval
+    where
+        progs_sttus='STANDBY' 
+        and user_id =  '90000003';
+        
+
+
+
+select 
+	count(*) as col_0_0_ 
+from 
+	approval.tb_approver 
+where progs_sttus='STANDBY' 
+and user_id = '90000003';
+
+
+
+
+CREATE TABLE wsc_ktds.approval.tb_user (
+	user_id varchar(75) NOT NULL,
+	company_id varchar(75) NOT NULL,
+	dept_id varchar(75),
+	emp_no varchar(75),
+	username varchar(75) NOT NULL,
+	email varchar(75) NOT NULL,
+	phone varchar(75),
+	dept_name varchar(75),
+	user_type varchar(20) DEFAULT 'STAFF'::character varying NOT NULL,
+	sign_file_name varchar(255),
+	sign_file_path varchar(255),
+	created_dt timestamp,
+	updated_dt timestamp,
+	delete_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	created_by varchar(75),
+	updated_by varchar(75),
+	sign_file_url varchar(255),
+	"position" varchar(255),
+	PRIMARY KEY (user_id,company_id)
+);
+
+ALTER TABLE wsc_ktds.approval.tb_user
+	ADD FOREIGN KEY (company_id) 
+	REFERENCES tb_company (company_id);
+
+
+CREATE UNIQUE INDEX uk_tb_user_unique ON approval.tb_user USING btree (emp_no, email);
+
+
+
+
+select * from approval.tb_user;
+
+
+
+alter table approval.tb_user add column delegate_sttus varchar(20) default 'DISMISS';
+
+alter table approval.tb_user add column delegator_company_id varchar(75);
+
+alter table approval.tb_user add column delegator_user_id varchar(75);
+
+alter table approval.tb_user add column delegate_start_dt timestamp;
+
+alter table approval.tb_user add column delegate_end_dt timestamp;
+
+ALTER TABLE approval.tb_user ADD CONSTRAINT fk_tb_user_delegator_pk FOREIGN KEY (delegator_company_id, delegator_user_id) REFERENCES approval.tb_user;
+
+ALTER TABLE approval.tb_user ADD CONSTRAINT fk_tb_user_delegator_company_id FOREIGN KEY (delegator_company_id) REFERENCES approval.tb_company;
+
+select * from approval.tb_approval;
+
+select * from approval.tb_approver;
+
+select * from approval.tb_code;
+
+INSERT INTO approval.tb_code(code_id, group_code_id, code_desc, code_val, display_order, created_dt, updated_dt) 
+VALUES ('ONGOING', 'PROGS_STTUS', '진행 중', '진행 중', '1', '2020-09-16 19:36:59.613682', '2020-09-16 19:36:59.613682');
+
+
+select * from approval.tb_link_system;
+
+
+CREATE TABLE wsc_ktds.approval.tb_approval (
+	approval_id serial NOT NULL,
+	user_id varchar(75),
+	company_id varchar(75),
+	link_system_id int8,
+	src_appr_work_id varchar(40),
+	callback_url varchar(300),
+	dept_id varchar(75),
+	approval_name varchar(60) NOT NULL,
+	approval_contents text NOT NULL,
+	approval_type varchar(20) DEFAULT 'SERIES'::character varying NOT NULL,
+	approval_sttus varchar(20),
+	progs_sttus varchar(20) DEFAULT 'ONGOING'::character varying NOT NULL,
+	requested_dt timestamp NOT NULL,
+	approved_dt timestamp,
+	created_by varchar(70),
+	created_dt timestamp,
+	updated_by varchar(70),
+	updated_dt timestamp,
+	delete_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	PRIMARY KEY (approval_id)
+);
+
+ALTER TABLE wsc_ktds.approval.tb_approval
+	ADD FOREIGN KEY (link_system_id) 
+	REFERENCES tb_link_system (link_system_id);
+
+select * from approval.tb_approver;
+
+DELETE FROM approval.tb_approver WHERE approver_id = 1;
+DELETE FROM approval.tb_approver WHERE approver_id = 2;
+DELETE FROM approval.tb_approver WHERE approver_id = 3;
+DELETE FROM approval.tb_approver WHERE approver_id = 4;
+DELETE FROM approval.tb_approver WHERE approver_id = 5;
+DELETE FROM approval.tb_approver WHERE approver_id = 6;
+DELETE FROM approval.tb_approver WHERE approver_id = 7;
+DELETE FROM approval.tb_approver WHERE approver_id = 8;
+DELETE FROM approval.tb_approver WHERE approver_id = 9;
+DELETE FROM approval.tb_approver WHERE approver_id = 10;
+DELETE FROM approval.tb_approver WHERE approver_id = 11;
+DELETE FROM approval.tb_approver WHERE approver_id = 12;
+DELETE FROM approval.tb_approver WHERE approver_id = 13;
+DELETE FROM approval.tb_approver WHERE approver_id = 14;
+
+select * from approval.tb_approval;
+
+select * from approval.tb_approver;
+
+select * from approval.tb_link_system;
+
+select * from approval.tb_user;
+
+select * from approval.tb_user order by user_id;
+
+select * from approval.tb_link_system;
+
+alter table approval.tb_link_system add column system_url varchar(100);
+
+select * from approval.tb_link_system;
+
+alter table approval.tb_link_system alter column system_url set not null;
+
+alter table approval.tb_link_system drop column system_url;
+
+
+CREATE TABLE approval.tb_link_system_api (
+    link_system_api_id  bigserial NOT NULL, 
+    api_name varchar(30) NOT NULL, 
+    api_url varchar(100) NOT NULL, 
+    created_by varchar(75), 
+    created_dt timestamp, 
+    updated_by varchar(75), 
+    updated_dt timestamp, 
+    link_system_id int8, 
+    PRIMARY KEY (link_system_api_id)
+);
+
+ALTER TABLE approval.tb_link_system_api ADD CONSTRAINT fk_tb_link_system_api_link_system_id FOREIGN KEY (link_system_id) REFERENCES approval.tb_link_system;
+
+
+drop table approval.tb_link_system_api;
+
+
+
+INSERT INTO approval.tb_link_system_api
+	(api_name, api_url, link_system_id, created_by, created_dt, updated_by, updated_dt)
+VALUES 
+	( '승인결과 통보 API', 'https://www.portal-a/approval/result',  1, 'SYSTEM', now(), 'SYSTEM', now() ),
+	( '승인 업무 갯수 조회 통보 API', 'https://www.portal-a/approval/count',  1, 'SYSTEM', now(), 'SYSTEM', now() ),
+	( '승인결과 통보 API', 'https://www.portal-b/approval/result',  2, 'SYSTEM', now(), 'SYSTEM', now() ),
+	( '승인 업무 갯수 조회 통보 API', 'https://www.portal-b/approval/count',  2, 'SYSTEM', now(), 'SYSTEM', now() ),
+	( '승인결과 통보 API', 'https://www.portal-c/approval/result',  3, 'SYSTEM', now(), 'SYSTEM', now() ),
+	( '승인 업무 갯수 조회 통보 API', 'https://www.portal-c/approval/count',  3, 'SYSTEM', now(), 'SYSTEM', now() );
+
+
+
+select * from approval.tb_link_system_api;
+
+
+select * from approval.tb_group_code;
+
+INSERT INTO approval.tb_group_code(group_code_id, created_dt, updated_dt, group_desc) 
+VALUES ('TRANS_TYPE', '2020-09-16 19:28:44.941434', '2020-09-16 19:28:44.941434', '송수신구분');
+
+
+
+
+INSERT INTO approval.tb_group_code(group_code_id, created_dt, updated_dt, group_desc) 
+VALUES ('LINK_SYSTEM_API', '2020-09-16 19:28:44.941434', '2020-09-16 19:28:44.941434', '연동 시스템 API');
+
+
+select * from approval.tb_code;
+
+
+
+INSERT INTO approval.tb_code(code_id, created_dt, updated_dt, code_desc, code_val, display_order, group_code_id) 
+VALUES 
+('APPROVAL_RESULT', '2020-09-16 19:36:59.613682', '2020-09-16 19:36:59.613682', '승인 결과', '승인 결과', '1', 'LINK_SYSTEM_API'),
+('APPROVAL_STANDBY_CNT', '2020-09-16 19:36:59.613682', '2020-09-16 19:36:59.613682', '승인 업무 카운트', '승인 업무 카운트', '2', 'LINK_SYSTEM_API');
+
+
+select * from approval.tb_link_system_api;
+
+
+UPDATE approval.tb_user SET delegate_sttus = 'EMPOWER',  delegate_startWHERE company_id = '2001' AND user_id = '90000006' and  company_id = '2001' ;
+
+select * from approval.tb_user;
+
+
+UPDATE approval.tb_user SET 
+delegate_end_dt = '2020-10-30 09:54:55.421283', 
+delegate_start_dt = '2020-09-01 09:54:55.421283', 
+delegate_sttus = 'EMPOWER'
+WHERE company_id = '2001' AND user_id = '90000006';
+
+select * from approval.tb_approval;
+
+
+select * from approval.tb_approver where approval_id = 1;
+
+select * from approval.tb_approver;
+
+
+    select
+        approvers0_.approval_id as approva11_2_1_,
+        approvers0_.approver_id as approver1_2_1_,
+        approvers0_.approver_id as approver1_2_0_,
+        approvers0_.created_by as created_2_2_0_,
+        approvers0_.created_dt as created_3_2_0_,
+        approvers0_.updated_by as updated_4_2_0_,
+        approvers0_.updated_dt as updated_5_2_0_,
+        approvers0_.approval_id as approva11_2_0_,
+        approvers0_.approval_order as approval6_2_0_,
+        approvers0_.approval_sttus as approval7_2_0_,
+        approvers0_.approved_dt as approved8_2_0_,
+        approvers0_.comments as comments9_2_0_,
+        approvers0_.progs_sttus as progs_s10_2_0_,
+        approvers0_.company_id as company12_2_0_,
+        approvers0_.user_id as user_id13_2_0_ 
+    from
+        approval.tb_approver approvers0_ 
+    where
+        approvers0_.approval_id=1;
+
+
+
+
+select * from approval.tb_approval;
+
+
+select * from approval.tb_approver where approval_id = 6;
+
+
+alter table approval.tb_approval alter column src_appr_work_id set not null;
+
+
+select * from approval.tb_link_system;
+
+
+
+select * from approval.tb_approval;
+
+
+
+select * from approval.tb_link_system;
+
+
+select * from approval.tb_code;
+
+
+select * from approval.tb_company;
+
+
+alter table approval.tb_approval add constraint uk_tb_approval_unique unique (link_system_id, src_appr_work_id);
+
+
+select * from approval.tb_approval_file;
+
+
+drop table  approval.tb_approval_file;
+
+CREATE TABLE approval.tb_approval_file (
+	file_id bigserial NOT NULL, 
+	file_name varchar(255) NOT NULL, 
+	file_no varchar(10) NOT NULL, 
+	file_path varchar(255) NOT NULL, 
+	file_url varchar(255) NOT NULL, 
+	file_size bigint NOT NULL,
+    use_yn char(1) DEFAULT 'Y' NOT NULL,
+	approval_id int8, 
+	created_by varchar(75), 
+	created_dt timestamp, 
+	updated_by varchar(75), 
+	updated_dt timestamp, 
+	PRIMARY KEY (file_id)
+);
+
+
+ALTER TABLE approval.tb_approval_file ADD CONSTRAINT fk_tb_approval_file_approval_id FOREIGN KEY (approval_id) REFERENCES approval.tb_approval;
+
+
+select * from approval.tb_link_system;
+
+select * from approval.tb_approval;
+
+select * from approval.tb_approver;
+
+select * from approval.tb_approval_file;
+
+DELETE FROM approval.tb_approval_file WHERE file_id = 4;
+
+
+select * from approval.tb_user;
+
+
+select * from approval.tb_code;
+
+
+select * from approval.tb_code order by group_code_id asc;
+
+select * from approval.tb_group_code;
+
+
+select * from approval.tb_user;
+
+select user_id, company_id, username from approval.tb_user;
+
+
+select * from approval.tb_user_role;
+
+
+select * from approval.tb_user where user_id = '90000010';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

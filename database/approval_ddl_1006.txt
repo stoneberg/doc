@@ -1,0 +1,306 @@
+DROP TABLE IF EXISTS approval.tb_approval CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_approval_file CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_approver CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_code CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_company CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_delegate CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_group_code CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_link_system CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_role CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_system_link_hist CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_user CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_user_access_hist CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_user_noti CASCADE; 
+
+DROP TABLE IF EXISTS approval.tb_user_role CASCADE; 
+
+CREATE TABLE approval.tb_approval 
+  ( 
+     approval_id       BIGSERIAL NOT NULL, 
+     approval_contents TEXT NOT NULL, 
+     approval_name     VARCHAR(60) NOT NULL, 
+     approval_sttus    VARCHAR(20), 
+     approval_type     VARCHAR(20) DEFAULT 'SERIES' NOT NULL, 
+     approved_dt       TIMESTAMP, 
+     callback_url      VARCHAR(300), 
+     delete_yn         CHAR(1) DEFAULT 'N' NOT NULL, 
+     dept_id           VARCHAR(75), 
+     progs_sttus       VARCHAR(20) DEFAULT 'ONGOING' NOT NULL, 
+     requested_dt      TIMESTAMP NOT NULL, 
+     src_appr_work_id  VARCHAR(40) NOT NULL, 
+     link_system_id    INT8, 
+     company_id        VARCHAR(75), 
+     user_id           VARCHAR(75), 
+	 created_by        VARCHAR(75), 
+     created_dt        TIMESTAMP, 
+     updated_by        VARCHAR(75), 
+     updated_dt        TIMESTAMP, 
+     PRIMARY KEY (approval_id) 
+  ); 
+
+CREATE TABLE approval.tb_approval_file 
+  ( 
+     file_id     BIGSERIAL NOT NULL, 
+     file_name   VARCHAR(255) NOT NULL, 
+     file_path   VARCHAR(255) NOT NULL, 
+     file_size   BIGINT NOT NULL, 
+     file_url    VARCHAR(255) NOT NULL, 
+     approval_id INT8,
+     created_by  VARCHAR(75), 
+     created_dt  TIMESTAMP, 
+     updated_by  VARCHAR(75), 
+     updated_dt  TIMESTAMP, 	 
+     PRIMARY KEY (file_id) 
+  ); 
+
+CREATE TABLE approval.tb_approver 
+  ( 
+     approver_id    BIGSERIAL NOT NULL, 
+     approval_order VARCHAR(10), 
+     approval_sttus VARCHAR(20), 
+     approved_dt    TIMESTAMP, 
+     comments       VARCHAR(300), 
+     progs_sttus    VARCHAR(20) DEFAULT 'STANDBY' NOT NULL, 
+     approval_id    INT8, 
+     company_id     VARCHAR(75), 
+     user_id        VARCHAR(75),
+     created_by     VARCHAR(75), 
+     created_dt     TIMESTAMP, 
+     updated_by     VARCHAR(75), 
+     updated_dt     TIMESTAMP,	 
+     PRIMARY KEY (approver_id) 
+  ); 
+
+CREATE TABLE approval.tb_code 
+  ( 
+     code_id       VARCHAR(20) NOT NULL, 
+     code_desc     VARCHAR(50) NOT NULL, 
+     code_val      VARCHAR(20), 
+     display_order VARCHAR(10), 
+     group_code_id VARCHAR(20), 
+	 created_dt    TIMESTAMP, 
+     updated_dt    TIMESTAMP, 
+     PRIMARY KEY (code_id) 
+  ); 
+
+CREATE TABLE approval.tb_company 
+  ( 
+     company_id    VARCHAR(75) NOT NULL, 
+     company_name  VARCHAR(75) NOT NULL, 
+     display_order VARCHAR(10),
+     created_by    VARCHAR(75), 
+     created_dt    TIMESTAMP, 
+     updated_by    VARCHAR(75), 
+     updated_dt    TIMESTAMP, 	 
+     PRIMARY KEY (company_id) 
+  ); 
+
+CREATE TABLE approval.tb_delegate 
+  ( 
+     delegate_id         BIGSERIAL NOT NULL, 
+	 delegate_user_id    VARCHAR(75),
+	 delegate_company_id VARCHAR(75),		
+	 delegate_username   VARCHAR(75),
+     delegate_dept_nm    VARCHAR(75), 
+	 mandate_user_id    VARCHAR(75),
+	 mandate_company_id VARCHAR(75), 
+	 mandate_username   VARCHAR(75), 
+     mandate_dept_nm    VARCHAR(75), 
+	 delete_yn           CHAR(1) DEFAULT 'N' NOT NULL, 
+     dismiss_dt          TIMESTAMP NOT NULL, 
+     empower_dt          TIMESTAMP NOT NULL, 
+     end_dt              TIMESTAMP NOT NULL, 
+     start_dt            TIMESTAMP NOT NULL, 
+     company_id          VARCHAR(75), 
+     user_id             VARCHAR(75), 
+	 created_by          VARCHAR(75), 
+     created_dt          TIMESTAMP, 
+     updated_by          VARCHAR(75), 
+     updated_dt          TIMESTAMP, 
+     PRIMARY KEY (delegate_id) 
+  ); 
+
+CREATE TABLE approval.tb_group_code 
+  ( 
+     group_code_id VARCHAR(20) NOT NULL, 
+     group_desc    VARCHAR(50) NOT NULL, 
+	 created_dt    TIMESTAMP, 
+     updated_dt    TIMESTAMP,
+     PRIMARY KEY (group_code_id) 
+  ); 
+
+CREATE TABLE approval.tb_link_system 
+  ( 
+     link_system_id  BIGSERIAL NOT NULL, 
+     link_created_dt TIMESTAMP NOT NULL, 
+     link_removed_dt TIMESTAMP, 
+     system_id       VARCHAR(30) NOT NULL, 
+     system_key      TEXT NOT NULL, 
+     system_name     VARCHAR(100) NOT NULL, 
+     use_yn          CHAR(1) DEFAULT 'Y' NOT NULL, 
+	 created_by      VARCHAR(75), 
+     created_dt      TIMESTAMP, 
+     updated_by      VARCHAR(75), 
+     updated_dt      TIMESTAMP, 
+     PRIMARY KEY (link_system_id) 
+  ); 
+
+CREATE TABLE approval.tb_role 
+  ( 
+     role_id    BIGSERIAL NOT NULL, 
+     role_type  VARCHAR(20),
+     created_by VARCHAR(75), 
+     created_dt TIMESTAMP, 
+     updated_by VARCHAR(75), 
+     updated_dt TIMESTAMP, 	 
+     PRIMARY KEY (role_id) 
+  ); 
+
+CREATE TABLE approval.tb_system_link_hist 
+  ( 
+     system_link_hist_id BIGSERIAL NOT NULL, 
+     callback_url        VARCHAR(300), 
+     error_yn            CHAR(1) DEFAULT 'N' NOT NULL, 
+     link_dt             TIMESTAMP NOT NULL, 
+     link_end_point      VARCHAR(255) NOT NULL, 
+     link_log            TEXT NOT NULL, 
+     source_system_id    VARCHAR(30) NOT NULL, 
+     target_system_id    VARCHAR(30) NOT NULL, 
+     trans_type          VARCHAR(20) NOT NULL,
+     created_by          VARCHAR(75), 
+     created_dt          TIMESTAMP, 
+     updated_by          VARCHAR(75), 
+     updated_dt          TIMESTAMP, 	 
+     PRIMARY KEY (system_link_hist_id) 
+  ); 
+
+CREATE TABLE approval.tb_user 
+  ( 
+     company_id     VARCHAR(75) NOT NULL, 
+     user_id        VARCHAR(75) NOT NULL, 
+     delegate_sttus VARCHAR(20) DEFAULT 'DISMISS', 
+     delete_yn      CHAR(1) DEFAULT 'N' NOT NULL, 
+     dept_id        VARCHAR(75), 
+     dept_name      VARCHAR(75), 
+     email          VARCHAR(75), 
+     emp_no         VARCHAR(75), 
+     phone          VARCHAR(75), 
+     position       VARCHAR(255), 
+     sign_file_name VARCHAR(255), 
+     sign_file_path VARCHAR(255), 
+     sign_file_url  VARCHAR(255), 
+     user_type      VARCHAR(20) DEFAULT 'STAFF' NOT NULL, 
+     username       VARCHAR(75) NOT NULL, 
+     delegate_id    INT8, 
+	 created_by     VARCHAR(75), 
+     created_dt     TIMESTAMP, 
+     updated_by     VARCHAR(75), 
+     updated_dt     TIMESTAMP, 
+     PRIMARY KEY (company_id, user_id) 
+  ); 
+
+CREATE TABLE approval.tb_user_access_hist 
+  ( 
+     access_hist_id   BIGSERIAL NOT NULL, 
+     access_end_point VARCHAR(255), 
+     company_id       VARCHAR(75), 
+     company_name     VARCHAR(75), 
+     dept_id          VARCHAR(75), 
+     dept_name        VARCHAR(75), 
+     email            VARCHAR(75), 
+     phone            VARCHAR(75), 
+     user_id          VARCHAR(75), 
+     username         VARCHAR(75), 
+	 last_access_dt   TIMESTAMP, 
+     PRIMARY KEY (access_hist_id) 
+  ); 
+
+CREATE TABLE approval.tb_user_noti 
+  ( 
+     user_noti_id   BIGSERIAL NOT NULL, 
+     noti_direction VARCHAR(20) NOT NULL, 
+     noti_type      VARCHAR(20) NOT NULL, 
+     company_id     VARCHAR(75), 
+     user_id        VARCHAR(75), 
+	 created_by     VARCHAR(75), 
+     created_dt     TIMESTAMP, 
+     updated_by     VARCHAR(75), 
+     updated_dt     TIMESTAMP, 
+     PRIMARY KEY (user_noti_id) 
+  ); 
+
+CREATE TABLE approval.tb_user_role 
+  ( 
+     user_role_id BIGSERIAL NOT NULL, 
+     role_id      INT8, 
+     company_id   VARCHAR(75), 
+     user_id      VARCHAR(75), 
+     created_by   VARCHAR(75), 
+     created_dt   TIMESTAMP, 
+     updated_by   VARCHAR(75), 
+     updated_dt   TIMESTAMP, 
+     PRIMARY KEY (user_role_id) 
+  ); 
+
+ALTER TABLE approval.tb_approval 
+  ADD CONSTRAINT uk_tb_approval_unique UNIQUE (link_system_id, src_appr_work_id); 
+
+ALTER TABLE approval.tb_approval 
+  ADD CONSTRAINT fk_tb_approval_link_system_id FOREIGN KEY (link_system_id) 
+  REFERENCES approval.tb_link_system; 
+
+ALTER TABLE approval.tb_approval 
+  ADD CONSTRAINT fk_tb_approval_user_pk FOREIGN KEY (company_id, user_id) 
+  REFERENCES approval.tb_user; 
+
+ALTER TABLE approval.tb_approval_file 
+  ADD CONSTRAINT fk_tb_approval_file_approval_id FOREIGN KEY (approval_id) 
+  REFERENCES approval.tb_approval; 
+
+ALTER TABLE approval.tb_approver 
+  ADD CONSTRAINT fk_tb_approver_approval_id FOREIGN KEY (approval_id) REFERENCES 
+  approval.tb_approval; 
+
+ALTER TABLE approval.tb_approver 
+  ADD CONSTRAINT fk_tb_approver_user_pk FOREIGN KEY (company_id, user_id) 
+  REFERENCES approval.tb_user; 
+
+ALTER TABLE approval.tb_code 
+  ADD CONSTRAINT fk_tb_code_group_code_id FOREIGN KEY (group_code_id) REFERENCES 
+  approval.tb_group_code; 
+
+ALTER TABLE approval.tb_delegate 
+  ADD CONSTRAINT fk_tb_delegator_user_pk FOREIGN KEY (company_id, user_id) 
+  REFERENCES approval.tb_user; 
+
+ALTER TABLE approval.tb_user 
+  ADD CONSTRAINT fk_tb_user_company_id FOREIGN KEY (company_id) REFERENCES 
+  approval.tb_company; 
+
+ALTER TABLE approval.tb_user 
+  ADD CONSTRAINT fk_tb_user_delegate_id FOREIGN KEY (delegate_id) REFERENCES 
+  approval.tb_delegate; 
+
+ALTER TABLE approval.tb_user_noti 
+  ADD CONSTRAINT fk_tb_user_noti_user_pk FOREIGN KEY (company_id, user_id) 
+  REFERENCES approval.tb_user; 
+
+ALTER TABLE approval.tb_user_role 
+  ADD CONSTRAINT fk_tb_user_role_role_id FOREIGN KEY (role_id) REFERENCES 
+  approval.tb_role; 
+
+ALTER TABLE approval.tb_user_role 
+  ADD CONSTRAINT fk_tb_user_role_user_pk FOREIGN KEY (company_id, user_id) 
+  REFERENCES approval.tb_user; 

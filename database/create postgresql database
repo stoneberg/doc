@@ -1,0 +1,62 @@
+@Postgresql: How to Test DB setup 
+​
+​
+​
+create database cubot;
+​
+create user stoneberg password 'new1234@' superuser;
+​
+생성된 DB 접속 후 eyJhbGciOiJIUzUxMiJ9.eyJpZCI6MSwiZW1haWwiOiJhbGV4QGdvbWFpbC5jb20iLCJhdXRob3JpdGllcyI6W3siYXV0aG9yaXR5IjoiUk9MRV9HVUVTVCJ9LHsiYXV0aG9yaXR5IjoiUk9MRV9VU0VSIn1dLCJ1c2VybmFtZSI6ImFsZXgiLCJzdWIiOiJhbGV4IiwiaWF0IjoxNTk3MjA4NTU3LCJleHAiOjE1OTcyMTU3NTd9.3o9YYcTp7rAEyNfogndIvwEqMzINeJh7HqNwKQ0ODg_-KIqSN0aVlB1ibeKEZG2sa0ZsDwrwQEfmS3V1dojGOA
+\c cubot;
+
+CREATE schema play;
+ALTER ROLE stoneberg ​in DATABASE cubot ​set search_path to play;​
+​
+GRANT CONNECT ON DATABASE cubot TO stoneberg​;
+GRANT USAGE ON SCHEMA play TO stoneberg​;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA play TO stoneberg​;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA play TO stoneberg​;​​
+
+
+
+===========================================================================
+
+
+create database wsc_ktds;
+​create user wscadmin password 'Wscadmin1234!' superuser;
+​\c wsc_ktds;
+CREATE schema esign;
+​alter role wscadmin in database wsc_ktds set search_path to esign;
+grant connect on database wsc_ktds to wscadmin;
+GRANT USAGE ON SCHEMA esign TO wscadmin​;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA esign TO wscadmin​;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA esign TO wscadmin​;
+
+=============================================================================
+
+create database wsc_ktds;
+​create user wscadmin password 'Wscadmin1234!' superuser;
+​\c wsc_ktds;
+CREATE schema approval;
+​-- alter role wscadmin in database wsc_ktds set search_path to approval;
+grant connect on database wsc_ktds to wscadmin;
+GRANT USAGE ON SCHEMA approval TO wscadmin​;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA approval TO wscadmin​;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA approval TO wscadmin​;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,710 @@
+
+
+
+select * from tb_user_role;
+
+select * from tb_user_role where user_id = '90000003';
+
+UPDATE tb_user_role SET role_id = 3 WHERE company_id = '2001' AND user_id = '90000003';
+
+select * from tb_user where user_id = '90000003';
+
+
+CREATE TABLE wsc_ktds.esign.tb_form (
+	form_id serial NOT NULL,
+	contents_type varchar(20) DEFAULT 'HTML'::character varying NOT NULL,
+	form_contents text,
+	form_name varchar(100) NOT NULL,
+	form_type varchar(20) DEFAULT 'PERSONAL'::character varying NOT NULL,
+	video_file_name varchar(255),
+	video_file_path varchar(255),
+	company_id varchar(75),
+	user_id varchar(75),
+	created_dt timestamp,
+	updated_dt timestamp,
+	form_desc varchar(255),
+	video_file_url varchar(255),
+	use_yn char(1) DEFAULT 'Y'::bpchar NOT NULL,
+	delete_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	created_by varchar(255),
+	updated_by varchar(255),
+	PRIMARY KEY (form_id)
+);
+
+ALTER TABLE wsc_ktds.esign.tb_form
+	ADD FOREIGN KEY (company_id,user_id) 
+	REFERENCES tb_user (company_id,user_id);
+
+
+drop table tb_user_access_hist;
+
+
+CREATE TABLE tb_user_access_hist (
+	access_hist_id serial NOT NULL,
+	user_id varchar(70) NOT NULL,
+	username varchar(70) NOT NULL,
+	company_id varchar(70) NOT NULL,
+	company_name varchar(70) NOT NULL,
+	dept_id varchar(70),
+	dept_name varchar(70),
+	email varchar(70) NOT NULL,
+	phone varchar(70),
+	access_end_point varchar(255) NOT NULL,
+	last_login_dt timestamp NOT NULL,
+	PRIMARY KEY (access_hist_id)
+);
+
+select * from tb_user_access_hist;
+
+select * from tb_user_access_hist where user_id = '90000003' order by last_login_dt desc  limit 1;
+
+alter table tb_pledge drop column pledge_contents;
+alter table tb_pledge add column pledge_contents text;
+
+alter table tb_pledge drop column video_play_sec;
+alter table tb_pledge add column video_play_sec integer;
+
+alter table tb_code add column code_val varchar(20);
+
+
+select * from tb_user_role;
+
+
+select * from tb_pledge;
+
+
+select * from tb_pledge_user;
+
+
+CREATE TABLE esign.tb_user_role (
+	user_role_id serial NOT NULL,
+	role_id int8,
+	company_id varchar(75),
+	user_id varchar(75),
+	created_by varchar(75),
+	updated_by varchar(75),
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY (user_role_id)
+);
+
+ALTER TABLE tb_user_role
+  ADD CONSTRAINT fk_tb_user_role_user_pk FOREIGN KEY (company_id, user_id)
+  REFERENCES tb_user;
+
+
+
+
+
+INSERT INTO tb_user_role(user_id, company_id, role_id) VALUES
+('80000003', '1014', 2),
+('80000004', '1014', 3),
+('80000001', '1014', 1),
+('80000002', '1014', 1),
+('80000005', '1014', 4),
+('80000006', '1014', 4),
+('90000001', '2001', 4),
+('90000002', '2001', 4),
+('90000003', '2001', 4),
+('90000004', '2001', 4),
+('90000005', '2001', 4),
+('90000006', '2001', 4),
+('90000007', '2001', 4),
+('90000008', '2001', 4),
+('90000009', '2001', 4);
+
+select * from tb_user where user_id = '90000003';
+
+select * from tb_role;
+
+select * from tb_user_role;
+
+
+CREATE TABLE esign.tb_pledge (
+	pledge_id serial NOT NULL,
+	pledge_name varchar(100) NOT NULL,
+	pledge_contents text,
+	progs_sttus varchar(20) DEFAULT 'STANDBY'::character varying NOT NULL,
+	end_dt timestamp NOT NULL,
+	start_dt timestamp NOT NULL,
+	video_play_sec int4 DEFAULT 60,
+	delete_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	form_id int8,
+	user_id varchar(75),
+	company_id varchar(75),
+	created_dt timestamp,
+	updated_dt timestamp,
+    created_by varchar(75),
+	updated_by varchar(75),
+	PRIMARY KEY (pledge_id)
+);
+
+CREATE TABLE esign.tb_pledge_item (
+	pledge_item_id serial NOT NULL,
+	item_name1 varchar(50),
+	item_name2 varchar(50),
+	item_name3 varchar(50),
+	pledge_id int8,
+	created_dt timestamp,
+	updated_dt timestamp,
+	created_by varchar(75),
+	updated_by varchar(75),
+	PRIMARY KEY (pledge_item_id)
+);
+
+
+CREATE TABLE esign.tb_pledge_user (
+	pledge_user_id serial NOT NULL,
+	progs_sttus varchar(20) DEFAULT 'STANDBY'::character varying NOT NULL,
+	pledge_dt timestamp,
+	pledge_id int8,
+	video_play_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	company_id varchar(75),
+	user_id varchar(75),
+	created_dt timestamp,
+	updated_dt timestamp,
+    created_by varchar(75),
+	updated_by varchar(75),
+	PRIMARY KEY (pledge_user_id)
+);
+
+CREATE TABLE esign.tb_pledge_user_item (
+	pledge_user_item_id serial NOT NULL,
+	item_name1 varchar(50),
+	item_contents1 text,
+	item_name2 varchar(50),
+	item_contents2 text,
+	item_name3 varchar(50),
+	item_contents3 text,
+	pledge_user_id int8,
+	created_by varchar(70),
+	updated_by varchar(70),
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY (pledge_user_item_id)
+);
+
+
+ALTER TABLE esign.tb_pledge_user_item
+	ADD FOREIGN KEY (pledge_user_id)
+	REFERENCES esign.tb_pledge_user (pledge_user_id);
+
+
+
+ALTER TABLE esign.tb_pledge
+  ADD CONSTRAINT fk_tb_pledge_form_id FOREIGN KEY (form_id) REFERENCES esign.tb_form;
+
+ALTER TABLE esign.tb_pledge
+  ADD CONSTRAINT fk_tb_pledge_user_pk FOREIGN KEY (company_id, user_id)
+  REFERENCES esign.tb_user;
+
+ALTER TABLE esign.tb_pledge_item
+	ADD FOREIGN KEY (pledge_id)
+	REFERENCES esign.tb_pledge (pledge_id);
+
+ALTER TABLE esign.tb_pledge_user
+  ADD CONSTRAINT fk_tb_pledge_user_user_pk FOREIGN KEY (company_id, user_id)
+  REFERENCES esign.tb_user;
+
+
+
+alter table esign.tb_pledge_user add column user_pledge_image text;
+
+
+select * from esign.tb_pledge_user; 
+
+select * from esign.tb_pledge; 
+DELETE FROM esign.tb_pledge_user WHERE pledge_user_id = 1;
+DELETE FROM esign.tb_pledge_user WHERE pledge_user_id = 3;
+DELETE FROM esign.tb_pledge_user WHERE pledge_user_id = 4;
+DELETE FROM esign.tb_pledge_user WHERE pledge_user_id = 5;
+DELETE FROM esign.tb_pledge_user WHERE pledge_user_id = 2;
+
+select * from esign.tb_pledge_item; 
+DELETE FROM esign.tb_pledge_item WHERE pledge_item_id = 1;
+DELETE FROM esign.tb_pledge WHERE pledge_id = 1;
+
+select * from esign.tb_pledge_user_item; 
+
+DELETE FROM esign.tb_pledge_user_item WHERE pledge_user_item_id = 1;
+DELETE FROM esign.tb_pledge_user_item WHERE pledge_user_item_id = 2;
+
+
+select * from esign.tb_code;
+
+
+
+INSERT INTO esign.tb_group_code(group_code_id, group_desc, created_dt, updated_dt) VALUES ('PLEDGE_COMMON', '서약 공통', '2020-08-28 16:26:47.875722', '2020-08-28 16:26:47.875722');
+
+
+
+INSERT INTO esign.tb_code(code_id, group_code_id, code_desc, display_order, created_dt, updated_dt, code_val) VALUES ('REQUEST_LIMIT', 'PLEDGE_COMMON', '개인 양식 1회 요청 가능한 서약자 수', '1', '2020-08-28 16:25:35.22007', '2020-08-28 16:25:35.22007', '5');
+
+
+select * from esign.tb_pledge;
+
+select * from esign.tb_pledge_user;
+
+
+
+    select
+        distinct pledgeuser0_.pledge_user_id as col_0_0_,
+        cast(pledgeuser0_.progs_sttus as varchar) as col_1_0_,
+        case 
+            when pledgeuser0_.progs_sttus='ONGOING' then '진행 중' 
+            when pledgeuser0_.progs_sttus='COMPLETE' then '완료' 
+            else '완료' 
+        end as col_2_0_,
+        pledge1_.pledge_name as col_3_0_,
+        pledge1_.pledge_id as col_4_0_,
+        user2_.dept_name as col_5_0_,
+        user2_.username as col_6_0_,
+        pledge1_.start_dt as col_7_0_,
+        pledge1_.end_dt as col_8_0_,
+        cast(form3_.contents_type as varchar) as col_9_0_,
+        form3_.form_id as col_10_0_,
+        case 
+            when form3_.contents_type='HTML' then '일반' 
+            else '동영상' 
+        end as col_11_0_,
+        pledgeuser0_.created_dt as col_12_0_ 
+    from
+        tb_pledge_user pledgeuser0_ 
+    left outer join
+        tb_pledge pledge1_ 
+            on pledgeuser0_.pledge_id=pledge1_.pledge_id 
+    left outer join
+        tb_user user2_ 
+            on pledge1_.company_id=user2_.company_id 
+            and pledge1_.user_id=user2_.user_id 
+    left outer join
+        tb_form form3_ 
+            on pledge1_.form_id=form3_.form_id 
+    where
+        pledgeuser0_.progs_sttus='ONGOING' 
+        and (
+            pledge1_.start_dt<'2020-10-08T00:08:17.848+0900' 
+            or pledge1_.start_dt='2020-10-08T00:08:17.848+0900'
+        ) 
+        and (
+            pledge1_.end_dt<'2020-10-08T00:08:17.848+0900' 
+            or pledge1_.end_dt='2020-10-08T00:08:17.848+0900'
+        ) 
+        and (
+            pledge1_.start_dt between '2020-10-01T00:00:00.000+0900' and '2020-10-08T23:59:59.000+0900'
+        ) 
+        and (
+            pledgeuser0_.company_id, pledgeuser0_.user_id
+        )=(
+            '2001', '90000006'
+        ) ;
+
+
+select * from esign.tb_pledge;
+
+select * from esign.tb_pledge_item;
+
+select * from esign.tb_user_pledge;
+
+select * from esign.tb_pledge;
+
+select * from esign.tb_pledge_user_item;
+
+
+-- 
+
+CREATE TABLE esign.tb_pledge_user (
+	pledge_user_id serial NOT NULL,
+	progs_sttus varchar(20) DEFAULT 'STANDBY'::character varying NOT NULL,
+	pledge_dt timestamp,
+	pledge_id int8,
+	video_play_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	company_id varchar(75),
+	user_id varchar(75),
+	created_dt timestamp,
+	updated_dt timestamp,
+    created_by varchar(75),
+	updated_by varchar(75),
+	PRIMARY KEY (pledge_user_id)
+);
+
+ALTER TABLE esign.tb_pledge_user
+  ADD CONSTRAINT fk_tb_pledge_user_pledge_id FOREIGN KEY (pledge_id) REFERENCES
+  esign.tb_pledge;
+
+ALTER TABLE esign.tb_pledge_user
+  ADD CONSTRAINT fk_tb_pledge_user_user_pk FOREIGN KEY (company_id, user_id)
+  REFERENCES esign.tb_user;
+  
+  
+  CREATE TABLE esign.tb_pledge_user_item (
+	pledge_user_item_id serial NOT NULL,
+	item_name1 varchar(50),
+	item_contents1 text,
+	item_name2 varchar(50),
+	item_contents2 text,
+	item_name3 varchar(50),
+	item_contents3 text,
+	pledge_user_id int8,
+	created_by varchar(70),
+	updated_by varchar(70),
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY (pledge_user_item_id)
+);
+
+
+ALTER TABLE esign.tb_pledge_user_item
+	ADD FOREIGN KEY (pledge_user_id)
+	REFERENCES esign.tb_pledge_user (pledge_user_id);
+	
+-- 
+
+
+CREATE TABLE wsc_ktds.esign.tb_pledge_user (
+	pledge_user_id serial NOT NULL,
+	pledge_dt timestamp,
+	progs_sttus varchar(20) DEFAULT 'STANDBY'::character varying NOT NULL,
+	video_play_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	pledge_id int8,
+	company_id varchar(75),
+	user_id varchar(75),
+	created_by varchar(75),
+	created_dt timestamp,
+	updated_by varchar(75),
+	updated_dt timestamp,
+	complete_image text,
+	PRIMARY KEY (pledge_user_id)
+);
+
+ALTER TABLE wsc_ktds.esign.tb_pledge_user
+	ADD FOREIGN KEY (pledge_id) 
+	REFERENCES tb_pledge (pledge_id);
+
+ALTER TABLE wsc_ktds.esign.tb_pledge_user
+	ADD FOREIGN KEY (company_id) 
+	REFERENCES tb_user (company_id);
+
+ALTER TABLE wsc_ktds.esign.tb_pledge_user
+	ADD FOREIGN KEY (user_id) 
+	REFERENCES null (null);
+
+
+select * from esign.tb_user where user_id = '90000003';
+
+
+select * from esign.tb_pledge;
+
+
+select * from esign.tb_pledge_user where pledge_id = '10';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

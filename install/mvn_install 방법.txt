@@ -1,0 +1,91 @@
+I. ### Gradle boot 플러그인
+spring-boot-gradle-plugin.zip 파일은
+
+본인의 
+C:\Users\Administrator\.m2\repository\org\springframework\boot 경로에다 복사
+
+압축해제 후 아래와 같이 경로 가 생기도록 한다.
+C:\Users\Administrator\.m2\repository\org\springframework\boot\spring-boot-gradle-plugin\~기타 등등
+
+
+
+
+II. ### 아래의 jar 디렉토리를 c:\jar 가 되도록 복사한다.
+
+CMD 창을 열어서 아래의 mvn 명령어 라인을 복사한 후 엔터를 친다. 설치 시 OK..OK 가 표시되면 정상적으로 로컬 maven
+repository 에 파일이 복사된다.
+설치된 파일은 //주석으로 표시된 라인을 스프링부트 프로젝트의 gradle.build 파일 복사하고 gradle 빌드를 하면된다.
+
+
+
+//SafeDB 암호화 모듈
+//compile group: 'com.initech.safedb', name: 'SafeDBCore', version: '3.2.9'
+	
+mvn install:install-file -Dfile=c:\jar\SafeDBCore-3.2.9.jar -DgroupId=com.initech.safedb -DartifactId=SafeDBCore -Dversion=3.2.9 -Dpackaging=jar
+	
+	
+	
+	
+//compile group: 'com.initech.safedb', name: 'SafeDBCrypto', version: '3.2.9'
+	
+mvn install:install-file -Dfile=c:\jar\SafeDBCrypto-3.2.9.jar -DgroupId=com.initech.safedb -DartifactId=SafeDBCrypto -Dversion=3.2.9 -Dpackaging=jar
+	
+	
+	
+//compile group: 'com.initech.safedb', name: 'SafeDBSDK', version: '3.2.18'
+	
+mvn install:install-file -Dfile=c:\jar\SafeDBSDK-3.2.18.jar -DgroupId=com.initech.safedb -DartifactId=SafeDBSDK -Dversion=3.2.18 -Dpackaging=jar
+	
+   
+
+//compile('xercesImpl:xercesImpl:1.0')
+	
+mvn install:install-file -Dfile=c:\jar\xercesImpl-1.0.jar -DgroupId=xercesImpl -DartifactId=xercesImpl -Dversion=1.0 -Dpackaging=jar
+	
+
+    
+//compile group: 'com.initech', name: 'INICrypto', version: '4.1.8'
+	
+mvn install:install-file -Dfile=c:\jar\INICrypto-4.1.8.jar -DgroupId=com.initech -DartifactId=INICrypto -Dversion=4.1.8 -Dpackaging=jar
+	
+	
+//compile group: 'com.initech', name: 'INISAFECore', version: '2.2.12'
+	
+mvn install:install-file -Dfile=c:\jar\INISAFECore-2.2.12.jar -DgroupId=com.initech -DartifactId=INISAFECore -Dversion=2.2.12 -Dpackaging=jar
+	
+	
+//compile group: 'com.initech', name: 'INISAFENet', version: '7.2.43_paccel'
+	
+mvn install:install-file -Dfile=c:\jar\INISAFENet-7.2.43_paccel.jar -DgroupId=com.initech -DartifactId=INISAFENet -Dversion=7.2.43_paccel -Dpackaging=jar
+
+	
+//compile group: 'com.initech', name: 'INISAFEPaccelClient', version: '2.0.11'
+	
+mvn install:install-file -Dfile=c:\jar\INISAFEPaccelClient-2.0.11.jar -DgroupId=com.initech -DartifactId=INISAFEPaccelClient -Dversion=2.0.11 -Dpackaging=jar
+	
+	
+//compile group: 'com.initech', name: 'INISAFEPKI', version: '1.1.23'
+	
+mvn install:install-file -Dfile=c:\jar\INISAFEPKI-1.1.23.jar -DgroupId=com.initech -DartifactId=INISAFEPKI -Dversion=1.1.23 -Dpackaging=jar
+	
+
+
+//"com.edb:edb-jdbc:1.7
+
+mvn install:install-file -Dfile=D:\2019\mvn_install\edb-jdbc17.jar -DgroupId=com.edb -DartifactId=edb-jdbc -Dversion=1.7 -Dpackaging=jar
+
+
+
+//simplecaptcha-1.2.1.jar
+mvn install:install-file -Dfile=D:\2019\mvn_install\simplecaptcha-1.2.1.jar -DgroupId=nl.captcha -DartifactId=simplecaptcha -Dversion=1.2.1 -Dpackaging=jar
+
+
+//compile 'nets.ldap:adutilssl:1.0'
+
+mvn install:install-file -Dfile=c:\jar\ADUtilSSL.jar -DgroupId=nets.ldap -DartifactId=adutilssl -Dversion=1.0 -Dpackaging=jar
+
+
+
+
+
+

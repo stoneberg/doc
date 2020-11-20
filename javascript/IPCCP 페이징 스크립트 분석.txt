@@ -1,0 +1,290 @@
+###################### IPCCP 페이징 조회 로직 분석 ######################
+
+#1. Frontend
+
+ - js
+ 
+    /**
+     * 클러스터 마스터 조회 및 리스트, 탭 생성
+     */
+    var findClusterMasters = function(selectPageNo) {
+        var url = _CTX + "clustermgmt/cluster/findClusterMasters";
+        var param = {};
+        
+        if (_svcId == -1) {
+            param['clusterMasterId'] = _rtnClusterMasterId; 
+        }
+        param['svcId'] = _svcId; 
+        param['pageNo'] = selectPageNo || _initPageNo;
+        param['clusterName'] = $.trim($('#clusterName').val()) || '';
+        param['username'] = findSuitableUsernameForSearching();
+        
+        $.ajaxProxy($.reqPost(url).setData(param).build()).then(function(response) {
+            createClusterList(response);
+            return response;
+        }).done(function(response) {
+           createClusterDetailTab(response);
+        });
+        
+    };
+	
+	
+	/**
+     * 클러스터 마스터 목록 테이블 생성
+     */
+    var createClusterList = function(response) {
+        var result = response['data']['result'];
+        //result = _.sortBy(result, function(c) { return c['sysRecdCretDt']; }).reverse(); // order by date desc
+        var pagination = response['data']['pagination'];
+        
+        if (!_.isEmpty(result)) {
+            
+            var html = '';
+            
+            _.each(result, function(v, k) {
+                html += '<tr data-svc-id="' + v['svcId'] + '" data-cluster-master-id="' + v['clusterMasterId'] + '">';
+                html += '<td>' + (v['regionName'] || '') + '</td>';
+                html += '<td>' + (v['envTypeName'] || '') + '</td>';
+                html += '<td class="left clusterName"><em class="bul_cs">CS</em><a href="javascript:;">' + v['clusterName'] + '</a></td>';
+                html += '<td>' + v['openshiftVer'] + '</td>';
+                html += '<td data-cluster-status="' + v['baseClusterServiceStatus'] + '">' + getClusterStatusValue(v['baseClusterServiceStatus']) + '</td>';
+                html += '<td>' + v['createUserName'] + '</td>';
+                html += '<td>' + $.dateFormat(v['createDate'], 'M') + '</td>';
+                html += '<td><a href="javascript:;" class="btn_main projectMgmt">Project 관리</a></td>';
+                html += '</tr>';
+            });
+            
+            $('#resultList').html(html);
+            $('#pagination').html(pagination).show();
+            
+        } else {
+            $('#resultList').html('<tr><td colspan="8">조회된 클러스터가 존재하지 않습니다.</td></tr>');
+        }
+        
+    }
+	
+	/**
+     * 클러스터 조회 목록 페이징 처리
+     */
+    var pageMove = function(page, order) {
+        if (!order) {
+            findClusterMasters(page)
+        } else if (order === _secondPagination) {
+            findLocalClusterNode(_nodeResult, createClusterNodeTab, page, _secondPagination);
+        } else if (order === _thirdPagination) {
+            findClusterCommonUrl(page);
+        }
+    };
+	
+
+ - html
+		 .....................
+		  </tbody>
+		</table>
+		
+	   <!-- ######################## Pagination  ######################## -->
+		 <div class="paging_box" style="display:none;" id="pagination"></div>
+	   <!-- ######################## Pagination  ######################## -->
+		
+	</div>   
+
+
+
+
+
+#2. Backend
+
+ - 1. controller
+
+    /**
+     * 클러스터 서비스 관리 > 사용자의 클러스터 마스터 조회
+     * @param clusterMaster, restMessage
+     * @return 
+     */
+    @PostMapping("cluster/findClusterMasters")
+    public ResponseEntity<?> findClusterMasters(@RequestBody final ClusterMasterDomain clusterMaster, final RestMessage restMessage) {
+        log.info("@clustermgmt/findClusterMasters================>");
+        clusterMaster.setLimitAndOffset(clusterMaster.getPageNo());
+        restMessage.setData(clusterMgmtService.findClusterMasters(clusterMaster)); // paging info
+        restMessage.setOK();
+        return ResponseEntity.ok(restMessage);
+    }
+	
+	Dto인 ClusterMasterDomain는 BaseDomain을 상속하고 있으면 BaseDomain안에 프론트에서 보낸 limit, pageNo, offset 정보등을 가지고 있다. 
+	
+	
+ - 2. service
+ 
+     /**
+     * 클러스터 관리 > 클러스터 마스터 목록 조회
+     * @param clusterMaster
+     * @return 
+     */
+    public Map<String, Object> findClusterMasters(ClusterMasterDomain clusterMaster) {
+        log.info("@findClusterMasters=====================>{}", clusterMaster);
+        try {
+            Map<String, Object> rstMap = new HashMap<>();
+            List<ClusterMasterDomain> clusterMasters = clusterMgmtMapper.findClusterMasters(clusterMaster);
+            int totalRow = clusterMgmtMapper.findTotalCount();
+            rstMap.put("result", clusterMasters);
+            rstMap.put("pagination", paginationUtil.getPagination(totalRow, clusterMaster));
+            return rstMap;
+        } catch (Exception e) {
+            throw new CustomException(CustomStatusCd.CD_22000.getCd(), CustomStatusCd.CD_22000.getMsg(), e);
+        }
+    }
+	
+	서비스에서는 조회 조건에 맞는 결과 리스트(clusterMasters)와 결과 총 갯수(totalRow)를 같이 조회 한다.
+	조회 결과와 기존에 파라미터로 넘어온 Dto를 가지고 페이징 HTML을 생성하고 컨트롤러로 다시 보낸다.
+	
+ -3. 페이징 유틸
+    @Component
+	@Data
+	public class PaginationUtil {
+		
+		/** default display rows : 10 **/
+		public static final Integer SIZE_10 = 10;
+		
+		/** default page range : 10 **/
+		public static final Integer BLOCK_10 = 10;
+		
+		/** custom default display rows : 5 **/
+		public static final Integer SIZE_5 = 5;
+		
+		/** custom page range : 5 **/
+		public static final Integer BLOCK_5 = 5;
+		
+		/** custom display rows : 3 **/
+		public static final Integer SIZE_3 = 3;
+		
+		/** custom page range : 3 **/
+		public static final Integer BLOCK_3 = 3;
+		
+		
+		/**
+		 * 페이징 처리. js 파일의 module 명을 받아서 처리(10, 10)
+		 * @param totalRow
+		 * @param pageNo
+		 * @param orderNo
+		 * @param moduleStr
+		 * @return
+		 */
+		public String getPagination(Integer totalRow, BaseDomain baseDomain) {
+			
+			int page = (baseDomain.getPageNo() != null) ? baseDomain.getPageNo() : 1;
+			int order = (baseDomain.getOrderNo() != null) ? baseDomain.getOrderNo() : 0;
+			int totalPage = (int) Math.ceil((float) totalRow / baseDomain.getPageSize());
+			int pageGroup = (int) Math.ceil((float) page / baseDomain.getPageBlock());
+			int next = pageGroup * baseDomain.getPageBlock();
+			int prev = next - (baseDomain.getPageBlock() - 1);
+			int goNext = 0;
+			int goPrev = 0;
+			String module = !StringUtils.isBlank(baseDomain.getModuleName()) 
+					? baseDomain.getModuleName() : "module";
+			
+			StringBuilder pagingHtml = new StringBuilder();
+			
+			if (prev - 1 <= 0) {
+				goPrev = 1;
+				prev = 1;
+			} else {
+			   goPrev = prev - 1;
+			}
+			
+			if (next > totalPage) {
+				goNext = totalPage;
+				next = totalPage;
+			} else {
+				goNext = next + 1;
+			}
+			
+			if (goNext > totalPage) {
+				goNext = totalPage;
+			}
+				
+			if (totalRow != 0) {
+				
+				pagingHtml.append("<ul class=\"paging\">");
+				
+				/** |<<| <| **/
+				if (page == 1) {
+					pagingHtml.append("<li><a href=\"javascript:;\" class=\"ppv dis\" data-page=\"1\">맨앞</a></li>");
+					pagingHtml.append("<li><a href=\"javascript:;\" class=\"pv dis\" data-page=\"");
+					pagingHtml.append(goPrev);
+					pagingHtml.append("\">앞</a></li>");
+				} else {
+					pagingHtml.append("<li><a href=\"javascript:;\" class=\"ppv\" data-page=\"1\" onclick=\"");
+					pagingHtml.append(module).append(".pageMove(1, ").append(order);
+					pagingHtml.append(");return false;\">맨앞</a></li>");
+					pagingHtml.append("<li><a href=\"javascript:;\" class=\"pv\" data-page=\"");
+					pagingHtml.append(goPrev);
+					pagingHtml.append("\" onclick=\"").append(module).append(".pageMove(");
+					pagingHtml.append(goPrev);
+					pagingHtml.append(", ");
+					pagingHtml.append(order);
+					pagingHtml.append(");return false;\">앞</a></li>");
+				}
+				
+				/** |1|2|3|........|9|10| **/
+				for (int pageIndex = prev; pageIndex <= next; pageIndex ++) {
+					if (pageIndex == page) {
+						pagingHtml.append("<li class=\"on\"><a href=\"javascript:;\">");
+						pagingHtml.append(pageIndex);
+						pagingHtml.append("</a></li>");
+					} else {
+						pagingHtml.append("<li><a href=\"javascript:;\" onclick=\"");
+						pagingHtml.append(module).append(".pageMove(");
+						pagingHtml.append(pageIndex);
+						pagingHtml.append(", ");
+						pagingHtml.append(order);
+						pagingHtml.append(");return false;\" data-page=\"");
+						pagingHtml.append(pageIndex);
+						pagingHtml.append("\">");
+						pagingHtml.append(pageIndex);
+						pagingHtml.append("</a></li>");
+					}
+				} 
+				
+				/** |> |>>| **/
+				if (page == totalPage) {
+					pagingHtml.append("<li><a href=\"javascript:;\" class=\"nv dis\" data-page=\"");
+					pagingHtml.append(goNext);
+					pagingHtml.append("\">뒤</a></li>");
+					pagingHtml.append("<li><a href=\"javascript:;\" class=\"nnv dis\" data-page=\"");
+					pagingHtml.append(totalPage);
+					pagingHtml.append("\">맨뒤</a></li>");
+				} else {
+					pagingHtml.append("<li><a href=\"javascript:;\" class=\"nv\" data-page=\"");
+					pagingHtml.append("\" onclick=\"").append(module).append(".pageMove(");
+					pagingHtml.append(goNext);
+					pagingHtml.append(", ");
+					pagingHtml.append(order);
+					pagingHtml.append(");return false;\">뒤</a></li>");
+					pagingHtml.append("<li><a href=\"javascript:;\" class=\"nnv\" data-page=\"");
+					pagingHtml.append(totalPage);
+					pagingHtml.append("\" onclick=\"").append(module).append(".pageMove(");
+					pagingHtml.append(totalPage);
+					pagingHtml.append(", ");
+					pagingHtml.append(order);
+					pagingHtml.append(");return false;\">맨뒤</a></li>");
+				}
+				
+				pagingHtml.append("</ul>");
+				
+			}
+			
+			return pagingHtml.toString();
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

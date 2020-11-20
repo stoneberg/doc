@@ -1,0 +1,136 @@
+@ToString
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = {"id", "destination", "type"})
+@Entity
+@Table(name = "trains")
+public class Train {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String destination;
+    private TrainType type;
+    private Long price;
+    private String feature;
+
+    public void setType(TrainType type) {
+        this.type = type;
+    }
+
+    public void setFeature(String feature) {
+        this.feature = feature;
+    }
+}
+
+
+package com.stone.mapstruct.play.case5.domain;
+
+import lombok.*;
+
+import javax.persistence.*;
+
+@ToString
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = {"id", "name"})
+@Entity
+@Table(name = "people")
+public class People {
+
+    /**
+     * 유저의 아이디 (PK)
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    /**
+     * 유저의 이름
+     */
+    @Column(unique = true, nullable = false)
+    private String name;
+
+    /**
+     * 유저의 나이
+     */
+    @Column(nullable = false, columnDefinition = "int default 1")
+    private Integer age;
+
+}
+
+
+
+
+curl -X POST \
+'http://localhost:8081/oauth/token' \
+-H 'Authorization:Basic dGVzdENsaWVudElkOnRlc3RTZWNyZXQ=' \
+-d 'grant_type=authorization_code' \
+-d 'code=fxCqIJ' \
+-d 'redirect_uri=http://localhost:8081/oauth2/callback'
+
+
+ http://localhost:8081/oauth/authorize?client_id=testClientId&redirect_uri=http://localhost:8081/oauth2/callback&response_type=code&scope=read
+ http://localhost:8081/oauth/authorize?client_id=testClientId&redirect_uri=http://localhost:8081/oauth2/callback&response_type=code&scope=read
+
+
+http://localhost:8081/oauth/autorize
+
+http://localhost:8081/login/oauth/access_token
+
+
+$ keytool -genkeypair -alias oauth2jwt -keyalg RSA -keypass oauth2jwtpass -keystore oauth2jwt.jks -storepass oauth2jwtpass
+이름과 성을 입력하십시오.
+  [Unknown]: stoneberg
+조직 단위 이름을 입력하십시오.
+  [Unknown]: dev
+조직 이름을 입력하십시오.
+  [Unknown]: kt
+구/군/시 이름을 입력하십시오?
+  [Unknown]: bundang
+시/도 이름을 입력하십시오.
+  [Unknown]: seongnam
+이 조직의 두 자리 국가 코드를 입력하십시오.
+  [Unknown]: kr
+CN=Unknown, OU=Unknown, O=Unknown, L=Unknown, ST=Unknown, C=Unknown이(가) 맞습니까?
+  [아니오]:  y
+
+
+$ keytool -list -rfc --keystore oauth2jwt.jks | openssl x509 -inform pem -pubkey
+
+
+
+키 저장소 비밀번호 입력:  oauth2jwtpass
+
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqX2v/+FEZadRv+xwmwoO
+o0cdTq8ldCpLP8k+nJy/FifDMyDcK941hPjL3xWwe7VvDzjggjQDOdgdCsC96Zz6
+cMafNccumchgdQKc5ZGAodLXvSMTzP+5tAnlYoH4ojARnBgJfT6dbgS5fWUAPZDO
+8oXjPcxhW17jZFmr63ff0AaWiOa+fB7tu8+D4+AN5uVfUchUOABIFdZp86sThoiy
+7hE2JVPTHZ11iog4ZNerNvaMtJ0RTOcuJFKFhL1r9HTWPXoKhyRCj0/kQw4fxget
+5DVTkiqgUr2NftLERk0qz8rk/pDdH4NGz2F4HYZDG3mKwGbRdBUJi+GQ9XuMM04N
+GwIDAQAB
+-----END PUBLIC KEY-----
+-----BEGIN CERTIFICATE-----
+MIIDYTCCAkmgAwIBAgIERZcOTDANBgkqhkiG9w0BAQsFADBhMQswCQYDVQQGEwJr
+cjERMA8GA1UECBMIc2VvbmduYW0xEDAOBgNVBAcTB2J1bmRhbmcxCzAJBgNVBAoT
+Amt0MQwwCgYDVQQLEwNkZXYxEjAQBgNVBAMTCXN0b25lYmVyZzAeFw0yMDA4MDcw
+NDAxMDZaFw0yMDExMDUwNDAxMDZaMGExCzAJBgNVBAYTAmtyMREwDwYDVQQIEwhz
+ZW9uZ25hbTEQMA4GA1UEBxMHYnVuZGFuZzELMAkGA1UEChMCa3QxDDAKBgNVBAsT
+A2RldjESMBAGA1UEAxMJc3RvbmViZXJnMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+MIIBCgKCAQEAqX2v/+FEZadRv+xwmwoOo0cdTq8ldCpLP8k+nJy/FifDMyDcK941
+hPjL3xWwe7VvDzjggjQDOdgdCsC96Zz6cMafNccumchgdQKc5ZGAodLXvSMTzP+5
+tAnlYoH4ojARnBgJfT6dbgS5fWUAPZDO8oXjPcxhW17jZFmr63ff0AaWiOa+fB7t
+u8+D4+AN5uVfUchUOABIFdZp86sThoiy7hE2JVPTHZ11iog4ZNerNvaMtJ0RTOcu
+JFKFhL1r9HTWPXoKhyRCj0/kQw4fxget5DVTkiqgUr2NftLERk0qz8rk/pDdH4NG
+z2F4HYZDG3mKwGbRdBUJi+GQ9XuMM04NGwIDAQABoyEwHzAdBgNVHQ4EFgQUfsoc
+PrkKU5lwnMtfC7mfnPghaeEwDQYJKoZIhvcNAQELBQADggEBAEgayYvKYIzp+xd/
+VcSKPGUVBHAcNV+XFMSdjYSmPE2mBgajl7ecG7WFitiAQMfrWw9qchehHuzyhA4N
+iPD7Pmp5i9kBAgZOsTSa50TygXAH1UYSkRTUeH501tP/eMbqkWoUlUCyV5ONTFPv
+CMjZpiDYiaHpYYjt2uNVK/NTmRxfoKcRsz3G4pVzaMxJ7PrgrgoYe9UdiZM2hhFy
+s5BakFMpWZPs/lUWgytEDBTmwdEbQNv97CTiPksnxf4fxXumqAHGh4q84QHwN9Jq
+anDxdr+h8iwSDTZTILp2nHTqAHJGxACAu5gEsz8Z7qDMErIH3WcREmV27bLoH7Vn
+PtscoPw=
+-----END CERTIFICATE-----
+

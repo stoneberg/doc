@@ -1,0 +1,19 @@
+​​
+create database cubot;
+create database asw_demo;
+create database github_demos;
+​
+create user stoneberg password 'new1234@' superuser;
+
+
+​
+생성된 DB 접속 후 
+\c cubot
+CREATE schema play;
+
+github_demos=# alter role stoneberg in database github_demos set search_path to play;
+​
+github_demos=# grant connect on database github_demos to stoneberg;
+github_demos=# grant usage on schema play to stoneberg;
+github_demos=# grant all privileges on all tables in schema play to stoneberg;
+github_demos=# grant all privileges on all sequences in schema play to stoneberg;

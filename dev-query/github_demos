@@ -1,0 +1,14 @@
+
+
+select * from blogs;
+
+select * from categories;
+
+select * from posts;
+
+select * from replies;
+
+select * from users;
+
+
+

@@ -1,0 +1,339 @@
+|                           |
+|   |                  |    |
+|   |  |             | |    |
+|	|  |  Image      | |  ==> Physical
+|	|  |_____________| |    |
+|	|                  |    |
+|	|    Container     |  ==> Logical
+|	|__________________|    |
+|                           |
+|          Host             |
+|___________________________|
+
+
+
+
+docker run -d -p 80:80 --name docker-tutorial docker101tutorial
+
+
+docker images
+
+동작중인 컨테이너 확인
+docker ps
+
+모든 컨테이너 확인
+docker ps -a 
+
+도커 이미지, 컨테이너 삭제
+
+docker rmi -f image id
+
+컨테이너 삭제
+docker rm container id, container id
+
+
+docker run -it -p [외부(HOST)port]:[컨테이너 내부port] --name [컨테이너 이름] [image id] /bin/bash
+
+
+docker pull redis
+
+docker images
+
+docker run redis
+
+dpcler run -d redis
+
+docker stop container id
+
+docker ps
+
+docker start container id
+
+docker run redis:version  ==> docker pull redis:version
+
+@ port binding
+
+
+container Port Vs Host Port
+
+docker run -d -p6000:6379 redis
+
+## 모든 컨테이너 삭제 ##
+docker rm `docker ps -a -q`
+
+docker logs container id
+
+docker logs container name
+
+# 실행 중인 컨테이너 로깅
+docker exec -it container id /bin/bash
+
+docker exec -it container name /bin/bash
+
+
+docker run -d -it -p 6000:6379 --name my_redis redis /bin/bash
+
+########## Docker Volume
+
+컨테이너를 삭제할 때마다 데이터가 날라감
+컨테이너 파일 시스템을 Host 파일 시스템에 마운트 시켜서 컨테이너 데이터를 Host 파일 시스템에 쓰게 함
+
+docker run -v /home/home/data:/var/lib/mysql/data
+docker run -v name:/var/lib/mysql/data  ==> 컨테이너 파일 패스와 같은 디렉토리가 호스트 파일 시스템에 만들어짐
+
+########### Jenkins
+
+jenkins external port 8080
+jenkins master/slave communication port 5000
+
+### -v 컨테이너 내부 폴더와 연동
+docker run -p 8090:8080 -p 50000:50000 -d -v /storage/jenkins/jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+
+93b0f0c906e74728a08ea1cdee49886a
+
+
+### GitLab
+
+yum install docker
+systemctl start docker
+systemctl enable docker
+systemctl status docker
+
+
+docker pull gitlab-ce
+
+docker pull gitlab/gitlab-ce
+
+docker run -d --hostname gitlab.stoneberg.com \
+-p 443:443 -p 8089:80 -p 2222:22 \
+--name gitlab-stoneberg \
+--restart unless-stopped \
+-v /storage/gitlab/config:/etc/gitabl \
+-v /storage/gitlab/logs:/var/log/gitlab \
+-v /storage/gitlab/data:/var/opt/gitlab \
+gitlab/gitlab-ce:latest
+
+
+80 (http)
+443 (if you configure HTTPS)
+8080 (used by Unicorn)
+22 (used by the SSH deamon)
+
+https://devyurim.github.io/development%20environment/docker/2018/06/27/docker-1.html
+
+docker exec -it gitlab /bin/bash
+
+cd /etc/gitlab
+
+vi gitlab.rb
+
+
+docker logs container_id -f
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

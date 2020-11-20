@@ -1,0 +1,57 @@
+Git global setup
+git config --global user.name "이유평"
+git config --global user.email "91264983@ktfriend.com"
+
+Create a new repository
+git clone http://gitlab.example.com/esign_dev/ktds-qesign.git
+cd ktds-qesign
+touch README.md
+git add README.md
+git commit -m "add README"
+git push -u origin master
+
+Push an existing folder
+cd existing_folder
+git init
+git remote add origin http://gitlab.example.com/esign_dev/ktds-qesign.git
+git add .
+git commit -m "Initial commit"
+git push -u origin master
+
+Push an existing Git repository
+cd existing_repo
+git remote rename origin old-origin
+git remote add origin http://gitlab.example.com/esign_dev/ktds-qesign.git
+git push -u origin --all
+git push -u origin --tags
+
+
+
+Push an existing folder
+cd existing_folder
+git init
+git remote add origin http://10.226.242.69/esign_dev/ktds-qesign.git
+git add .
+git commit -m "Initial commit"
+git push -u origin master
+
+
+91267983@ktfriend.com
+less5537@
+
+
+
+
+
+######################################################################
+cd existing_folder
+git init
+git remote add origin http://10.226.242.69/dev_workstream/q-esign.git
+git add .
+git commit -m "Initial commit"
+git push -u origin master
+
+
+
+
+

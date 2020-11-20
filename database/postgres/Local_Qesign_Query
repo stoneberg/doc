@@ -1,0 +1,1373 @@
+
+select * from example_user_pledge;
+
+drop table tb_common_code;
+
+
+CREATE TABLE tb_common_code (
+	"id" serial NOT NULL,
+	group_code varchar(20) NOT NULL,
+	group_desc varchar(50) NOT NULL,
+	code varchar(20) NOT NULL,
+	code_desc varchar(50) NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	display_order varchar(2),
+	PRIMARY KEY ("id")
+);
+
+INSERT INTO dswc.qesign.tb_common_code
+	(group_code, group_desc, code, code_desc, display_order, created_dt,  updated_dt)
+VALUES 
+	('PLEDGE_TYPE', '서명 양식', 'HTML', '일반', '1', now(), now()),
+	('PLEDGE_TYPE', '서명 양식', 'VIDEO', '영상', '2', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'STANDBY', '대기', '1', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'PROCEEDING', '진행 중', '2', now(), now()),
+	('PLEDGE_ACCEPT_TYPE', '사용자 서명 상태', 'COMPLETE', '완료', '3', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'STANDBY', '대기', '1', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'PROCEEDING', '진행 중', '2', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'COMPLETE', '완료', '3', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'DELETE', '삭제', '4', now(), now()),
+	('PLEDGE_PROG_TYPE', '서약 업무 진행 상태', 'CANCEL', '취소', '5', now(), now());
+
+
+select * from tb_common_code;
+
+
+select * from tb_code;
+
+
+CREATE TABLE wsc_ktds.esign.tb_form (
+	form_id serial NOT NULL,
+	user_id varchar(75),
+	company_id varchar(75),
+	form_name varchar(100) NOT NULL,
+	form_type varchar(20) DEFAULT 'PERSONAL'::character varying NOT NULL,
+	form_contents text,
+	contents_type varchar(20) DEFAULT 'HTML'::character varying NOT NULL,
+	video_file_path varchar(255),
+	video_file_name varchar(255),
+	use_yn bool DEFAULT true NOT NULL,
+	delete_yn bool DEFAULT false NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY (form_id)
+);
+
+ALTER TABLE wsc_ktds.esign.tb_form
+	ADD FOREIGN KEY (user_id,company_id) 
+	REFERENCES tb_user (user_id,company_id);
+
+
+select * from tb_user;
+
+-- 82022597, 홍길동
+select * from tb_user where username = '홍길동';
+
+select count(*) from tb_user;
+
+
+UPDATE tb_user SET email = 'ktds@kt.com' WHERE user_id = '82022602' AND company_id = '1014';
+
+select * from tb_form;
+
+select * from tb_pledge_item;
+
+
+
+alter table tb_pledge_item rename column item_content to item_contents; 
+
+
+
+select * from tb_user;
+
+
+
+select * from tb_code;
+
+
+select * from tb_group_code;
+
+
+DELETE FROM tb_code WHERE code_id = 'STANDBY';
+DELETE FROM tb_code WHERE code_id = 'ONGOING';
+DELETE FROM tb_code WHERE code_id = 'COMPLETE';
+DELETE FROM tb_code WHERE code_id = 'CANCEL';
+
+
+INSERT INTO tb_code(code_id, group_code_id, code_desc, display_order, created_dt, updated_dt) VALUES ('STANDBY', 'PROGS_STTUS', '대기', '1', '2020-08-28 16:25:35.22007', '2020-08-28 16:25:35.22007');
+INSERT INTO tb_code(code_id, group_code_id, code_desc, display_order, created_dt, updated_dt) VALUES ('ONGOING', 'PROGS_STTUS', '진행 중', '2', '2020-08-28 16:25:35.22007', '2020-08-28 16:25:35.22007');
+INSERT INTO tb_code(code_id, group_code_id, code_desc, display_order, created_dt, updated_dt) VALUES ('COMPLETE', 'PROGS_STTUS', '완료', '3', '2020-08-28 16:25:35.22007', '2020-08-28 16:25:35.22007');
+INSERT INTO tb_code(code_id, group_code_id, code_desc, display_order, created_dt, updated_dt) VALUES ('CANCEL', 'PROGS_STTUS', '회수', '4', '2020-08-28 16:25:35.22007', '2020-08-28 16:25:35.22007');
+
+
+
+
+alter table tb_user_noti rename column noti_direct_type to noti_direction; 
+
+
+
+
+CREATE TABLE wsc_ktds.esign.tb_user_noti (
+	user_noti_id serial NOT NULL,
+	noti_direction varchar(20) NOT NULL,
+	noti_type varchar(20) NOT NULL,
+	company_id varchar(75),
+	user_id varchar(75),
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY (user_noti_id)
+);
+
+ALTER TABLE wsc_ktds.esign.tb_user_noti
+	ADD FOREIGN KEY (company_id,user_id) 
+	REFERENCES tb_user (company_id,user_id);
+
+
+
+
+
+CREATE TABLE wsc_ktds.esign.example_user_pledge (
+	"id" serial NOT NULL,
+	contents_type varchar(20),
+	end_dt timestamp,
+	pledge_name varchar(60) NOT NULL,
+	progs_sttus_type varchar(20),
+	req_dept varchar(20) NOT NULL,
+	req_user varchar(30) NOT NULL,
+	start_dt timestamp,
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY ("id")
+);
+
+
+
+alter table example_user_noti rename column noti_direct_type to noti_direction; 
+
+
+
+
+select * from tb_user where username = '이유평';
+
+select * from tb_user where user_id = '90000003';
+
+select * from tb_user where user_id in  ('90000001', '90000002', '90000003', '90000004', '90000005', '90000006'); 
+
+select * from tb_form;
+
+
+
+ALTER TABLE wsc_ktds.esign.tb_pledge
+	ADD FOREIGN KEY (company_id) 
+	REFERENCES tb_user (company_id);
+
+ALTER TABLE wsc_ktds.esign.tb_pledge
+	ADD FOREIGN KEY (user_id) 
+	REFERENCES null (null);
+
+
+select * from tb_code;
+
+select * from tb_form;
+
+
+
+
+DELETE FROM tb_form WHERE form_id = 3;
+
+
+
+
+CREATE TABLE wsc_ktds.esign.tb_form (
+	form_id serial NOT NULL,
+	contents_type varchar(20) DEFAULT 'HTML'::character varying NOT NULL,
+	form_contents text,
+	form_name varchar(100) NOT NULL,
+	form_type varchar(20) DEFAULT 'PERSONAL'::character varying NOT NULL,
+	video_file_name varchar(255),
+	video_file_path varchar(255),
+	company_id varchar(75),
+	user_id varchar(75),
+	created_dt timestamp,
+	updated_dt timestamp,
+	use_yn char(1) DEFAULT 'Y'::bpchar NOT NULL,
+	delete_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	PRIMARY KEY (form_id)
+);
+
+ALTER TABLE wsc_ktds.esign.tb_form
+	ADD FOREIGN KEY (company_id,user_id) 
+	REFERENCES tb_user (company_id,user_id);
+
+
+select delete_yn from tb_user;
+
+
+alter table tb_pledge_user drop column video_play_yn;
+alter table tb_pledge_user add column video_play_yn char(1) default 'N' not null;
+
+
+
+alter table tb_user drop column delete_yn;
+alter table tb_user add column delete_yn char(1) default 'N' not null;
+
+
+
+alter table tb_pledge drop column delete_yn;
+alter table tb_pledge add column delete_yn char(1) default 'N' not null;
+
+
+
+alter table tb_form drop column use_yn;
+alter table tb_form drop column delete_yn;
+
+alter table tb_form add column use_yn char(1) default 'Y' not null;
+alter table tb_form add column delete_yn char(1) default 'N' not null;
+
+
+
+select * from tb_form;
+
+
+
+
+
+select * from tb_user where username = '이유평';
+
+
+
+
+CREATE TABLE wsc_ktds.esign.tb_form (
+	form_id serial NOT NULL,
+	user_id varchar(75),
+	company_id varchar(75),
+	form_name varchar(100) NOT NULL,
+	form_type varchar(20) DEFAULT 'PERSONAL'::character varying NOT NULL,
+	form_contents text,
+	contents_type varchar(20) DEFAULT 'HTML'::character varying NOT NULL,
+	video_file_path varchar(255),
+	video_file_name varchar(255),
+	use_yn char(1) DEFAULT 'Y'::bpchar NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	delete_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	video_file_url varchar(255),
+	form_desc varchar(255),
+	PRIMARY KEY (form_id)
+);
+
+
+
+
+ALTER TABLE wsc_ktds.esign.tb_form
+	ADD FOREIGN KEY (user_id,company_id) 
+	REFERENCES tb_user (user_id,company_id);
+
+
+select * from tb_form where form_id = 53;
+
+
+
+select * from tb_form;
+
+select * from tb_user where user_id = '90000003';
+select * from tb_user where user_id = '90000001';
+
+
+
+
+    select
+        count(form0_.form_id) as col_0_0_ 
+    from
+        tb_form form0_ 
+    left outer join
+        tb_user user1_ 
+            on form0_.company_id=user1_.company_id 
+            and form0_.user_id=user1_.user_id 
+    where
+        (
+            form0_.form_type='FIXED' 
+            or form0_.form_type='COMMON'
+        ) 
+        and (
+            form0_.form_name like '%박주식%' escape '!' 
+            or user1_.username='박주식' 
+            or user1_.dept_name='박주식'
+        ) 
+        and (
+            form0_.created_dt between '2020-09-02T00:00:00.000+0900' and '2020-09-02T23:59:59.999+0900'
+        );
+
+
+select count(*) from (
+
+	select * from tb_form
+	where form_type = 'FIXED' or form_type = 'COMMON'
+	union all
+	select * from tb_form
+	where form_type = 'PERSONAL'
+
+) as t;
+
+
+select * from tb_form;
+select count(*) from tb_form;
+
+
+select * from tb_form
+where formType = 'FIXED' or forType = 'COMMON'
+union all
+select * from tb_form
+where formType = 'PERSONAL';
+
+
+
+select count(*) from (
+
+	select * from tb_form
+	where contents_type = 'HTML' and (form_type = 'FIXED' or form_type = 'COMMON') and (
+	union all
+	select * from tb_form
+	where form_type = 'PERSONAL'
+
+) as t;
+
+
+    select
+        form0_.form_id as form_id1_9_0_,
+        user1_.company_id as company_1_16_1_,
+        user1_.user_id as user_id2_16_1_,
+        user1_.username as usernam14_16_1_,
+        form0_.created_dt as created_2_9_0_,
+        form0_.updated_dt as updated_3_9_0_,
+        form0_.contents_type as contents4_9_0_,
+        form0_.delete_yn as delete_y5_9_0_,
+        form0_.form_contents as form_con6_9_0_,
+        form0_.form_desc as form_des7_9_0_,
+        form0_.form_name as form_nam8_9_0_,
+        form0_.form_type as form_typ9_9_0_,
+        form0_.use_yn as use_yn10_9_0_,
+        form0_.company_id as company14_9_0_,
+        form0_.user_id as user_id15_9_0_,
+        form0_.video_file_name as video_f11_9_0_,
+        form0_.video_file_path as video_f12_9_0_,
+        form0_.video_file_url as video_f13_9_0_
+
+    from
+        tb_form form0_ 
+    left outer join
+        tb_user user1_ 
+            on form0_.company_id=user1_.company_id 
+            and form0_.user_id=user1_.user_id 
+    where
+        (
+            form0_.form_type in (
+                'COMMON' , 'FIXED'
+            ) 
+            or form0_.form_type='PERSONAL' 
+            and (
+                form0_.company_id, form0_.user_id
+            )=(
+                '2001', '90000003'
+            )
+        ) 
+        and (
+            form0_.created_dt between '2020-09-02T00:00:00.000+0900' and '2020-09-02T23:59:59.999+0900'
+        ) 
+    order by
+        user1_.username desc,
+   		form0_.form_id desc,
+        form0_.created_dt desc;
+
+
+select * from tb_form;
+
+
+
+    select
+        form0_.form_id as form_id1_9_0_,
+        user1_.company_id as company_1_16_1_,
+        user1_.user_id as user_id2_16_1_,
+        form0_.created_dt as created_2_9_0_,
+        form0_.updated_dt as updated_3_9_0_,
+        form0_.contents_type as contents4_9_0_,
+        form0_.delete_yn as delete_y5_9_0_,
+        form0_.form_contents as form_con6_9_0_,
+        form0_.form_desc as form_des7_9_0_,
+        form0_.form_name as form_nam8_9_0_,
+        form0_.form_type as form_typ9_9_0_,
+        form0_.use_yn as use_yn10_9_0_,
+        form0_.company_id as company14_9_0_,
+        form0_.user_id as user_id15_9_0_,
+        form0_.video_file_name as video_f11_9_0_,
+        form0_.video_file_path as video_f12_9_0_,
+        form0_.video_file_url as video_f13_9_0_,
+        user1_.created_dt as created_3_16_1_,
+        user1_.updated_dt as updated_4_16_1_,
+        user1_.delete_yn as delete_y5_16_1_,
+        user1_.dept_id as dept_id6_16_1_,
+        user1_.dept_name as dept_nam7_16_1_,
+        user1_.email as email8_16_1_,
+        user1_.emp_no as emp_no9_16_1_,
+        user1_.phone as phone10_16_1_,
+        user1_.sign_file_name as sign_fi11_16_1_,
+        user1_.sign_file_path as sign_fi12_16_1_,
+        user1_.user_type as user_ty13_16_1_,
+        user1_.username as usernam14_16_1_ 
+    from
+        tb_form form0_ 
+    left outer join
+        tb_user user1_ 
+            on form0_.company_id=user1_.company_id 
+            and form0_.user_id=user1_.user_id 
+    where
+        form0_.form_type='PERSONAL' 
+        and (
+            form0_.form_name like '%%' escape '!' 
+            or user1_.username='' 
+            or user1_.dept_name=''
+        ) 
+        and to_char(form0_.created_dt, 'YYYY-MM-DD')='2020-09-01' 
+        and (
+            form0_.company_id, form0_.user_id
+        )=(
+            '2001', '90000003'
+        ) 
+    order by
+        form0_.created_dt desc;
+
+
+
+
+
+CREATE TABLE wsc_ktds.esign.tb_form (
+	form_id serial NOT NULL,
+	user_id varchar(75),
+	company_id varchar(75),
+	form_name varchar(100) NOT NULL,
+	form_type varchar(20) DEFAULT 'PERSONAL'::character varying NOT NULL,
+	form_contents text,
+	contents_type varchar(20) DEFAULT 'HTML'::character varying NOT NULL,
+	video_file_path varchar(255),
+	video_file_name varchar(255),
+	use_yn char(1) DEFAULT 'Y'::bpchar NOT NULL,
+	created_dt timestamp,
+	updated_dt timestamp,
+	delete_yn char(1) DEFAULT 'N'::bpchar NOT NULL,
+	video_file_url varchar(255),
+	form_desc varchar(255),
+	PRIMARY KEY (form_id)
+);
+
+ALTER TABLE wsc_ktds.esign.tb_form
+	ADD FOREIGN KEY (user_id,company_id) 
+	REFERENCES tb_user (user_id,company_id);
+
+
+
+
+
+
+select * from tb_form where form_id = '53';
+
+
+
+select * from tb_form;
+
+
+select * from tb_form order by form_id desc;
+
+DELETE FROM tb_company WHERE company_id = '123456789';
+
+INSERT INTO wsc_ktds.esign.tb_company
+	(company_id, company_name, display_order, created_dt, updated_dt)
+VALUES 
+	('123456789', 'KT', '', now(), now());
+	
+	
+
+INSERT INTO wsc_ktds.esign.example_company
+	(cmpn_id, cmpn_name, diplay_order, created_dt, updated_dt)
+VALUES 
+	('123456789', 'KT', '', now(), now());
+
+
+
+
+INSERT INTO wsc_ktds.esign.example_user
+	(user_id, dept_id, email, emp_name, emp_no, phone, sign_file_name, sign_file_path, cmpn_id, created_dt, updated_dt)
+VALUES 
+	('90000003', '777888555', 'ktds@kt.com', '도람푸', '123456789', '010-0000-0000', '', '', '123456789',  now(), now() );
+
+
+select * from tb_company;
+
+
+select * from example_user;
+
+
+
+select * from tb_role;
+
+
+
+select * from tb_user order by user_id desc;
+
+select * from tb_user where username = '이유평';
+select * from tb_company;
+
+
+
+select * from tb_role;
+
+
+select * from tb_form;
+
+
+select * from example_user;
+
+
+select * from example_user_pledge;
+
+
+select * from example_user_pledge;
+
+
+
+
+
+
+select * from tb_role;
+
+
+INSERT INTO tb_role( role_type) 
+VALUES ('ROLE_USER'),
+('ROLE_FORM'),
+('ROLE_PLEDGE'),
+ ('ROLE_SYSTEM');
+
+
+INSERT INTO tb_user_role(user_id, company_id, role_id) VALUES
+('80000003', '1014', 2),
+('80000004', '1014', 3),
+('80000001', '1014', 1),
+('80000002', '1014', 1),
+('80000005', '1014', 4),
+('80000006', '1014', 4),
+('90000001', '2001', 4),
+('90000002', '2001', 4),
+('90000003', '2001', 4),
+('90000004', '2001', 4),
+('90000005', '2001', 4),
+('90000006', '2001', 4),
+('90000007', '2001', 4),
+('90000008', '2001', 4),
+('90000009', '2001', 4);
+ 
+
+select * from tb_user where  company_id = '2001';
+
+
+INSERT INTO tb_user_role(user_id, company_id, role_id) VALUES
+('80000003', '1014', 2);
+
+INSERT INTO tb_user_role(user_id, company_id, role_id) VALUES
+('80000003', '1014', 3);
+
+INSERT INTO tb_user_role(user_id, company_id, role_id) VALUES
+('80000003', '1014', 4);
+
+INSERT INTO tb_user_role(user_id, company_id, role_id) VALUES
+('90000003', '2001', 1),
+('90000003', '2001', 2),
+('90000003', '2001', 3);
+
+
+select * from tb_user_role where user_id = '90000003';
+
+
+
+CREATE TABLE tb_user_access_hist (
+	access_hist_id serial NOT NULL,
+	user_id varchar(70) NOT NULL,
+	username varchar(70) NOT NULL,
+	company_id varchar(70) NOT NULL,
+	company_name varchar(70) NOT NULL,
+	dept_id varchar(70),
+	dept_name varchar(70),
+	email varchar(70) NOT NULL,
+	phone varchar(70),
+	access_end_point varchar(255) NOT NULL,
+	last_login_dt timestamp NOT NULL,
+	PRIMARY KEY (access_hist_id)
+);
+
+
+select * from tb_user where company_id not in ('1014');
+
+
+select * from tb_user_access_hist;
+
+select * from tb_user where company_id not in ('1014');
+
+select * from tb_user_role where user_id = '90000004';
+
+
+select * from tb_user where username = '이유평';
+
+select * from tb_user where user_id = '90000003';
+
+select * from tb_user where user_id in  ('90000001', '90000002', '90000003', '90000004', '90000005', '90000006', '90000007', '90000008'); 
+
+select * from tb_form;
+
+
+
+delete from tb_pledge_user;
+delete from tb_pledge_item;
+delete from tb_pledge;
+
+
+select * from tb_pledge;
+select * from tb_pledge_item;
+select * from tb_pledge_user;
+
+
+
+select * from tb_pledge where pledge_id = '10';
+select * from tb_pledge_item where pledge_id = '10';
+select * from tb_pledge_user where pledge_id = '10';
+
+
+
+
+select * from tb_pledge;
+
+
+
+    select
+        distinct pledge0_.pledge_id as pledge_i1_12_,
+        pledge0_.created_by as created_2_12_,
+        pledge0_.created_dt as created_3_12_,
+        pledge0_.updated_by as updated_4_12_,
+        pledge0_.updated_dt as updated_5_12_,
+        pledge0_.delete_yn as delete_y6_12_,
+        pledge0_.end_dt as end_dt7_12_,
+        pledge0_.form_id as form_id13_12_,
+        pledge0_.pledge_contents as pledge_c8_12_,
+        pledge0_.pledge_name as pledge_n9_12_,
+        pledge0_.progs_sttus as progs_s10_12_,
+        pledge0_.start_dt as start_d11_12_,
+        pledge0_.company_id as company14_12_,
+        pledge0_.user_id as user_id15_12_,
+        pledge0_.video_play_sec as video_p12_12_ 
+    from
+        tb_pledge pledge0_ 
+    left outer join
+        tb_user user1_ 
+            on pledge0_.company_id=user1_.company_id 
+            and pledge0_.user_id=user1_.user_id 
+    left outer join
+        tb_pledge_user pledgeuser2_ 
+            on pledge0_.pledge_id=pledgeuser2_.pledge_id 
+    left outer join
+        tb_form form3_ 
+            on pledge0_.form_id=form3_.form_id cross 
+    join
+        tb_user user4_ 
+    where
+        pledgeuser2_.company_id=user4_.company_id 
+        and pledgeuser2_.user_id=user4_.user_id 
+ --        and form3_.contents_type='HTML' 
+        and (
+            pledge0_.pledge_name like '%서약서%' escape '!' 
+            or user4_.username='서약서'
+        ) 
+        and pledge0_.delete_yn='N' 
+        and (
+            pledge0_.start_dt between '2020-09-01T00:00:00.000+0900' and '2020-09-30T23:59:00.000+0900'
+        ) 
+        and (
+            pledge0_.company_id, pledge0_.user_id
+        )=(
+            '2001', '90000003'
+        ) 
+    order by
+        pledge0_.created_dt desc,
+        pledge0_.progs_sttus asc,
+        pledge0_.pledge_id desc limit 10;
+
+
+select * from tb_pledge;
+
+select * from tb_pledge_user where pledge_id = 11;
+
+
+INSERT INTO tb_pledge_user( progs_sttus, pledge_dt, pledge_id, company_id, user_id, created_dt, updated_dt, video_play_yn, created_by, updated_by)
+ VALUES ( 'STANDBY', null, 11, '2001', '90000001', '2020-09-08 11:50:38.301', '2020-09-08 11:50:38.301', 'N', '90000003', '90000003');
+INSERT INTO tb_pledge_user( progs_sttus, pledge_dt, pledge_id, company_id, user_id, created_dt, updated_dt, video_play_yn, created_by, updated_by)
+ VALUES ( 'STANDBY', null, 11, '2001', '90000002', '2020-09-08 11:50:38.301', '2020-09-08 11:50:38.301', 'N', '90000003', '90000003');
+
+select sum(case when progs_sttus = 'COMPLETE'  then 1  else 0 end)  as sss from tb_pledge_user where pledge_id = 11;
+
+
+-- 6
+select * from tb_form;
+
+select * from tb_pledge;
+
+select * from tb_form; 
+
+-- 31
+select * from tb_pledge where form_id = '10';
+
+select * from tb_form  where form_id = '10';
+
+select * from tb_pledge where pledge_id = '21';
+
+select * from tb_pledge_item where pledge_id = '21';
+
+select * from tb_pledge_user where pledge_user_id = '31';
+
+INSERT INTO tb_pledge_user(progs_sttus, pledge_dt, pledge_id, company_id, user_id, created_dt, updated_dt, video_play_yn, created_by, updated_by) 
+VALUES ( 'STANDBY', null, 31, '2001', '90000006', '2020-09-10 13:05:03.188', '2020-09-10 13:05:03.188', 'N', '90000003', '90000003');
+INSERT INTO tb_pledge_user(progs_sttus, pledge_dt, pledge_id, company_id, user_id, created_dt, updated_dt, video_play_yn, created_by, updated_by) 
+VALUES ( 'STANDBY', null, 31, '2001', '90000007', '2020-09-10 13:05:03.188', '2020-09-10 13:05:03.188', 'N', '90000003', '90000003');
+INSERT INTO tb_pledge_user(progs_sttus, pledge_dt, pledge_id, company_id, user_id, created_dt, updated_dt, video_play_yn, created_by, updated_by) 
+VALUES ( 'STANDBY', null, 31, '2001', '90000008', '2020-09-10 13:05:03.188', '2020-09-10 13:05:03.188', 'N', '90000003', '90000003');
+INSERT INTO tb_pledge_user(progs_sttus, pledge_dt, pledge_id, company_id, user_id, created_dt, updated_dt, video_play_yn, created_by, updated_by) 
+VALUES ( 'STANDBY', null, 31, '2001', '9000000', '2020-09-10 13:05:03.188', '2020-09-10 13:05:03.188', 'N', '90000003', '90000003');
+
+
+select * from tb_pledge_user_item;
+
+select * from tb_user_role;
+
+
+select * from tb_form;
+delete from tb_form;
+
+select * from tb_pledge;
+delete from tb_pledge;
+
+select * from tb_pledge_item;
+delete from tb_pledge_item;
+
+select * from tb_pledge_user; 
+delete from tb_pledge_user;
+
+select * from tb_pledge_user_item;
+delete from tb_pledge_user_item;
+
+
+
+select * from tb_pledge where pledge_id = 35;
+
+select * from tb_pledge where pledge_id = 34;
+
+select * from tb_pledge;
+
+
+select * from tb_pledge_item where pledge_id = 35;
+
+select * from tb_pledge_user where pledge_id = 35;
+
+select * from tb_pledge_user_item where pledge_user_item_id = 65;
+
+
+drop table tb_pledge_user_item;
+
+
+CREATE TABLE wsc_ktds.esign.tb_pledge_user_item (
+	pledge_user_item_id serial NOT NULL,
+	display_order varchar(10) NOT NULL,
+	item_contents text NOT NULL,
+	item_name varchar(50) NOT NULL,
+	pledge_user_id int8,
+	created_by varchar(70),
+	updated_by varchar(70),
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY (pledge_user_item_id)
+);
+
+ALTER TABLE wsc_ktds.esign.tb_pledge_user_item
+	ADD FOREIGN KEY (pledge_user_id) 
+	REFERENCES tb_pledge_user (pledge_user_id);
+
+
+
+
+
+
+drop table tb_user_access_hist;
+
+
+CREATE TABLE wsc_ktds.esign.tb_user_access_hist (
+	access_hist_id serial NOT NULL,
+	user_id varchar(70) NOT NULL,
+	username varchar(70) NOT NULL,
+	company_id varchar(70) NOT NULL,
+	company_name varchar(70) NOT NULL,
+	dept_id varchar(70),
+	dept_name varchar(70),
+	email varchar(70) NOT NULL,
+	phone varchar(70),
+	access_end_point varchar(255) NOT NULL,
+	last_access_dt timestamp NOT NULL,
+	PRIMARY KEY (access_hist_id)
+);
+
+
+
+select * from tb_user_noti;
+
+
+select * from tb_pledge_user;
+
+select * from tb_pledge;
+
+INSERT INTO tb_pledge( pledge_name, progs_sttus, end_dt, start_dt, form_id, company_id, user_id, created_dt, updated_dt, delete_yn, created_by, updated_by, pledge_contents, video_play_sec) 
+VALUES 
+( '서약 서약 1112', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1113', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1114', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1115', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1116', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1117', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1118', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1119', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1111', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1112', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1113', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1114', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1115', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1116', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null),
+( '서약 서약 1117', 'ONGOING', '2020-09-10 23:59:00', '2020-09-01 17:00:00', 12, '2001', '90000003', '2020-09-11 17:15:04.141', '2020-09-11 18:11:53.364', 'N', '90000003', 'SYSTEM', '<p>Ooooooooooooooooooooooooooooold</p>', null);
+
+
+
+UPDATE tb_pledge SET progs_sttus = 'ONGOING' WHERE progs_sttus = 'COMPLETE';
+
+
+
+
+
+select * from tb_form order by form_id desc;
+
+INSERT INTO tb_form(contents_type, form_contents, form_name, form_type, video_file_name, video_file_path, company_id, user_id, created_dt, updated_dt, use_yn, delete_yn, video_file_url, form_desc, created_by, updated_by) 
+VALUES
+( 'HTML', '<p>박주식:: 고정4-일반 양식</p>', '일반 양식 #004', 'FIXED', null, null, '2001', '90000001', '2020-09-10 09:07:59.904', '2020-09-10 09:07:59.904', 'Y', 'N', null, '일반 양식 #001', '90000001', '90000001');
+
+
+INSERT INTO tb_form(contents_type, form_contents, form_name, form_type, video_file_name, video_file_path, company_id, user_id, created_dt, updated_dt, use_yn, delete_yn, video_file_url, form_desc, created_by, updated_by) 
+VALUES
+( 'HTML', '<p>고정4-일반 양식</p>', '일반 양식 #004', 'FIXED', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', null, '일반 양식 #001', '90000003', '90000003'),
+( 'HTML', '<p>고정5-일반 양식</p>', '일반 양식 #005',  'FIXED', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', null, '일반 양식 #001', '90000003', '90000003'),
+( 'HTML', '<p>고정6-일반 양식</p>', '일반 양식 #006', 'FIXED', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', null, '일반 양식 #001', '90000003', '90000003'),
+( 'HTML', '<p>고정7-일반 양식</p>', '일반 양식 #007', 'FIXED', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', null, '일반 양식 #001', '90000003', '90000003'),
+( 'HTML', '<p>고정8-일반 양식</p>', '일반 양식 #008', 'FIXED', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', null, '일반 양식 #001', '90000003', '90000003'),
+( 'HTML', '<p>고정9-일반 양식</p>', '일반 양식 #009', 'FIXED', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', null, '일반 양식 #001', '90000003', '90000003'),
+( 'HTML', '<p>고정10-일반 양식</p>', '일반 양식 #010', 'FIXED', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', null, '일반 양식 #001', '90000003', '90000003'),
+( 'HTML', '<p>고정11-일반 양식</p>', '일반 양식 #011', 'FIXED', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', null, '일반 양식 #001', '90000003', '90000003');
+
+
+
+
+select * from tb_user where user_id = '90000001';
+select * from tb_user where user_id = '90000003';
+
+
+select * from tb_form_user;
+
+
+select * from tb_user_role;
+
+
+-- 공통 양식 
+
+INSERT INTO tb_form(contents_type, form_contents, form_name, form_type, video_file_name, video_file_path, company_id, user_id, created_dt, updated_dt, use_yn, delete_yn, video_file_url, form_desc, created_by, updated_by) 
+VALUES
+( 'HTML', '<p>공통  -  일반 양식1</p>', '일반 양식 1', 'COMMON', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', null, '공통  -  일반 양식1', '90000003', '90000003'),
+( 'HTML', '<p>공통  -  일반 양식2</p>', '일반 양식 2',  'COMMON', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', null, '공통  -  일반 양식2', '90000003', '90000003'),
+( 'VIDEO', null, '동영상  양식1 ', 'COMMON', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', 'http://localhost:8080/esign/files/2001_90000003_27_1599900442356_Crossroads.mp4', '공통  -  동영상 양식3', '90000003', '90000003'),
+( 'VIDEO', null,  '동영상 양식 2', 'COMMON', null, null, '2001', '90000003', '2020-09-11 09:07:59.904', '2020-09-11 09:07:59.904', 'Y', 'N', 'http://localhost:8080/esign/files/2001_90000003_27_1599900442356_Crossroads.mp4', '공통  -  동영상 양식4', '90000003', '90000003');
+
+
+select * from tb_form_user order by form_user_id desc;
+
+
+select * from tb_form order by form_id desc;
+
+
+
+select * from tb_code;
+
+
+select * from tb_group_code;
+
+
+select * from tb_group_code where group_code_id = 'PLEDGE_COMMON';
+
+
+
+select * from tb_pledge;
+
+
+select * from tb_pledge_user;
+
+
+
+
+
+    select
+        distinct pledgeuser0_.pledge_user_id as col_0_0_,
+        cast(pledgeuser0_.progs_sttus as varchar) as col_1_0_,
+        case 
+            when pledge1_.progs_sttus='ONGOING' then '진행 중' 
+            when pledge1_.progs_sttus='COMPLETE' then '완료' 
+            else '완료' 
+        end as col_2_0_,
+        pledge1_.pledge_name as col_3_0_,
+        pledge1_.pledge_id as col_4_0_,
+        user2_.dept_name as col_5_0_,
+        user2_.username as col_6_0_,
+        pledge1_.start_dt as col_7_0_,
+        pledge1_.end_dt as col_8_0_,
+        cast(form3_.contents_type as varchar) as col_9_0_,
+        form3_.form_id as col_10_0_,
+        case 
+            when form3_.contents_type='HTML' then '일반' 
+            else '동영상' 
+        end as col_11_0_,
+        pledgeuser0_.created_dt as col_12_0_ 
+    from
+        tb_pledge_user pledgeuser0_ 
+    left outer join
+        tb_pledge pledge1_ 
+            on pledgeuser0_.pledge_id=pledge1_.pledge_id 
+    left outer join
+        tb_user user2_ 
+            on pledge1_.company_id=user2_.company_id 
+            and pledge1_.user_id=user2_.user_id 
+    left outer join
+        tb_form form3_ 
+            on pledge1_.form_id=form3_.form_id 
+    where
+        pledgeuser0_.progs_sttus='ONGOING' 
+        and pledge1_.start_dt<'2020-09-14T09:18:33.178+0900' 
+        and pledge1_.end_dt>'2020-09-14T09:18:33.178+0900' 
+        and (
+            pledge1_.pledge_name like '%%' escape '!' 
+            or user2_.dept_name like '%%' escape '!' 
+            or user2_.username like '%%' escape '!'
+        ) 
+        and (
+            pledge1_.start_dt between '2020-09-01T00:00:00.000+0900' and '2020-10-30T23:59:00.000+0900'
+        ) 
+        and (
+            pledgeuser0_.company_id, pledgeuser0_.user_id
+        )=(
+            '2001', '90000003'
+        ) 
+    order by
+        pledgeuser0_.created_dt desc,
+        pledgeuser0_.pledge_user_id asc;
+
+
+
+
+
+select * from tb_pledge order by pledge_id desc;
+
+
+select * from tb_form;
+
+
+select * from tb_pledge_user where pledge_id = 52 order by pledge_user_id desc;
+
+
+
+select * from esign.tb_pledge_user;
+
+
+
+select * from tb_user_role;
+
+
+
+    alter table tb_user_role add column created_by varchar(75);
+
+    alter table tb_user_role add column updated_by varchar(75);
+
+    alter table tb_user_role add column created_dt timestamp;
+
+    alter table tb_user_role add column updated_dt timestamp;
+
+
+
+
+select * from tb_user_role;
+
+
+select * from tb_role;
+
+
+select * from tb_user;
+
+
+alter table tb_user_role drop column use_yn;
+
+
+alter table tb_user add column position varchar(255);
+
+
+UPDATE tb_user SET position = '우주방위군';
+
+
+select * from tb_form;
+
+--  관리자 권한 중 삭제된 사용자
+INSERT INTO tb_user_role(role_id, company_id, user_id, created_by, created_dt, updated_by, updated_dt)
+ VALUES ( 2, '1014', '82107248', null, '2020-09-16 15:20:24.489303', null, '2020-09-16 15:20:24.489303');
+
+
+
+    select
+        user0_.company_id as company_1_17_,
+        user0_.user_id as user_id2_17_,
+        user0_.created_by as created_3_17_,
+        user0_.created_dt as created_4_17_,
+        user0_.updated_by as updated_5_17_,
+        user0_.updated_dt as updated_6_17_,
+        user0_.delete_yn as delete_y7_17_,
+        
+        user0_.dept_id as dept_id8_17_,
+        user0_.dept_name as dept_nam9_17_,
+        
+        user0_.email as email10_17_,
+        user0_.emp_no as emp_no11_17_,
+        user0_.phone as phone12_17_,
+        user0_.position as positio13_17_,
+        user0_.sign_file_name as sign_fi14_17_,
+        user0_.sign_file_path as sign_fi15_17_,
+        user0_.sign_file_url as sign_fi16_17_,
+        user0_.user_type as user_ty17_17_,
+        user0_.username as usernam18_17_ 
+    from
+        tb_user user0_ 
+    where 
+    user0_.dept_id <> 'NULL' and user0_.dept_name <> 'NULL' and user0_.dept_id <> '' and  user0_.dept_name <> ''
+
+    group by
+    user0_.company_id,
+    user0_.user_id,
+        user0_.dept_id;
+
+
+select * from tb_user;
+
+select distinct(dept_id)  from tb_user where company_id = '1014';
+
+select  *  from tb_user where company_id = '1014' group by dept_id, company_id, user_id;
+
+select * from tb_company;
+
+
+
+
+
+--  권한 추가 삭제 테스
+INSERT INTO tb_user_role(role_id, company_id, user_id, created_by, created_dt, updated_by, updated_dt)
+ VALUES ( 2, '2001', '90000001', null, '2020-09-16 15:20:24.489303', null, '2020-09-16 15:20:24.489303');
+INSERT INTO tb_user_role(role_id, company_id, user_id, created_by, created_dt, updated_by, updated_dt)
+ VALUES ( 3, '2001', '90000001', null, '2020-09-16 15:20:24.489303', null, '2020-09-16 15:20:24.489303');
+
+
+select * from tb_user_role;
+
+
+
+
+CREATE TABLE wsc_ktds.esign.tb_role (
+	role_id serial NOT NULL,
+	role_type varchar(20),
+	created_dt timestamp,
+	updated_dt timestamp,
+	created_by varchar(75),
+	updated_by varchar(75),
+	PRIMARY KEY (role_id)
+);
+
+
+select * from tb_role;
+
+select * from tb_user where user_id= '90000005';
+
+select * from tb_user_role where user_id = '90000005';
+
+
+select * from esign.tb_user;
+
+
+
+drop table esign.tb_user_role;
+
+
+select * from esign.tb_user_role;
+
+
+
+
+CREATE TABLE esign.tb_user_role
+  (
+     company_id VARCHAR(75) NOT NULL,
+     user_id    VARCHAR(75) NOT NULL,
+     role_id    INT8 NOT NULL,
+     created_by varchar(70),
+ 	 updated_by varchar(70),
+	 created_dt timestamp,
+	 updated_dt timestamp,
+     PRIMARY KEY (company_id, user_id, role_id)
+  );
+
+
+
+
+
+select * from esign.tb_role;
+
+select * from esign.tb_user limt100;
+
+
+select * from esign.tb_user_role;
+
+
+CREATE TABLE tb_user_role (
+	user_role_id serial NOT NULL,
+	role_id int8,
+	company_id varchar(75),
+	user_id varchar(75),
+	created_by varchar(70),
+	created_dt timestamp,
+	updated_by varchar(70),
+	updated_dt timestamp,
+	PRIMARY KEY (user_role_id)
+);
+
+-- 1. user, 2. form, 3.pledge, 4.system
+select * from tb_role;
+
+
+select * from esign.tb_user_role where user_id = '90000003';
+
+DELETE FROM esign.tb_user_role WHERE user_role_id = 44;
+
+INSERT INTO esign.tb_user_role(role_id, company_id, user_id, created_by, created_dt, updated_by, updated_dt) 
+VALUES ( 4, '2001', '90000003', null, '2020-09-16 15:20:24.437637', null, '2020-09-16 15:20:24.437637');
+
+
+
+
+UPDATE esign.tb_user_role SET role_id = 3 WHERE user_role_id = 39;
+
+
+select * from approval.tb_code order by group_code_id desc;
+
+
+select * from tb_role;
+
+
+select * from tb_pledge;
+
+
+select * from tb_pledge_user_item;
+
+select * from esign.tb_form where form_type= 'FIXED';
+
+select * from esign.tb_code;
+
+select * from esign.tb_form;
+
+
+
+INSERT INTO esign.tb_form(user_id, company_id, form_name, form_type, form_contents, contents_type, video_file_path, video_file_name, use_yn, created_dt, updated_dt, delete_yn, video_file_url, form_desc, created_by, updated_by) 
+VALUES ( '90000001', '2001', '新 윤리경영 원칙 실천 서약', 'FIXED', '', 'HTML', '', '', 'Y', '2020-09-01 19:47:43.884', '2020-09-01 19:47:43.884', 'N', null, null, 'SYSTEM', 'SYSTEM'),
+( '90000001', '2001', '2020년도 연차촉진 확인서', 'FIXED', '', 'HTML', '', '', 'Y', '2020-09-01 19:47:43.884', '2020-09-01 19:47:43.884', 'N', null, null, 'SYSTEM', 'SYSTEM'),
+( '90000001', '2001', '정보보호/지식 재산권/경쟁사전직금지 서약서', 'FIXED', '', 'HTML', '', '', 'Y', '2020-09-01 19:47:43.884', '2020-09-01 19:47:43.884', 'N', null, null, 'SYSTEM', 'SYSTEM');
+
+
+-- pdf 다운로드  테스트 데이터 
+select * from esign.tb_pledge_user where user_id = '90000003' and pledge_id = '52';
+
+select * from esign.tb_pledge_user where pledge_id = '52';
+
+select * from esign.tb_pledge where pledge_id = '52';
+
+
+-- 161, 162, 163
+select * from esign.tb_form where form_type = 'FIXED';
+
+select * from esign.tb_form where form_id = '3';
+
+select * from esign.tb_form where form_id in (1, 2, 3) order by form_id asc;
+
+
+select * from esign.tb_user where user_id = '90000003';
+
+select * from esign.tb_form where form_id = 64;
+
+
+
+drop table esign.tb_pledge_item;
+
+
+CREATE TABLE esign.tb_pledge_item (
+	pledge_item_id serial NOT NULL,
+	item_name1 varchar(50) NOT NULL,
+	item_name2 varchar(50) NOT NULL,
+	item_name3 varchar(50) NOT NULL,
+	pledge_id int8,
+	created_dt timestamp,
+	updated_dt timestamp,
+	created_by varchar(75),
+	updated_by varchar(75),
+	PRIMARY KEY (pledge_item_id)
+);
+
+ALTER TABLE esign.tb_pledge_item
+	ADD FOREIGN KEY (pledge_id) 
+	REFERENCES esign.tb_pledge (pledge_id);
+
+
+drop table esign.tb_pledge_user_item;
+
+CREATE TABLE esign.tb_pledge_user_item (
+	pledge_user_item_id serial NOT NULL,
+	item_name1 varchar(50) NOT NULL,
+	item_contents1 text NOT NULL,
+	item_name2 varchar(50) NOT NULL,
+	item_contents2 text NOT NULL,
+	item_name3 varchar(50) NOT NULL,
+	item_contents3 text NOT NULL,
+	pledge_user_id int8,
+	created_by varchar(70),
+	updated_by varchar(70),
+	created_dt timestamp,
+	updated_dt timestamp,
+	PRIMARY KEY (pledge_user_item_id)
+);
+
+ALTER TABLE esign.tb_pledge_user_item
+	ADD FOREIGN KEY (pledge_user_id) 
+	REFERENCES esign.tb_pledge_user (pledge_user_id);
+
+
+-- 테이블 변경
+select * from esign.tb_pledge_item;
+
+
+-- 테이블 변경
+select * from esign.tb_pledge_user_item;
+
+
+
+
+select * from esign.tb_pledge  order by pledge_id desc;
+
+
+
+select * from esign.tb_form where form_id = '26';
+
+
+
+
+select *  from esign.tb_pledge_user order by pledge_id desc;
+
+
+
+select * from esign.tb_user_role where user_id = '90000009';
+
+
+
+select * from esign.tb_user_role_hist order by user_role_hist_id desc;
+
+
+
+select * from esign.tb_role;
+
+
+
+INSERT INTO esign.tb_user_role( role_id, company_id, user_id, created_by, created_dt, updated_by, updated_dt) 
+VALUES (3, '2001', '90000009', null, '2020-09-16 15:20:24.472068', null, '2020-09-16 15:20:24.472068');
+
+
+
+select * from tb_code;
+
+
+select * from esign.tb_user where user_id = '90000003';
+
+
+select * from esign.tb_pledge_user order by pledge_user_id desc, pledge_id desc;
+
+
+select * from esign.tb_pledge where pledge_id = 96;
+select * from esign.tb_pledge where pledge_id = 95;
+
+select * from esign.tb_pledge_item where pledge_id = 95;
+
+
+DELETE FROM esign.tb_pledge_user WHERE pledge_user_id = 506;
+
+
+select * from esign.tb_pledge_user_item;
+
+
+INSERT INTO wsc_ktds.esign.tb_pledge_user_item
+	( item_name1, item_contents1, item_name2, item_contents2, item_name3, item_contents3, pledge_user_id)
+VALUES 
+	('축구', '헤트트릭', '야구', '사이클링 히트', '농구', '덩크슛', 510),
+	('축구', '헤트트릭', '야구', '사이클링 히트', '농구', '덩크슛', 509),
+	('축구', '헤트트릭', '야구', '사이클링 히트', '농구', '덩크슛', 508),
+	('축구', '헤트트릭', '야구', '사이클링 히트', '농구', '덩크슛', 507);
+
+
+
+DELETE FROM esign.tb_pledge_user_item WHERE pledge_user_item_id = 1;
+DELETE FROM esign.tb_pledge_user_item WHERE pledge_user_item_id = 2;
+DELETE FROM esign.tb_pledge_user_item WHERE pledge_user_item_id = 3;
+DELETE FROM esign.tb_pledge_user_item WHERE pledge_user_item_id = 4;
+
+
+
+
+alter table esign.tb_pledge_item alter column item_name1 drop not null;
+alter table esign.tb_pledge_item alter column item_name2 drop not null;
+alter table esign.tb_pledge_item alter column item_name3 drop not null;
+
+alter table esign.tb_pledge_user_item alter column item_name1 drop not null;
+alter table esign.tb_pledge_user_item alter column item_name2 drop not null;
+alter table esign.tb_pledge_user_item alter column item_name3 drop not null;
+
+
+alter table esign.tb_pledge_user_item alter column item_contents1 drop not null; 
+alter table esign.tb_pledge_user_item alter column item_contents2 drop not null;
+alter table esign.tb_pledge_user_item alter column item_contents3 drop not null;
+
+
+
+select * from esign.tb_code;
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+alertModel: function(message) {
+	$('.modal').modal("hide");
+	$('.alertMessage').html(message);
+	$('#pledgeDetailModal').modal({backdrop: 'static', keyboard: false});
+},
+
+
+
+// 아이디를 페이지 이름으로 고유하기 달것!  pledgeDetailModal, 
+// static Label
+	
+<!-- ///////// Ajax Success Alert Modal ///////// -->
+<div class="modal fade" id="pledgeDetailModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="pledgeDetailLabel" aria-hidden="true">
+	<div class="modal-dialog modal-default modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="pledgeDetailLabel">알림</h5>
+			</div>
+			<div class="modal-body alertMessage">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default b-close btn-full" data-dismiss="modal">
+					<p>확인</p>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- ///////// Ajax Success Alert Modal ///////// -->
+
+
+
+$('#pledgeDetailModal').on('hidden.bs.modal', function(e) {
+	global.location.href = CTX + 'pledges/list'; // 목록으로 이동
+});

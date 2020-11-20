@@ -1,0 +1,3 @@
+CREATE database ipccp;
+CREATE USER 'ipcapp'@'localhost' IDENTIFIED BY 'New1234!';
+GRANT ALL PRIVILEGES ON  ipccp.* TO 'ipcapp'@'localhost';

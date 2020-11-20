@@ -1,0 +1,17 @@
+Vue.component('home', {
+    props: ['user'],
+
+    mounted: function() {
+       $(document).ready(function(){
+
+            $('#tour-guide').slick({
+                centerMode: true,
+                centerPadding: '60px',
+                slidesToShow: 3,
+                arrows: true
+            });
+
+        });
+
+    }
+});

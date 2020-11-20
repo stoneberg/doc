@@ -1,0 +1,26 @@
+Foo foo = repository.findById(id)
+                    .orElse(null);
+
+
+return repository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(id));
+
+
+Optional<Foo> fooOptional = fooRepository.findById(id);
+if (fooOptional.isPresent()){
+    Foo foo = fooOptional.get();
+   // processing with foo ...
+}
+else{
+   // alternative processing....
+}
+
+
+
+
+Optional<Foo> result = repository.findById(…);
+
+result.ifPresent(it -> …); // do something with the value if present
+result.map(it -> …); // map the value if present
+Foo foo = result.orElse(null); // if you want to continue just like before
+

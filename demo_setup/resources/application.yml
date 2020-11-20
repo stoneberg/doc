@@ -1,0 +1,38 @@
+server:
+  port: 8090
+
+#server:
+#  error:
+#    include-stacktrace: never
+
+#server:
+#  servlet:
+#    encoding:
+#      charset: UTF-8
+#      enabled: true
+#      force: true
+
+logging:
+  config: classpath:logback/logback-spring.xml
+        
+spring:
+  # Default Profile
+  profiles:
+    active: local
+        
+# Actuator
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+#
+#  endpoint:
+#    health:
+#      show-components: always
+#      show-details: always
+#
+#  metrics:
+#    export:
+#      jmx:
+#        enabled: true

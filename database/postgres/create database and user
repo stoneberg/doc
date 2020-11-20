@@ -1,0 +1,81 @@
+create database sample;
+create user test with encrypted password 'new1234@';
+grant all privileges on database sample to test;
+grant all privileges on database <dbname> to <username>
+
+create user dev with encrypted password 'new1234@';
+grant all privileges on database sample to dev;
+
+
+MySQL에서는 테이블의 집합을 데이터베이스(Database)라는 개념으로 사용했었지만, 
+
+PostgreSQL에서는 테이블의 집합으로 데이터베이스(Database)와 스키마(Schema)라는 두 개의 개념을 사용한다.
+
+
+데이터베이스(Database)는 스키마(Schema)의 상위 개념이며, 또한 물리적인 집합인지 논리적인 집합인지의 차이도 가지고 있다.
+
+MySQL에서의 데이터베이스(Database) 개념은 PostgreSQL에서 스키마(Schema) 개념과 유사하다.
+
+
+한가지 유의할 점은 서로 다른 데이터베이스(Database)에 있는 테이블은 서로 JOIN이 될 수 없다는 점이다.
+
+하나의 DB 인스턴스에 의해 처리되지만 데이터베이스(Database)가 다르면 완전히 물리적인 분리가 되어 있다는 것을 의미하기 때문이다.
+반면, 서로 다른 Schema의 테이블 간에는 JOIN이 가능하다.
+또한 한 세션은 무조건 하나의 데이터베이스(Database)에만 접속할 수 있다.
+
+
+grant usage on schema public to <username>;
+grant all on schema public to <username>;
+grant all privileges on database <dbname> to <username>;
+grant all on all tables in schema public to <username>
+grant select on <table> to <username>;
+
+
+
+grant usage on schema test to test;
+grant all on schema test to test;
+grant all privileges on database sample to test;
+grant all on all tables in schema test to test;
+
+
+grant usage on schema test to dev;
+grant all on schema test to dev;
+grant all privileges on database sample to dev;
+grant all on all tables in schema test to dev;
+
+
+grant select on <table> to <username>;
+
+create schema myschema
+
+
+==================
+
+
+CREATE DATABASE cms;
+CREATE SCHEMA test;
+
+ALTER ROLE postgres
+SET search_path = sample;
+
+
+grant usage on schema test to test;
+grant all on schema test to test;
+grant all privileges on database sample to test;
+grant all on all tables in schema test to test;
+
+
+=======================
+
+DROP OWNED BY test;
+DROP USER test;
+
+==========================
+
+
+// 스키마 접두사 없이 쿼리 설정
+
+SHOW search_path;
+
+
+SET search_path TO test, public;

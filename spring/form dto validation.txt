@@ -1,0 +1,44 @@
+@Size: the element size must be between the specified boundaries.
+@NotBlank: the element must not be NULL or empty.
+@NotNull: the element must not be NULL.
+@AssertTrue: the element must be true.
+@AssertFalse: the element must be false.
+@Past: the element must be a date in the past.
+@Future: the element must be a date in the future.
+@Pattern: the element must match a specified regular expression.
+
+@Entity
+public class Pet {
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer id;
+
+    @NotBlank(message="Name must not be empty")
+    @Size(min=2, max=40)
+    @Pattern(regexp="^$|[a-zA-Z ]+$", message="Name must not include special characters.")
+    private String name;
+
+    @NotBlank(message="Kind must not be empty")
+    @Size(min=2, max=30)
+    @Pattern(regexp="^$|[a-zA-Z ]+$", message="Kind must not include special characters.")
+    private String kind;
+
+    @NotBlank(message="Age must not be empty")
+    @Min(0)
+    @Max(40)
+    private Integer age;
+
+    // standard getter and setter methods...
+}
+
+
+# DATA WEB (SpringDataWebProperties)
+spring.data.web.pageable.default-page-size=20 # Default page size.
+spring.data.web.pageable.max-page-size=2000 # Maximum page size to be accepted.
+spring.data.web.pageable.one-indexed-parameters=false # Whether to expose and assume 1-based page number indexes.
+spring.data.web.pageable.page-parameter=page # Page index parameter name.
+spring.data.web.pageable.prefix= # General prefix to be prepended to the page number and page size parameters.
+spring.data.web.pageable.qualifier-delimiter=_ # Delimiter to be used between the qualifier and the actual page number and size properties.
+spring.data.web.pageable.size-parameter=size # Page size parameter name.
+spring.data.web.sort.sort-parameter=sort # Sort parameter name.

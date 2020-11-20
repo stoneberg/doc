@@ -1,0 +1,79 @@
+1	개요
+본 가이드는 Q-Portal 과 기간계 시스템의 단일 인증을 구현하기 위한 방법을 설명합니다. Q- Portal은 쿠키와 URL parameter의 2가지 방식으로 단일 인증을 처리하기 위한 자바 라이브러리를 제공합니다. 
+-	쿠키 방식 : 포털과 기간계 시스템의 도메인이 같은 경우 사용되며 기간계 시스템에서는 제공된 라이브러리를 사용하여 쿠키 내부의 사용자 정보를 추출하고 추출한 정보로 기간계 시스템을 로그인 처리하는 페이지를 생성하고 포털에서 해당 페이지를 호출하여 단일 인증 처리가 됩니다.
+-	URL Parameter 방식 : 포털과 기간계 시스템의 도메인이 다른 경우 사용되며 기간계 시스템에서는 제공된 라이브러리를 사용하여 URL 파라메터에 포함된 사용자 정보를 추출하고 추출한 정보로 기간계 시스템을 로그인 처리하는 페이지를 생성하고 포털에서 사용자 정보가 담긴 URL 파라메터를 붙여서 해당 페이지를 호출하여 단일 인증 처리가 됩니다.
+
+1.1	선행 작업
+
+1.1.1	AES 256 암호화 처리를 위한 policy file 적용
+Q-Portal은 단일 인증 처리를 위해 AES 256 암호화를 사용하고 있으며, 이를 위해 Q-Portal 인증 자바 라이브러리를 배포합니다. 
+다만, Java 기본 배포판이 AES 128 암호화까지만 지원하기 때문에, AES 256 암호화를 처리하기 위해서는, Java Cryptography Extension(JCE) Unlimited Strength Jurisdiction Policy Files를 받아서, JRE가 설치된 곳에 overwrite를 해줘야 합니다. 그렇지 않으면, "Illegal key size" 오류가 발생합니다.
+JCE policy 파일은 아래 경로에서 다운로드 받아서 설치하면 됩니다.
+	java7
+http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html
+	java8
+http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
+1.1.2	라이브러리 및 dependency 정보
+구성된 프로젝트에 참조할 메인 Library 파일은 ' KTDS-QCommonLib-Token.jar'이며 아래의 Library를 참조합니다. 
+※	version은 테스트 진행시 버전이므로 참고사항입니다.
+group: "javax.servlet", name: "javax.servlet-api", version: "3.0"
+group: "log4j", name: "log4j", version: "1.2.17"
+group: "org.slf4j", name: "slf4j-api", version: "1.7.26"
+group: "org.slf4j", name: "jcl-over-slf4j", version: "1.7.2"
+group: "org.slf4j", name: "slf4j-log4j12", version: "1.7.26"
+
+
+2	쿠키 인증
+Q-Portal과 동일한 도메인을 사용하는 기간계 시스템은 쿠키 인증 방식을 이용하여 단일 사용자 인증을 처리합니다.
+
+2.1.1	사용 방법
+암호화 공유키(shredKey) 값은 Q-Portal과 미리 협의된 암호화 공유키를 사용하고, QcommonLib-Token에 포함되어 있는 CookieUtil을 사용하면 쿠키에 있는 값을 얻을 수 있습니다. 사용 방법은 아래의 샘플 코드를 참고합니다.
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.ktds.portal.qcommon.cookie.CookieUtil;
+
+public class CommonTest {
+
+	public void getTokenFromCookie(
+		HttpServletRequest servletRequest, HttpServletResponse servletResponse)
+		throws Exception {
+		
+		// Q Portal과 기 협의된 공유키 값을 사용한다.
+		final String sharedKey = "12345678901234567890123456789012";
+		Map<String, String> map =
+			CookieUtil.getDecryptedToken(
+				servletRequest, servletResponse, sharedKey);
+
+		String userId = CookieUtil.getUserId(map); // 로그인 사번
+		String displayName = CookieUtil.getDisplayName(map); // 사용자 표시명
+		String email = CookieUtil.getEmail(map); // 메일주소
+		String userName = CookieUtil.getUserName(map); // 이름
+		String oldEmpNo = CookieUtil.getOldEmpNo(map); // 회사 사번
+		String deptId = CookieUtil.getDeptId(map); // 부서코드
+		String deptName = CookieUtil.getDeptName(map); // 부서명
+		String companyId = CookieUtil.getCompanyId(map); // 회사코드
+		String companyName = CookieUtil.getCompanyName(map); // 회사명
+		String titleName = CookieUtil.getTitleName(map); // 호칭
+		String expired = CookieUtil.getExpired(map); // 유효시간
+		boolean expiredToken = CookieUtil.isExpiredToken(map); // 만료 여부 반환 
+	}
+}
+
+
+2.1.2	결과 데이터
+구분	이름	사용 예	설명
+userId	로그인 사번	500000034	kt 그룹의 경우 8자리 그룹 사번
+displayName	사용자 표시명	홍길동 (지원팀)	
+email	메일주소	help.hong@kt.com	
+userName	이름	홍길동	
+oldEmpNo	회사 사번	201690034	kt 그룹의 경우 회사 고유 사번 또는 구 사번
+deptId	부서코드	000001	
+deptName	부서명	지원팀	
+companyId	회사코드	1001	
+companyName	회사명	케이티	
+titleName	호칭	과장	
+expired	유효시간	20160308013351	토큰을 사용하는 기간계 시스템에서 이 값을 기준으로 처리가 필요한 경우에 사용함.

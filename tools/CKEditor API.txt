@@ -1,0 +1,5 @@
+### CKEditor API
+
+추가로 덧붙일때
+CKEDITOR.instances[ckeditor_id].insertText(str);
+

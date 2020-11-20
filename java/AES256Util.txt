@@ -1,0 +1,147 @@
+2. AES256Util.java 파일을 작성한다
+
+
+package com.test.api.utils;
+ 
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+ 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+ 
+import org.apache.commons.codec.binary.Base64;
+ 
+/*
+Copyright 회사명 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+ 
+public class AES256Util {
+    private String iv;
+    private Key keySpec;
+    
+    public AES256Util(String key) throws UnsupportedEncodingException {
+        this.iv = key.substring(0, 16);
+        
+        byte[] keyBytes = new byte[16];
+        byte[] b = key.getBytes("UTF-8");
+        int len = b.length;
+        if (len > keyBytes.length) {
+            len = keyBytes.length;
+        }
+        System.arraycopy(b, 0, keyBytes, 0, len);
+        SecretKeySpec keySpec = new SecretKeySpec(keyBytes, "AES");
+        
+        this.keySpec = keySpec;
+    }
+    
+ 
+    // 암호화
+    public String aesEncode(String str) throws java.io.UnsupportedEncodingException, 
+                                                    NoSuchAlgorithmException, 
+                                                    NoSuchPaddingException, 
+                                                    InvalidKeyException, 
+                                                    InvalidAlgorithmParameterException, 
+                                                    IllegalBlockSizeException, 
+                                                    BadPaddingException {
+        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
+ 
+        byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
+        String enStr = new String(Base64.encodeBase64(encrypted));
+ 
+        return enStr;
+    }
+ 
+    //복호화
+    public String aesDecode(String str) throws java.io.UnsupportedEncodingException,
+                                                        NoSuchAlgorithmException,
+                                                        NoSuchPaddingException, 
+                                                        InvalidKeyException, 
+                                                        InvalidAlgorithmParameterException,
+                                                        IllegalBlockSizeException, 
+                                                        BadPaddingException {
+        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes("UTF-8")));
+ 
+        byte[] byteStr = Base64.decodeBase64(str.getBytes());
+ 
+        return new String(c.doFinal(byteStr),"UTF-8");
+    }
+ 
+}
+ 
+Colored by Color Scripter
+cs
+
+
+3. 암호화, 복호화, URL Encoding, Decoding 테스트
+
+
+String key = "aes256-test-key!!";    //key는 16자 이상
+AES256Util aes256 = new AES256Util(key);
+URLCodec codec = new URLCodec();
+ 
+String encLoginidx = codec.encode(aes256.aesEncode(loginidx)); 
+String decLoginidx = aes256.aesDecode(codec.decode(encLoginidx));
+ 
+logger.debug("### loginidx:"+loginidx); //MEM201605090243
+logger.debug("### encLoginidx:"+encLoginidx); //encoding 전 K8OcI65S+lX9MjEKN5EMdQ== / 후 K8OcI65S%2BlX9MjEKN5EMdQ%3D%3D
+logger.debug("### decLoginidx:"+decLoginidx); //MEM201605090243
+ 
+String encLat = codec.encode(aes256.aesEncode(""+Lat)); 
+String decLat = aes256.aesDecode(codec.decode(encLat));
+ 
+logger.debug("### Lat:"+Lat);    //37.71248872643193
+logger.debug("### encLat:"+encLat);    //encoding 전 0FTRN5NS7FrhNsJ4GEI4Hc62CLzuTx89JUX+2Z4PvqE= / 후 0FTRN5NS7FrhNsJ4GEI4Hc62CLzuTx89JUX%2B2Z4PvqE%3D
+logger.debug("### decLat:"+decLat);    //37.71248872643193
+ 
+String encLng = codec.encode(aes256.aesEncode(""+Lng)); 
+String decLng = aes256.aesDecode(codec.decode(encLng));
+ 
+logger.debug("### Lng:"+Lng);    //127.26688771630859
+logger.debug("### encLng:"+encLng);    //encoding 전 OVDlF0whDEW7MxGbJvk84Jajx4ve0tikK4YXj+Z8y6Q= / 후 OVDlF0whDEW7MxGbJvk84Jajx4ve0tikK4YXj%2BZ8y6Q%3D
+logger.debug("### decLng:"+decLng);    //127.26688771630859
+ 
+Colored by Color Scripter
+cs
+
+
+
+
+
+
+그 외에, 암호화된 데이터로 넘겨받았는지 아닌지 체크하기 (암호화 된 값이라면 String형이므로 Double 로 형변환 실패할 것)
+
+
+/**
+ * 암호화 된 좌표인지 확인하기 위한 임시 변수
+ * 실제 복호화 할 필요가 있는지
+ * 복호화 할 필요가 있으면 true 
+ */
+boolean aesAvail = false;
+String aesLat = (String)param.get("neLat");
+try{
+    Double.parseDouble(aesLat);
+    aesAvail = false;
+} catch(Exception e){
+    aesAvail = true;
+}
+
+
+출처: https://aramk.tistory.com/32 [깨순이네]

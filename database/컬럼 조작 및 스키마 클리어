@@ -1,0 +1,200 @@
+alter table tb_pledge_user drop column video_play_yn;
+alter table tb_pledge_user add column video_play_yn char(1) default 'N' not null;
+
+
+
+alter table tb_user drop column delete_yn;
+alter table tb_user add column delete_yn char(1) default 'N' not null;
+
+
+
+alter table tb_pledge drop column delete_yn;
+alter table tb_pledge add column delete_yn char(1) default 'N' not null;
+
+
+
+alter table tb_form drop column use_yn;
+alter table tb_form drop column delete_yn;
+
+alter table tb_form add column use_yn char(1) default 'Y' not null;
+alter table tb_form add column delete_yn char(1) default 'N' not null;
+
+alter table tb_form add column form_desc varchar(255);
+
+alter table esign.tb_pledge_user add column complete_image BYTEA;
+
+
+SELECT * FROM tb_form WHERE form_type IN ('FIXED', 'COMMON') OR (form_type = 'PERSONAL' AND user_id = '90000001');
+
+Arrays.asList(FormType.getTypeFromCode(FormType.FIXED.name()), form.formType.eq(FormType.getTypeFromCode(FormType.COMMON.name())))
+
+alter table tb_pledge add column prog_sttus varchar(20) default 'STANDBY' not null;
+
+alter table tb_pledge drop column progs_sttus_type;
+
+alter table ex_user add contraint uk_ex_user_emp_no unique (emp_no);
+
+alter table table_name rename column column_name to new_column_name; 
+
+alter table table_name alter column column_name set default value;
+
+alter table tb_form alter column use_yn set default true;
+
+alter table tb_user_role drop column use_yn;
+
+// drop default
+alter table approval.tb_approval alter column progs_sttus drop default;
+// set default
+alter table approval.tb_approval alter column progs_sttus set default 'STANDBY';
+
+alter table approval.tb_link_system drop column system_url;
+
+
+// not null 제약 조건 제거
+alter table tb_pledge drop column video_play_sec;
+alter table tb_pledge add column video_play_sec integer;
+
+alter table tb_pledge add column video_play_sec integer default 60;
+
+alter table tb_pledge drop column pledge_contents;
+alter table tb_pledge add column pledge_contents text;
+
+alter table approval.tb_approver drop column comments;
+alter table approval.tb_approver add column comments varchar(300);
+
+
+// column length 변경
+alter table tb_pledge alter column pledge_name type varchar(100);
+
+// add not null
+alter table approval.tb_link_system alter column system_url set not null;
+
+// drop not null
+alter table esign.tb_pledge_item alter column item_name1 drop not null;
+alter table esign.tb_pledge_item alter column item_name2 drop not null;
+alter table esign.tb_pledge_item alter column item_name3 drop not null;
+
+alter table esign.tb_pledge_user_item alter column item_name1 drop not null;
+alter table esign.tb_pledge_user_item alter column item_name2 drop not null;
+alter table esign.tb_pledge_user_item alter column item_name3 drop not null;
+
+
+alter table esign.tb_pledge_user_item alter column item_contents1 drop not null; 
+alter table esign.tb_pledge_user_item alter column item_contents2 drop not null;
+alter table esign.tb_pledge_user_item alter column item_contents3 drop not null;
+
+alter table approval.tb_delegate alter column dismiss_dt drop not null;
+alter table approval.tb_delegate alter column empower_dt drop not null;
+
+
+drop schema qesign cascade;
+
+create schema qesign;
+
+alter role wscadmin in database wsc_ktds set search_path to esign;
+
+grant connect on database dswc to devops;
+
+grant usage on schema qesign to devops;
+
+grant all privileges on all tables in schema qesign to devops;
+
+grant all privileges on all sequences in schema qesign to devops;
+
+
+alter table tb_user add column position varchar(255);
+
+alter table approval.tb_user drop column delegate_start_dt;
+alter table approval.tb_user drop column delegate_end_dt;
+
+
+alter table approval.tb_user add column delegate_start_dt date;
+alter table approval.tb_user add column delegate_end_dt date;
+
+alter table esign.tb_pledge_user add column user_pledge_image text;
+
+
+/////////////////////////////////////////////////////////////////////////
+
+\c wsc_ktds;
+
+
+drop schema esign cascade;
+
+create schema esign;
+
+alter role wscadmin in database wsc_ktds set search_path to esign;
+
+grant connect on database wsc_ktds to wscadmin;
+
+grant usage on schema esign to wscadmin;
+
+grant all privileges on all tables in schema esign to wscadmin;
+
+grant all privileges on all sequences in schema esign to wscadmin;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

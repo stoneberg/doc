@@ -1,0 +1,34 @@
+thymleaf
+
+
+<div class="wrap admin-wrap" th:if="${#authorization.expression('hasAnyRole(''ROLE_SYSTEM'', ''ROLE_FORM'', ''ROLE_PLEDGE'')')}">
+
+
+
+
+<button th:if="${#authorization.expression('hasRole(''ROLE_FORM'')')
+	and #authorization.expression('hasRole(''ROLE_PLEDGE'')')
+	and #authorization.expression('!hasRole(''ROLE_SYSTEM'')')}"
+		type="button" id="form-pledge-admin" class="btn-admin">
+	<span class="icon-area"></span>
+	<a th:href="@{/admin/form-mgmts}" style="text-decoration: none;" th:utext="#{client.header-title5}">관리자</a>
+</button>
+<!--  form admin -->
+<button th:if="${#authorization.expression('hasRole(''ROLE_FORM'')')
+	and #authorization.expression('!hasRole(''ROLE_PLEDGE'')')
+	and #authorization.expression('!hasRole(''ROLE_SYSTEM'')')}"
+		type="button" id="form-admin" class="btn-admin">
+	<span class="icon-area"></span>
+	<a th:href="@{/admin/form-mgmts}" style="text-decoration: none;" th:utext="#{client.header-title5}">관리자</a>
+</button>
+<!--  pledge admin -->
+<button th:if="${#authorization.expression('!hasRole(''ROLE_FORM'')')
+	and #authorization.expression('hasRole(''ROLE_PLEDGE'')')
+	and #authorization.expression('!hasRole(''ROLE_SYSTEM'')')}"
+		type="button" id="pledge-admin" class="btn-admin">
+	<span class="icon-area"></span>
+	<a th:href="@{/admin/pledge-mgmts}" style="text-decoration: none;" th:utext="#{client.header-title5}">관리자</a>
+</button>
+
+
+

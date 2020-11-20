@@ -1,0 +1,27 @@
+The object Type
+
+string
+boolean
+number
+bigint
+symbol
+null
+undefined
+
+// Rest Parameter
+function Greet(greeting: string, ...names: string[]) {
+    return greeting + " " + names.join(", ") + "!";
+}
+
+Greet("Hello", "Steve", "Bill"); // returns "Hello Steve, Bill!"
+
+Greet("Hello");// returns "Hello !"
+
+
+Cannot redeclare block-scoped variable 
+export {};​
+
+
+tsc test.ts --out output-script.js
+tsc test.ts -w
+tsc -help

@@ -1,0 +1,69 @@
+
+리다이렉트 URL
+http://localhost:8080/login/oauth2/code/google
+
+
+클라이언트 아이디
+743600080583-1peai6jc1pt0rslh7fl7lq3mjt5dtcg0.apps.googleusercontent.com
+
+
+클라이언트 보안 비밀번호
+-oDxSo5ljCm6vfOItUU8Kwpc
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 743600080583-1peai6jc1pt0rslh7fl7lq3mjt5dtcg0.apps.googleusercontent.com
+            client-secret: -oDxSo5ljCm6vfOItUU8Kwpc
+            scope: profile,email
+
+
+
+spring.security.oauth2.client.registration.google.client-id=743600080583-1peai6jc1pt0rslh7fl7lq3mjt5dtcg0.apps.googleusercontent.com
+spring.security.oauth2.client.registration.google.client-secret=-oDxSo5ljCm6vfOItUU8Kwpc
+spring.security.oauth2.client.registration.google.scope=profile,email
+
+
+=====================================================
+
+Naver Social Login
+
+리다이렉트 URL : http://localhost:8080/login/oauth2/code/naver
+
+ClientID: xMAYo5x8Tcqkd5yol7Pe
+
+ClientSecret: 4wc3gxliwf
+
+
+==========================================================
+
+KAKAO
+
+리다이렉트 URL : http://localhost:8080/login/oauth2/code/kakao
+
+
+RestAPI(ClinetId) 키: b49dee3e0641d93f2a3b4905958034f3
+
+
+ClientSecret: ojjTO3GoQUCUrqSovX5q4IdPJq7fojum5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

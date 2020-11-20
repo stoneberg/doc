@@ -1,0 +1,108 @@
+
+create database wsc_ktds;
+​
+create user wscadmin password 'Wscadmin1234!' superuser;
+​
+생성된 DB 접속 후 
+\c wsc_ktds;
+
+CREATE schema esign
+ALTER ROLE wscadmin ​in DATABASE wsc_ktds ​set search_path to esign;
+​
+GRANT CONNECT ON DATABASE wsc_ktds TO wscadmin​;
+GRANT USAGE ON SCHEMA esign TO wscadmin​;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA esign TO wscadmin​;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA esign TO wscadmin​;
+
+
+============================================================================
+
+docker postgresql 사용 시 database 설정
+
+test_db.sql
+
+
+drop database testdb;
+
+drop user testuser;
+
+create user testuser with password 'new1234@'
+
+create database testdb with template=template0 owner=testuser
+
+\connect testdb
+
+alter default privileges grant all on tables to testuser
+
+alter default privileges grant all on sequences to testuser
+
+
+create table et_users (
+	user_id integer primary key not null,
+	first_name varchar(20) not null,
+	last_name varchar(20) not null,
+	email varchar(30) not null,
+	pasword text not null
+);
+
+create et_categories(
+	category_id integer primary key not null,
+	user_id integer not null,
+	title varchar(20) not null,
+	description varchar(50) not null
+)
+
+alter table et_categories add constraint cat_users_fk
+foreign key (user_id) reference et_users(user_id);
+
+create table et_transactions(
+	transaction_id integer primary key not null,
+	category_id integer not null,
+	user_id integer not null,
+	note varchar(50) not null,
+	transaction_date bigint not null
+)
+
+alter table et_transactions add constraint trans_cat_fk
+foreign key (category_id) reference et_categories(category_id)
+alter table et_transactions add constraint trans_users_fk
+foreign key (user_id) reference et_users(user_id);
+
+create sequences et_users_seq increment 1 start 1;
+create sequences et_categories_seq increment 1 start 1;
+create sequences et_transactions increment 1 start 1000;
+
+
+=============================================================================
+
+
+######### 통합승인 스키마 생성
+​
+
+​
+생성된 DB 접속 후 
+\c wsc_ktds;
+
+CREATE schema approval
+​
+GRANT CONNECT ON DATABASE wsc_ktds TO wscadmin​;
+GRANT USAGE ON SCHEMA approval TO wscadmin​;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA approval TO wscadmin​;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA approval TO wscadmin​;
+
+
+============================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+

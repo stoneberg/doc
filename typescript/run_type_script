@@ -1,0 +1,7 @@
+run typescript
+
+npm install typescript -g
+
+tsc test.ts
+
+node test.js

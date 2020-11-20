@@ -1,0 +1,51 @@
+       <!-- local libs -->
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom</artifactId>
+            <version>1.1.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/jdom-1.1.3.jar</systemPath>
+            <type>jar</type>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>nets.ldap</groupId>
+            <artifactId>ADUtilSSL</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/sha1pwdssl.jar</systemPath>
+            <type>jar</type>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>smartframe.portal.idp.client</groupId>
+            <artifactId>smartframe</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/smartframe.portal.idp.client.jar</systemPath>
+            <type>jar</type>
+            <optional>true</optional>
+        </dependency>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

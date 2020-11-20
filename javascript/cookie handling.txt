@@ -1,0 +1,68 @@
+
+쿠키 핸들링
+
+function setCookie(name, value, expiredays) {
+	var today = new Date();
+	today.setDate(today.getDate() + expiredays);
+	document.cookie = name + "=" + escape(value) +";domain=.example.com;path=/;expiredays=" + today.toGMTString();
+}​
+
+
+function setCookie(name, value, expiredays) {
+	var today = new Date();
+	today.setDate(today.getDate() + expiredays);
+	document.cookie = name + "=" + escape(value) +";expiredays=" + today.toGMTString();
+}​
+
+
+
+(function setCookie(name, value, expiredays) {
+	var today = new Date();
+	today.setDate(today.getDate() + expiredays);
+	document.cookie = name + "=" + escape(value) +";path=/;expiredays=" + today.toGMTString();
+}​)("SSO_Token", "abcdefghrjklmn", 1);
+
+
+
+ setCookie('CookieName', CookieValue', 365); //365일 후 만료
+var str = getCookie('CookieName');
+
+ 
+
+function setCookie(name, value, days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    var expires = "; expires=" + date.toGMTString();    
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+(function setCookie(name, value, days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    var expires = "; expires=" + date.toGMTString();    
+    document.cookie = name + "=" + value + expires + "; path=/";
+})('SSO_Token', 'abcdefghrjklmn', 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

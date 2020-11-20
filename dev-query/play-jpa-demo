@@ -1,0 +1,190 @@
+select * from jojo_academy;
+delete from jojo_academy;
+	
+select * from jojo_teacher;	
+delete from jojo_teacher;
+	
+select * from jojo_subject;	
+delete from jojo_subject;	
+	
+	
+INSERT INTO jojo_subject("name", academy_id, teacher_id) 
+VALUES ( '자바 14 개발 ::: 0', 1, 1);
+	
+    select
+        academy0_.id as id1_0_0_,
+        subjects1_.id as id1_1_1_,
+        academy0_.name as name2_0_0_,
+        subjects1_.academy_id as academy_3_1_1_,
+        subjects1_.name as name2_1_1_,
+        subjects1_.teacher_id as teacher_4_1_1_,
+        subjects1_.academy_id as academy_3_1_0__,
+        subjects1_.id as id1_1_0__
+    from
+        jojo_academy academy0_ 
+    left outer join
+        jojo_subject subjects1_ 
+            on academy0_.id=subjects1_.academy_id ;	
+	
+	    select
+        academy0_.id as id1_0_0_,
+        subjects1_.id as id1_1_1_,
+        teacher2_.id as id1_2_2_,
+        academy0_.name as name2_0_0_,
+        subjects1_.academy_id as academy_3_1_1_,
+        subjects1_.name as name2_1_1_,
+        subjects1_.teacher_id as teacher_4_1_1_,
+        subjects1_.academy_id as academy_3_1_0__,
+        subjects1_.id as id1_1_0__,
+        teacher2_.name as name2_2_2_ 
+    from
+        jojo_academy academy0_ 
+    left outer join
+        jojo_subject subjects1_ 
+            on academy0_.id=subjects1_.academy_id 
+    left outer join
+        jojo_teacher teacher2_ 
+            on subjects1_.teacher_id=teacher2_.id;
+	
+	
+	
+	
+	select * from blog_board;
+	
+	select * from blog_board_replay;
+	
+	
+	
+	
+CREATE TABLE demo.play.blog_board (
+	"id" serial NOT NULL,
+	"content" text,
+	"count" int4,
+	create_date timestamp,
+	title varchar(100) NOT NULL,
+	user_id int4,
+	PRIMARY KEY ("id")
+);
+
+ALTER TABLE demo.play.blog_board
+	ADD FOREIGN KEY (user_id) 
+	REFERENCES blog_users ("id");
+
+
+select * from demo_board;
+
+	
+select * from jojo_academy;
+select * from jojo_subject;
+	
+	
+select a.* from jojo_academy a inner join jojo_subject b
+on b.academy_id = a."id";
+
+select distinct a.* from jojo_academy a inner join jojo_subject b
+on b.academy_id = a."id";
+	
+    select
+        distinct academy0_.id as id1_0_0_,
+        academy0_.name as name2_0_0_
+    from
+        jojo_academy academy0_ 
+    left outer join
+        jojo_subject subjects1_ 
+            on academy0_.id=subjects1_.academy_id;	
+	
+	
+	
+select * from jojo_book;
+	
+	
+	
+   select
+        count(book0_.id) as col_0_0_ 
+    from
+        jojo_book book0_ 
+    where
+        book0_.book_no=1;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

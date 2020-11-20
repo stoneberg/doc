@@ -1,0 +1,78 @@
+@Column Defintion
+​
+https://huongdanjava.com/learn-about-column-annotation-in-jpa.html​
+​
+@Column(name = "name", columnDefinition = "VARCHAR(4) NOT NULL")
+private String className;​​
+
+@Column(name = "name", insertable = false)
+private String className;​
+​
+@Column(columnDefinition = "varchar(255) default 'John Snow'")
+private String name;
+​
+@Column(columnDefinition = "integer default 25")
+private Integer age;
+​
+@Column(columnDefinition = "boolean default false")
+private Boolean locked;​
+​
+@Column(name = "email", nullable = false, unique = true)
+private String email;​
+​
+@Column(nullable = false, columnDefinition = "boolean default true")
+private boolean status
+​
+@Column(nullable = false, columnDefinition = "float default 0")
+private float rating;
+​
+@CreationTimestamp
+@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+private LocalDateTime regDate;
+​
+@CreationTimestamp
+@Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+protected LocalDateTime updateDate;
+​
+@Column(nullable = false, columnDefinition = "integer ​default 0")
+private int reviewTotal;​
+​
+@ColumnDefault("0")
+private int count;
+​
+@ColumnDefault("user")
+private String role;
+​
+@Column(columnDefinition="TEXT")
+ private String text;​
+​
+@Lob
+private String description;​
+​
+​
+​
+insertable
+
+This attribute is used to allow the use of this column in an INSERT statement. The default value of this attribute is true. If you define this attribute false as follows:​
+
+​
+length
+This property defines the length of the column value. It will override if you have defined the length of the column in the columnDefinition property.
+
+nullable
+This property defines whether this column is null or not. It will also be overridden if you defined it in the columnDefinition property.
+precision
+This attribute defines the value of the column with the DECIMAL value. It will also be overridden if you defined it in the columnDefinition property.
+scale
+This attribute defines the scalability of the column with the DECIMAL value type. It will also be overridden if you defined it in the columnDefinition property.
+An example with precision and scale attributes is:
+1
+salaryDECIMAL(5,2);
+where 5 is precision and 2 is scale. If the value of this column is as follows: 123.45, can round two decimal places.
+
+table
+Defines the table which this column belongs to.
+unique
+Defines the uniqueness of the value that this column contains. We can be used it to define the primary key column in a table.
+updatable
+Like the insertable attribute, this attribute defines whether to use this column in an UPDATE statement. By default, the value of this attribute is true.​
