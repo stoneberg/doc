@@ -1,0 +1,10 @@
+
+
+1L
+Puts serialVersionUID=1L; 
+It should be sufficient in most cases.
+
+
+private static final long serialVersionUID = 1L;
+
+
