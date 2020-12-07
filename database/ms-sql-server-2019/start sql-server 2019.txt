@@ -1,0 +1,32 @@
+#### SQL Server 2019
+
+Server=localhost;Database=master;Trusted_Connection=True;
+
+* 사용자 PC 설치된 경우 Windows 인증
+
+* 원격 SQL-Server 접속시에는 SQL-Server 인증
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
