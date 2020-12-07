@@ -1,0 +1,86 @@
+
+# Cake Shop App
+# React & Redux
+
+npm install -g yarn
+
+npx create-react-app react-redux-app
+
+npm i redux react-redux
+
+# middleware
+npm i redux-logger
+
+npm install --save redux-devtools-extension
+
+npm i axios redux-thunk
+
+npm i uuid
+// rerun react app
+import { v4 as uuidv4 } from 'uuid';
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

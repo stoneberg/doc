@@ -97,6 +97,14 @@
             <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
         </dependency>
+		
+	    <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+            <scope>compile</scope>
+        </dependency>	
+		
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
@@ -123,12 +131,9 @@
             <version>0.11.2</version>
             <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
-            <version>${mapstruct.version}</version>
-            <scope>compile</scope>
-        </dependency>
+		
+
+		
         <!-- https://mvnrepository.com/artifact/org.mindrot/jbcrypt -->
         <dependency>
             <groupId>org.mindrot</groupId>

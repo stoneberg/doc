@@ -26,7 +26,7 @@ create database wsc_ktds;
 ​create user wscadmin password 'Wscadmin1234!' superuser;
 ​\c wsc_ktds;
 CREATE schema esign;
-​alter role wscadmin in database wsc_ktds set search_path to esign;
+​#alter role wscadmin in database wsc_ktds set search_path to esign;
 grant connect on database wsc_ktds to wscadmin;
 GRANT USAGE ON SCHEMA esign TO wscadmin​;
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA esign TO wscadmin​;

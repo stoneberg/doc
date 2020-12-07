@@ -1,0 +1,70 @@
+#toast
+react-toastify
+
+#Modal
+react-modal
+
+#Tooltip
+tippy.js-react  npm i '@tippy.js/react'
+
+#Spinner
+yarn add react-spinners
+yarn add @emotion/core
+https://github.com/davidhu2000/react-spinners
+https://www.npmjs.com/package/react-loading-overlay
+
+import LoadingOverlay from 'react-loading-overlay'
+import BounceLoader from 'react-spinners/BounceLoader'
+ 
+export default function MyLoader({ active, children }) {
+  return (
+    <LoadingOverlay
+      active={active}
+      spinner={<BounceLoader />}
+    >
+      {children}
+    </LoadingOverlay>
+  )
+}
+
+<MyLoader active={true} />
+
+# react-modalify
+https://www.npmjs.com/package/react-modalify
+
+npm i react-modalify
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
