@@ -1,0 +1,60 @@
+select * from cesco.dbo.Person;
+
+
+select * from cesco.dbo.Product;
+
+
+use cesco;
+
+
+select * from dbo.Product;
+
+
+
+select * from dbo.Person;
+
+
+CREATE TABLE emp
+(EMPNO NUMERIC(4) NOT NULL,
+ENAME VARCHAR(10),
+JOB VARCHAR(9),
+MGR NUMERIC(4),
+HIREDATE DATETIME,
+SAL NUMERIC(7, 2),
+COMM NUMERIC(7, 2),
+DEPTNO NUMERIC(2));
+
+
+
+CREATE TABLE cesco.dbo.emp (
+	EMPNO numeric(4) NOT NULL,
+	ENAME varchar(10),
+	JOB varchar(9),
+	MGR numeric(4),
+	HIREDATE datetime,
+	SAL numeric(7,2),
+	COMM numeric(7,2),
+	DEPTNO numeric(2)
+);
+
+
+CREATE TABLE cesco.dbo.dept
+(DEPTNO NUMERIC(2),
+DNAME VARCHAR(14),
+LOC VARCHAR(13) )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
