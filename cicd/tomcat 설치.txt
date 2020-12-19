@@ -1,0 +1,9 @@
+$ sudo groupadd tomcat
+$ sudo useradd -s /bin/nologin -g tomcat -d /opt/tomcat tomcat
+
+해당 방법으로 시스템에 로그인할 수 없는 'tomcat' 그룹에 속한 'tomcat' 사용자를 작성합니다.
+계정의 홈 경로는 /opt/tomcat이며 Apache Tomcat이 위치하게 될 경로입니다.​
+​
+
+root 계정으로 Apache Tomcat을 바로 실행하는 것은 보안상 피해야 한다. 
+설치에 앞서 Tomcat을 관리하기 위한 tomcat이라는 이름의 그룹 및 사용자 계정을 새로 생성한다.
