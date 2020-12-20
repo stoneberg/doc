@@ -1,5 +1,4 @@
-$ sudo groupadd tomcat
-$ sudo useradd -s /bin/nologin -g tomcat -d /opt/tomcat tomcat
+$ sudo groupadd tomcat sudo useradd -s /bin/nologin -g tomcat -d /opt/tomcat tomcat
 
 해당 방법으로 시스템에 로그인할 수 없는 'tomcat' 그룹에 속한 'tomcat' 사용자를 작성합니다.
 계정의 홈 경로는 /opt/tomcat이며 Apache Tomcat이 위치하게 될 경로입니다.​
@@ -7,3 +6,160 @@ $ sudo useradd -s /bin/nologin -g tomcat -d /opt/tomcat tomcat
 
 root 계정으로 Apache Tomcat을 바로 실행하는 것은 보안상 피해야 한다. 
 설치에 앞서 Tomcat을 관리하기 위한 tomcat이라는 이름의 그룹 및 사용자 계정을 새로 생성한다.
+
+
+
+-------------------------------------------------------------------------------
+@ 멀티 톰캣 설치
+
+$ su - root
+
+$ systemctl status tomcat.service
+
+$ tar -xvzf apache-tomcat-9.0.30.tar.gz
+
+// 로그인 권한 없는 사용자와 그룹 생성
+$ useradd -m -d /opt/tomcat1/ -U -s /bin/false tomcat1
+
+$ cat /etc/passwd | grep tomcat
+
+$ mv apache-tomcat-9-0.30/* /opt/tomcat1/
+
+$ cd /opt/tomcat1
+
+$ ls -ltr
+
+$ cd ..
+
+$ chown -R tomcat1:tomcat1 /opt/tomcat1/*
+
+$ cd /etc/systemd/systemctl
+
+$ ll
+
+$ cp tomcat.service tomcat1.service
+
+$ vim tomcat1.service
+
+[Unit]
+Description=Tomcat 9
+After=network.target
+
+[Service]
+Type=forking
+User=tomcat
+Group=tomcat
+
+Environment="JAVA_HOME=/usr/lib/jvm/jre"
+Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom"
+Environment="CATALINA_BASE=/opt/tomcat"
+Environment="CATALINA_HOME=/opt/tomcat"
+Environment="CATALINA_PID=/opt/tomcat/temp/tomcat.pid"
+Environment="CATALINA_OPTS=-Xms512M -Xmx1024 -server -XX:+UseParallelGC"
+
+ExecStart=/opt/tomcat/bin/startup.sh
+ExecStop=/opt/tomcat/bin/shutdonw.sh
+
+[Install]
+WantedBy=multi-user.target
+
+--------------------------------------
+[Unit]
+Description=Tomcat Server
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=tomcat
+Group=tomcat
+
+Environment=JAVA_HOME=/usr/lib/jvm/jre
+Environment='JAVA_OPTS=-Djava.awt.headless=true'
+Environment=CATALINA_HOME=/usr/local/tomcat
+Environment=CATALINA_BASE=/usr/local/tomcat
+Environment=CATALINA_PID=/usr/local/tomcat/temp/tomcat.pid
+Environment='CATALINA_OPTS=-Xms512M -Xmx1024M'
+ExecStart=/usr/local/tomcat/bin/catalina.sh start
+ExecStop=/usr/local/tomcat/bin/catalina.sh stop
+
+[Install]
+WantedBy=multi-user.target
+
+----------------------------------------------
+
+$ cd /opt/tomcat/conf
+$ vim server.xml
+
+<Server port="8006" shutdown="SHUTDOWN">
+
+<Connector port="8180" protocal="HTTP/1.1"
+		 connectionTimeout="20000"
+		 redirectPort="8443" />
+
+
+
+============================================
+
+$ cd /opt/tomcat1/conf
+$ vim server.xml
+
+<Server port="8005" shutdown="SHUTDOWN">
+
+<Connector port="8181" protocal="HTTP/1.1"
+		 connectionTimeout="20000"
+		 redirectPort="8443" />
+		 
+$ systemctl enable tomcat1.service
+$ systemctl start tomcat1.service	 
+$ systemctl status tomcat1.service	
+$ systemctl restart tomcat1.service		 
+
+
+sudo firewall-cmd --permanent --zone=public --add-port=8180/tcp
+sudo firewall-cmd --permanent --zone=public --add-port=8181/tcp
+sudo firewall-cmd --reload
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
