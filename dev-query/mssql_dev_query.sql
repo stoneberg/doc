@@ -20,27 +20,27 @@ CREATE TABLE sales.codes (
 INSERT INTO storedb.sales.codes
 	(code, code_nm, code_desc)
 VALUES 
-	('VC', 'VIRTUAL_COIN', '°¡»óÈ­Æó');
+	('VC', 'VIRTUAL_COIN', 'ê°€ìƒí™”í');
 
 INSERT INTO storedb.sales.codes
 	(code, code_nm, code_desc, code_group)
 VALUES 
-	('BTC', 'BIT_COIN', 'ºñÆ®ÄÚÀÎ', 'VC');
+	('BTC', 'BIT_COIN', 'ë¹„íŠ¸ì½”ì¸', 'VC');
 	
 INSERT INTO storedb.sales.codes
 	(code, code_nm, code_desc, code_group)
 VALUES 
-	('ETH', 'ETHEREUM', 'ÀÌ´õ¸®¿ò', 'VC');
+	('ETH', 'ETHEREUM', 'ì´ë”ë¦¬ì›€', 'VC');
 
 INSERT INTO storedb.sales.codes
 	(code, code_nm, code_desc, code_group)
 VALUES 
-	('LTC', 'LITE_COIN', '¶óÀÌÆ®ÄÚÀÎ', 'VC');
+	('LTC', 'LITE_COIN', 'ë¼ì´íŠ¸ì½”ì¸', 'VC');
 
 INSERT INTO storedb.sales.codes
 	(code, code_nm, code_desc, code_group)
 VALUES 
-	('XRP', 'RIPPLE', '¸®ÇÃ', 'VC');
+	('XRP', 'RIPPLE', 'ë¦¬í”Œ', 'VC');
 
 	
 select * from sales.codes;

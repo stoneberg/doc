@@ -1,0 +1,129 @@
+public interface CodeEnum extends Serializable{
+   public String getCode();
+   public Enum getEnumByCode(String code);
+}
+
+
+public class CodeEnumTypeHandler<E extends Enum<E> & CodeEnum> extends BaseTypeHandler<E> {
+
+   private Class<E> type;
+
+   public CodeEnumTypeHandler(Class<E> type) {
+      if (type == null) throw new IllegalArgumentException("Type argument cannot be null");
+      this.type = type;
+   }
+
+   @Override
+   public void setNonNullParameter(PreparedStatement ps, int i, E parameter, JdbcType jdbcType) throws SQLException {
+      if (jdbcType == null) {
+         ps.setString(i, parameter.getCode());
+      } else {
+         ps.setObject(i, parameter.getCode(), jdbcType.TYPE_CODE);
+      }
+   }
+
+   public E getNullableResult(ResultSet rs, String columnName) throws SQLException {
+      String s = rs.getString(columnName);
+      return MediaEnumUtils.getCodeEnum(type, s);
+   }
+
+   @Override
+   public E getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+      String s = rs.getString(columnIndex);
+      return MediaEnumUtils.getCodeEnum(type, s);
+   }
+
+   @Override
+   public E getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+      String s = cs.getString(columnIndex);
+      return MediaEnumUtils.getCodeEnum(type, s);
+   }
+
+}
+
+
+MediaResourceType.java
+
+public enum MediaResourceType implements CodeEnum {
+
+   IMAGE("I") {
+      @Override public Enum getEnumByCode(String code) {
+         return IMAGE;
+      }
+   },
+   VIDEO("V") {
+      @Override public Enum getEnumByCode(String code) {
+         return VIDEO;
+      }
+   },
+   LIVE("L") {
+      @Override public Enum getEnumByCode(String code) {
+         return LIVE;
+      }
+   };
+
+   final private String code;
+
+   private MediaResourceType(String code) {
+      this.code = code;
+   }
+
+   public String getCode() {
+      return code;
+   }
+}
+
+public class MediaEnumUtils {
+
+   public static <T extends Enum<T> & CodeEnum> T getCodeEnum(Class<T> enumClass, String code) {
+      return EnumSet.allOf(enumClass).stream()
+            .filter(type -> type.getCode().equals(code))
+            .findFirst()
+            .orElseGet(null);
+   }
+}
+
+
+출처: https://androphil.tistory.com/707 [소림사의 홍반장!]
+
+
+
+
+sql.xml - 해당되는 컬럼에 typeHandler 사용한부분.
+
+<resultMap id="resourceMap" type="com.tmoncorp.api.domain.entity.resource.MediaResource">
+    <id column="resource_seqno" property="resourceSeqno" jdbcType="BIGINT"/>
+    <result column="resource_tp" property="resourceType" jdbcType="VARCHAR" typeHandler="com.tmoncorp.api.domain.enums.CodeEnumTypeHandler"/>
+    <result column="tp_seqno" property="typeSeqno" jdbcType="INTEGER"/>
+    <result column="file_nm" property="fileName" jdbcType="VARCHAR"/>
+    <result column="org_file_nm" property="orgFileName" jdbcType="VARCHAR"/>
+    <result column="file_path" property="filePath" jdbcType="VARCHAR"/>
+    <result column="file_url" property="fileUrl" jdbcType="VARCHAR"/>
+</resultMap>
+
+
+MediaResource.java - Enum으로 변수 선언한 부분.
+
+public class MediaResource implements Serializable {
+
+   protected Long resourceSeqno;
+   protected String orgFileName;
+   protected String fileName;
+   protected Integer fileSize;
+   protected Short width;
+   protected Short height;
+   protected String filePath;
+   protected MediaResourceType resourceType;
+   protected Integer typeSeqno;
+   protected String fileUrl;
+
+   // getter, setter
+}
+
+
+
+출처: https://androphil.tistory.com/707 [소림사의 홍반장!]
+
+
+#{yourBool,typeHandler=YesNoBooleanTypeHandler}
+
