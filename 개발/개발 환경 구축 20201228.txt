@@ -1,0 +1,953 @@
+@ 개발환경 설치 관련 논의점
+
+1. 설치할 http, was 제품 및 버전
+   - resin의 경우 상용제품이므로 개발 서버에 설치가 가능한가? 그외 대안 tomcat...
+   - Application 설치 주체는? 별도 인프라팀 혹인 협력 업체에서 설치하는가 또는 개발 서버는 개발팀에서 설치 및 세팅해야 하는가?
+   
+2. CI/CD 구성 방법
+   - jenkins 서버 확인
+   - nexus 서버 확인
+   - git + Jenkins + was 소스 배포 설정
+
+3. mybatis 샘플 코드 작성하기 위해서 cesco style mssql sp 샘플 참조 필요
+
+4. springboot package 구성 방법론
+ -- 아래는 kt 프로젝트 시 jpa로 시스템 구성 시 작성했던 개발 가이드 readme(md) 파일입니다.
+ 
+ 
+ ====================================================================================
+
+
+# 백엔드 API 개발 예제(infrabot-backend)
+backend 개발을 위한 기본 개발환경을 제공한다.  
+현 개발환경은 master branch 는 배포버전이며 버전별 branch를 구성하여 버전을 업데이트 하겠습니다.  
+업데이트 된 내용은 release history 에 정리됩니다.  
+
+문제 발견 시 ISSUES에 등록 부탁드립니다.
+
+
+# 이력
+  * v0.0.1-SNAPSHOT
+    * 2019.01.07 최초 등록 
+
+
+# 구성
+  * 버전
+    * infrabot-backend-0.0.1-SNAPSHOT
+  * 환경
+    * windows 10
+    * intellij 2018.3
+    * spring tool suite 4.0.0.RELEASE(build 201809220817)
+    * d2coding-1.3.2
+    * sourcetree 2.6.10
+    * apache-maven-3.5.4
+    * h2-1.4.197 (scope:runtime)
+    * openjdk 1.8.0.191
+    * rabbit mq
+    * redis
+  * 프레임워크
+    * spring boot 2.0.7.RELEASE
+      * spring framework 5.0.9.RELEASE
+      * spring data jpa
+      * spring data redis
+      * spring data envers
+      * spring amqp
+      * spring websocket
+      * spring test(scope:test)
+      * spring dev-tools(scope:runtime)
+      * embedded tomcat 8.5.34(scope:provided)
+      * hibernate 5.2.17.Final
+      * hibernate validator 6.0.12.Final
+      * hikaricp 2.7.9
+      * jackson 2.9.6
+    * flyway 5.0.7
+    * querydsl 4.1.4
+    * lombok 1.16.22
+    * commons-lang3 3.7
+    * commons-pool2 2.5.0
+    * commons-io 2.5
+    * lettuce-5.0.5.RELEASE
+    * mybatis 1.3.2
+    * swagger 2.7.0
+    * mapstruct 1.2.0.Final
+    * log4jdbc 1.16(profiles:default)
+    * jackson-dataformat-yaml 2.9.7
+    * postgresql 42.1.4
+>>>
+  더 자세한 내용은 /{local}/repository/org/springframework/boot/spring-boot-dependencies/2.0.7.RELEASE/spring-boot-dependencies-2.0.7.RELEASE.pom dependency
+>>>
+    
+
+# 실행
+  ## openjdk 1.8.0.191 설치
+  * https://github.com/ojdkbuild/ojdkbuild -다운로드 후 설치
+  * 환경변수 설정  
+    ``` 
+      JAVA_HOME : C:\Program Files\ojdkbuild\java-1.8.0-openjdk-1.8.0.191-1 
+      Path : %JAVA_HOME%\bin; 
+      java -version 
+    ```  
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-jdk-4.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-jdk-1.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-jdk-2.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-jdk-3.png" width="400" height="240" />   
+        
+  ## sourcetree 2.6.10 설치
+  * https://www.sourcetreeapp.com 다운로드 후 설치  
+  * 설치 안되어있을경우 git 다운로드  
+  * repository clone  
+    ```
+      https://gitlab.com/niceday.lucas/example-backend-api.git
+    ```
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sourcetree-1.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sourcetree-2.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sourcetree-3.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sourcetree-4.png" width="400" height="240" />      
+
+  ## spring tool suite 4.0.0.RELEASE 설치
+  * https://spring.io/tools 다운로드 후 압축 해제   
+  * {sts설치디렉토리}/SpringToolSuite4.ini 수정  
+  * sts 실행
+  * import-mavent-existing maven projects 실행 후 clone 받은 프로젝트 연결  
+  * 프로젝트 - debug as - maven update
+  * maven build 완료되면 lombok 설치  
+  * 프로젝트 - debug as - maven build(goal : clean package)  
+  * 프로젝트 - debug as - maven update  
+  * 프로젝트 - debug as - junit test  
+  * 모든 테스트 케이스가 success 되어야 정상 동작
+  * 현재 테스트 케이스 총 20개(현재 redis 관련 4개 케이스 ignore)
+  * RedisTest의 모든 테스트 케이스는 ignore 되어 있으며 redis 설치 후 테스트 가능
+    * windows용 redis 다운로드(https://github.com/MicrosoftArchive/redis/releases)
+    ``` 
+      -vm  
+      C:\Program Files\ojdkbuild\java-1.8.0-openjdk-1.8.0.171-1\bin\javaw.exe
+    ```    
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sts-1.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sts-2.png" width="400" height="240" />  
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sts-3.png" width="400" height="240" />  
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sts-4.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sts-5.png" width="400" height="240" />  
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sts-6.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sts-7.png" width="400" height="240" />  
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sts-8.png" width="400" height="240" />   
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sts-9.png" width="400" height="240" />  
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-sts-10.png" width="400" height="240" />  
+
+
+  ## intellij 2108.2.5 설치
+  * https://www.jetbrains.com/idea/download/#section=windows 다운로드 후 설치
+  * intellij 실행
+  * import project - sourcetree 에서 받는 프로젝트 경로 - maven
+  * import-mavent-existing maven projects 실행 후 clone 받은 프로젝트 연결  
+  * setting - plugins - browse repositories - lombok install 후 재시작
+  * maven build 완료되면 lombok 설치  
+  * 프로젝트 - maven - generate sources and update folders
+  * maven - -DskipTests=true clean compile
+  * 프로젝트 - debug - all tests
+  * 모든 테스트 케이스가 success 되어야 정상 동작
+  * 현재 테스트 케이스 총 20개(현재 redis 관련 4개 케이스 ignore)
+  * RedisTest의 모든 테스트 케이스는 ignore 되어 있으며 redis 설치 후 테스트 가능
+    * windows용 redis 다운로드(https://github.com/MicrosoftArchive/redis/releases)
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-intellij-1.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-intellij-2.png" width="400" height="240" />  
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-intellij-3.png" width="400" height="240" />  
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-intellij-4.png" width="400" height="240" /> 
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-intellij-5.png" width="400" height="240" />  
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/install-intellij-6.png" width="400" height="240" /> 
+
+
+  ## 기타 실행
+  * h2
+  * swagger  
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/tool-h2-1.png" width="400" height="240" />
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/tool-h2-2.png" width="400" height="240" />
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/tool-swagger-1.png" width="400" height="240" />
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/tool-swagger-2.png" width="400" height="240" /> 
+
+
+# 개발
+  ## 개발 프로세스
+  * 해당 테스크 상태 'doing' 변경
+  * /develop 브랜치를 기반으로 /feature/테스크번호 브랜치 생성
+  * 개발 완료 후 /feature/테스크번호에 push 후 merge request 생성
+  * /feature/테스크번호 맞는 merge request 를 해당 팀원은 모두 코드를 확인하고 변경사항이 없다면 커맨트에 '확인 완료' 작성 변경사항이 있다면 소스 위치에 수정내용 작성
+  * 작업자는 merge request 의 모든 커맨트를 확인하고  변경사항이 있다면 변경 후 해당 팀원에게 다시 확인 완료를 요청
+  * 모든 팀원이 확인 완료를 작성하면 해당 테스크의 jira task 에 api doc 를 작성
+  * 모든 작업이 완료되었다면 /develop 브랜치로 병합
+  * 해당 테스크 상태 'merged develop' 변경
+  * 위 내용은 스프린트(단위:1주) 단위로 이루어 지며 모든 테스크에 대해서 위와 같이 동일하게 반복
+  * 스프린트(단위:1주) 단위로 스프린트 시작 전 작성
+  
+  ## 배포 프로세스
+  * 개발 : git(branch-develop) - jenkins - deploy - was restart
+  * 운영 : git(branch-master)  - jenkins - deploy - was restart
+  
+  ## 소스 버전 관리 
+  * 해당 브랜치 구조는 git-flow 정책을 따름
+  
+  * 브랜치 구조  
+  feature - develop - release - tag - master - hotfix
+    * feature : 테스크 단위 브랜치
+    * develop : 전체 개발 단위 브랜치
+    * release : 릴리즈 단위 브랜치
+    * master  : 전체 운영 단위 브랜치
+    * hotfix  : 전체운영 핫픽스 단위 브랜치
+  * 태그
+    * master에 배포되는 모든 단위 기록
+
+  ## 디렉토리 구조
+  * 기본 패키지 구성은 MAVEN PACKAGE 기준을 따른다.
+  * /src/main/java     : 공통, 비지니스 로직를 모두 포함하는 영역
+  * /src/main/resource : 외부 설정 영역
+  * /src/test/java     : 테스트 영역(테스트케이스는 /src/main/java/com.kt... 의 테스트 대상 소스의 패키지를 따라간다.)
+    * ex. 대상 : com.kt.user.controller.UserController, 테스트케이스 : com.kt.user.UserTest, com.kt.user.UserHelper
+  ## 패키지 구조   
+  | 패키지 | 설명 |
+  |  --------                           |  --------                                               |
+  |  com.kt.common                     | 공통 패키지(비니지스 로직이 포함되지 않는 상위 영역 ex. aop, config..) |
+  |  com.kt.sample                     | 샘플 패키지(기본 CRUD)                                      |
+  |  com.kt.infra                     | 인프라자동화 비지니스 로직 영역                                  |
+  |  com.kt.infra.common              | 인프라자동화 비지니스 공통 영역                                  |
+  |  com.kt.infra.schedule            | 스케쥴 영역                                                |
+  |  com.kt.infra.access              | 접근 제어 영역                                             |
+  |  com.kt.infra.alone               | 독립적 실행 영역                                            |
+  |  com.kt.infra.assist              | 플레이북 지원 영역                                            |
+  |  com.kt.infra.difficult           | 플레이북 실행 영역                                            |
+  |  com.kt.infra.common.base         | 시스템 기반                                                 |
+  |  com.kt.infra.common.code         | 시스템 코드                                                 |
+  |  com.kt.infra.schedule.system     | 시스템 스케쥴 관리                                          |
+  |  com.kt.infra.schedule.job        | 잡 스케쥴 관리                                         |
+  |  com.kt.infra.access.user         | 사용자 관리                                                 |
+  |  com.kt.infra.access.authority    | 권한 관리                                                  |
+  |  com.kt.infra.access.resource     | 자원 관리                                                  |
+  |  com.kt.infra.access.menu         | 메뉴 관리                                                  |
+  |  com.kt.infra.alone.approval      | 작업 승인 관리                                              |
+  |  com.kt.infra.alone.receive       | 수신자 관리                                                 |
+  |  com.kt.infra.alone.question      | 설문 관리                                                  |
+  |  com.kt.infra.assist.report       | 리포트 관리                                                 |
+  |  com.kt.infra.assist.analysis     | 결과 기준 관리                                              |
+  |  com.kt.infra.assist.schedule     | 스케줄 관리                                                 |
+  |  com.kt.infra.assist.software     | 소프트웨어 설치 파일 관리                                       |
+  |  com.kt.infra.assist.inventory    | 인벤토리 관리                                               |
+  |  com.kt.infra.assist.command      | 명령어 관리                                                 |
+  |  com.kt.infra.difficult.task      | 테크스 관리                                                 |
+  |  com.kt.infra.difficult.playbook  | 플레이북 관리                                               |
+  |  com.kt.infra.difficult.workflow  | 워크플로우 관리                                              |
+  |  com.kt.infra.difficult.job       | 잡 관리                                                    |
+  |  com.kt.infra.difficult.result    | 결과 관리                                                    |
+  
+  ## 기능별 이하 패키지 구조
+  | 패키지 | 설명 |
+  |  --------                           |  --------                            |
+  | com.kt.sample.domain     | 도메인 영역(Dto, Entity)                         |
+  | com.kt.sample.mapper     | 매퍼 영역(Mapper)                                |
+  | com.kt.sample.controller | 컨트롤러 영역(Controller)                        |
+  | com.kt.sample.service    | 서비스 영역(Service)                             |
+  | com.kt.sample.enumerate  | 코드(열거형) 영역 |
+  | com.kt.sample.repository | 레파지토리 영역(Repository, Querydsl, Predicate) |
+
+  
+  ## 기능별 이하 테스트 패키지 구조
+  | 패키지 | 설명 |
+  |  --------                           |  --------                            |
+  | com.kt.sample   | 테스트 케이스 영역(Test, Helper) |
+
+  ## REST API 디자인
+  | 기능         | 함수명     | API                                               | 
+  |  --------    |  --------  | --------                                          |
+  | 페이지 목록  | getPage    | GET    /api/samples/posts/pages                   | 
+  | 목록         | getAll     | GET    /api/samples/posts                         | 
+  | 조건 목록    | getAll     | GET    /api/samples/posts/likes/title/content     | 
+  | 조건 조회    | get        | GET    /api/samples/posts/like/title/content      | 
+  | 관계 목록    | getAll     | GET    /api/samples/posts/{포스트아이디}/comments |
+  | 등록         | add        | POST   /api/samples/posts                         |
+  | 수정         | modify     | PUT    /api/samples/posts/{포스트아이디}          | 
+  | 삭제         | remove     | DELETE /api/samples/posts/{포스트아이디}          | 
+  | 존재 여부     | isExists   | HEAD    /api/samples/posts/{포스트아이디}           |
+  
+  * 페이지 : 마지막 uri에 pages작성
+  * 목록 : 복수로 작성
+  * 조건 목록 : 복수 뒤에 likes(목록) 를 붙이고 이하로 조건들을 작성
+  * 조건 조회 : 복수 뒤에 like(단일) 를 붙이고 이하로 조건들을 작성
+  * 관계 목록 : 포스트의 댓글목록을 가져오는 것이다. 이 처럼 도메인의 구조에 맞춰 데이터를 가져올 경우 이와 같이 상하 구조대로 api를 디자인 한다.
+  * 등록 : 복수로 작성
+  * 수정 : 복수 뒤에 아이디
+  * 삭제 : 복수 뒤에 아이디 
+  * 존재 여부 : 복수 뒤에 아이디 
+  
+
+
+
+# 예제
+  * 표준 API 개발 시 작성해야 할 내용들을 activity diagram 으로 표현
+  * 상세 내용은 아래의 내용을 참조
+    <img src="http://10.217.41.238:8100/root/infrabot-images/raw/master/infrabot-backend/process-1.png" width="1258" height="488" />  
+  ## form
+  * form - request/response - api - parameter 기준으로 요청/응답 정보 작성
+  * parameter 별 validation 처리가 가능하며 복잡한 validation 의 경우 @AssertTrue, @AssertFalse로 작성
+  * javax.validation, org.hibernate.validator 사용
+```java
+/**   
+ * @since       2018.10.02
+ * @author      lucas
+ * @description post form
+ **********************************************************************************************************************/
+public class PostForm {
+
+    public static class Request {
+
+        @Getter
+        @Setter
+        @Builder
+        @ToString
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class Find {
+            
+            @Size(min=5)
+            private String userId;
+            
+            @Size(min=5)
+            private String title;
+            
+            @PastOrPresent
+            @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
+            private LocalDate startCreatedAt;
+            
+            @PastOrPresent
+            @DateTimeFormat(iso=DateTimeFormat.ISO.DATE)
+            private LocalDate endCreatedAt;
+            
+            @AssertTrue
+            public boolean isValidDateRange() {                
+                if(ObjectUtils.allNotNull(startCreatedAt, endCreatedAt)) { return startCreatedAt.isBefore(endCreatedAt); }
+                if(ObjectUtils.anyNotNull(startCreatedAt, endCreatedAt)) { return false;                                 }
+                return true;
+            }
+        }
+
+        @Getter
+        @Setter
+        @Builder
+        @ToString
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class Add {
+
+            @NotBlank
+            @Size(min=5)
+            private String userId;
+            
+            @NotBlank
+            @Size(min=5)
+            private String title;
+            
+            @NotBlank
+            @Size(min=5)
+            private String content;
+            
+            public Post toPost() {
+                return mapper.toPost(this);
+            }
+        }
+
+        @Getter
+        @Setter
+        @Builder
+        @ToString
+        @NoArgsConstructor
+        @AllArgsConstructor
+        public static class Modify {
+
+            @NotBlank
+            @Size(min=5)
+            private String userId;
+            
+            @NotBlank
+            @Size(min=5)
+            private String title;
+            
+            @NotBlank
+            @Size(min=5)
+            private String content;
+            
+            public Post toPost() {
+                return mapper.toPost(this);
+            }
+        }
+    }
+    
+    public static class Response {
+        
+        @Data
+        public static class FindAll {
+
+            private Long   postNo;  
+            private String userId;     
+            private String title;   
+            private String createdAt;
+            
+            private List<CommentForm.Response.FindAll> comments;    
+        }
+        
+        @Data
+        public static class FindOne {
+
+            private Long   postNo;  
+            private String userId;     
+            private String title;   
+            private String content;    
+            private String createdAt;
+            private String updatedAt;
+            
+            private List<CommentForm.Response.FindAll> comments;    
+        }
+    }
+    
+    
+    public static PostMapper mapper = Mappers.getMapper(PostMapper.class);
+}        
+```
+  
+  ## mapper
+  * request/response 사이에서 dtd - entity 매핑
+  * mapstruct 사용(reflection 방식이 아닌 build 시 java code 를 생성하도록하는 개념)
+```java
+/**   
+ * @since       2018.10.03
+ * @author      lucas
+ * @description post mapper  
+ **********************************************************************************************************************/
+@Mapper
+public interface PostMapper {
+ 
+    public PostMapper mapper = Mappers.getMapper(PostMapper.class);
+    
+    public Post toPost(Add    form);
+    public Post toPost(Modify form);
+
+    public FindAll       toFindAll(Post post);
+    public FindOne       toFindOne(Post post);
+    public List<FindAll> toFindAll(List<Post> posts);
+
+    @Mappings({
+         @Mapping(target="postNo",    ignore=true)
+        ,@Mapping(target="createdAt", ignore=true)
+    })
+    public Post modify(Post source, @MappingTarget Post target);
+}
+
+```
+
+
+  ## controller
+  * property.api.end-point : /api
+  * restful 기준에 맞는 url 작성
+  * @Valid validation 체크 여부
+  * pageable 페이징 여부(/api/samples/posts?page=0&size=10&sort=userId,asc&sort=title,desc)
+  * service 요청 전달 시 form를 entity 로 매핑, api 응답 반환 시 entity를 form 으로 매핑
+    * 즉 request - controller - (form->entity) - service - (entity->form) - controller - response
+  * 검색조긴이 있을 경우 predicate, 없을 경우 entity 를 service 로 전달
+  * @RequiredArgsConstructor 통한 constructor injection(injection을 위하여 field는 final로 정의)
+```java
+/**   
+ * @since       2018.10.03
+ * @author      lucas
+ * @description post controller
+ **********************************************************************************************************************/
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("${property.api.end-point}")
+public class PostController {
+
+    @GetMapping("/samples/posts")
+    public Page<FindAll> getAll(@Valid Find find, @PageableDefault(size=10) Pageable pageable){ 
+        return postService.getAll(pageable).map(mapper::toFindAll);
+    }
+
+    @GetMapping("/samples/posts/entity-graph")
+    public Page<FindAll> getAllByEntityGraph(@Valid Find find, @PageableDefault(size=10) Pageable pageable){
+        return postService.getAllByEntityGraph(pageable).map(mapper::toFindAll);
+    }
+    
+    @GetMapping("/samples/posts/query-dsl")
+    public Page<FindAll> getAllByQueryDsl(@Valid Find find, @PageableDefault(size=10) Pageable pageable){
+        return postService.getAllByQueryDsl(PostPredicate.search(find), pageable).map(mapper::toFindAll);
+    }
+
+    @GetMapping("/samples/posts/predicate")
+    public List<FindAll> getAllByPredicate(@Valid Find find){
+        return mapper.toFindAll(postService.getAllByPredicate(PostPredicate.search(find)));
+    }
+
+    @GetMapping("/samples/posts/{postNo}")
+    public FindOne get(@PathVariable Long postNo){
+        return mapper.toFindOne(postService.get(postNo));
+    }
+
+    @PostMapping("/samples/posts")
+    public FindOne add(@Valid @RequestBody Add add){
+        return mapper.toFindOne(postService.add(add.toPost()));
+    }
+
+    @PutMapping("/samples/posts/{postNo}")
+    public FindOne modify(@PathVariable Long postNo, @Valid @RequestBody Modify modify){
+        return mapper.toFindOne(postService.modify(postNo, modify.toPost()));
+    }
+
+    @DeleteMapping("/samples/posts/{postNo}")
+    public void remove(@PathVariable Long postNo){
+        postService.remove(postNo);
+    }
+
+
+    private final PostService postService; 
+}
+```
+
+
+  ## entity
+  * lombok 이용(getter/setter, default constructor, all args constructor, builder 등)
+  * base entity 상속으로 등록 시 createdAt, 수정 시 updatedAt 이 자동 설정
+  * jpa 기반의 entity 구성
+  * OneToMany, ManyToOne 등의 annotation 의 엔티티 관계 정의(현 샘플은 post(1) : (n)comment )
+  * default fetch 전략은 lazy 정의
+  * n+1 문제는 fetch join(graph entity, querydsl), batch size, subquery 등으로 해결(graph entity, querydsl 권장)
+>>>
+  더 자세한 내용은 https://docs.spring.io/spring-data/jpa/docs/2.0.5.RELEASE/reference/html
+>>>
+```java
+/**
+ * @since       2018.10.02
+ * @author      lucas
+ * @description post
+ **********************************************************************************************************************/
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder(toBuilder=true)
+@Entity(name="sample_post")
+public class Post extends BaseEntity {  
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long   postNo;
+    private String userId;
+    private String title; 
+    private String content;    
+    
+    
+    @OneToMany(mappedBy="post", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    private List<Comment> comments;
+}
+
+```
+
+
+  ## service
+  * transaction 이 전체 선언되어 있고 조회 시 read olny 설정
+  * entity 수정 시에는 mapper 이용
+```java
+/**   
+ * @since       2018.10.03
+ * @author      lucas
+ * @description post service
+ **********************************************************************************************************************/
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class PostService {
+
+    @Transactional(readOnly = true)
+    public Page<Post> getAll(Pageable pageable) {        
+        return postRepository.findAll(pageable);
+    }
+    
+    @Transactional(readOnly = true)
+    public Page<Post> getAllByEntityGraph(Pageable pageable) {        
+        return postRepository.findAll(pageable);
+    }
+    
+    @Transactional(readOnly = true)
+    public Page<Post> getAllByQueryDsl(Predicate predicate, Pageable pageable) {
+        return postRepository.findAllByQueryDsl(predicate, pageable);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<Post> getAllByPredicate(Predicate predicate) {        
+        return postRepository.findAll(predicate);
+    }
+    
+    @Transactional(readOnly = true)    
+    public Post get(Long postNo) {
+        return postRepository.getOne(postNo);
+    }
+    
+    @Transactional(readOnly = true)
+    public Post get(String userId) {
+        return postRepository.findByUserId(userId);
+    }
+    
+    public Post add(Post post) {
+        return postRepository.save(post); 
+    }
+    
+    public Post modify(Long postNo, Post post) {
+        return mapper.modify(post, postRepository.getOne(postNo));
+    }
+    
+    public void remove(Long postNo) {
+        postRepository.delete(postRepository.getOne(postNo));
+    }
+
+
+    private final PostRepository postRepository;
+}
+```
+
+
+  ## repository
+  * predicate 사용 시 QuerydslPredicateExecutor 선언
+  * qyerydsl 을 통한 jpql 사용 시 PostRepositoryQuerydsl 선언, PostRepositoryImpl 구현
+  * jpa repository 기본 기능 사용(findAll, saveAll, deleteAllInBatch, getOne, findOne, save, count, exists 등등..)
+  * 일반적인 조건은 query creation, predicate
+  * 복잡한 조건은 querydsl + predicate
+  * jqpl로 작성하기 힘들경우에 한해 mybatis 사용(권장하지 않음)
+    * com.kt.sample.api.repository.PostMybatisRepository 참조
+>>>
+  더 자세한 내용은 https://docs.spring.io/spring-data/jpa/docs/2.0.5.RELEASE/reference/html
+>>>
+```java
+/**   
+ * @since       2018.10.03
+ * @author      lucas
+ * @description post repository 
+ **********************************************************************************************************************/
+@Repository
+public interface PostRepository extends JpaRepository<Post, Long>, QuerydslPredicateExecutor<Post>, PostRepositoryQuerydsl {
+
+    Post findByUserId(String userId);
+    
+    @EntityGraph(attributePaths="comments", type=EntityGraphType.FETCH)
+    Page<Post> findAll(Pageable pageable);
+    
+    @EntityGraph(attributePaths="comments", type=EntityGraphType.FETCH)
+    List<Post> findAll(Predicate predicate);
+}
+```
+
+
+  ## predicate
+  * 검색 조건 명시
+  * QPost 는 build 시 /target/generated-sources/java/... 에 자동 생성되어 사용가능
+    * 생성이 안되었을 경우 프로젝트 maven build, maven update 후 다시 확인
+>>>
+  더 자세한 내용은 http://www.querydsl.com/static/querydsl/4.1.4/reference/html
+>>>    
+    
+```java
+/**    
+ * @since       2018.10.03
+ * @author      lucas
+ * @description post predicate 
+ **********************************************************************************************************************/
+public class PostPredicate {
+    
+    public static Predicate search(Find find) {
+        
+        QPost          post    = QPost.post;
+        BooleanBuilder builder = new BooleanBuilder();
+        
+        Optional.ofNullable(find.getUserId()).ifPresent(p -> builder.and(post.userId.eq(p)));
+        Optional.ofNullable(find.getTitle ()).ifPresent(p -> builder.and(post.title.eq(p)));
+        
+        return builder;
+    }
+}
+```
+
+  ## querydsl
+  * 객체 기반 쿼리 작성
+  * QPost 는 build 시 /target/generated-sources/java/... 에 자동 생성되어 사용가능
+    * 생성이 안되었을 경우 프로젝트 maven build, maven update 후 다시 확인
+>>>
+  더 자세한 내용은 http://www.querydsl.com/static/querydsl/4.1.4/reference/html
+>>>    
+    
+```java
+/**   
+ * @since       2018.10.03
+ * @author      lucas
+ * @description post repository querydsl
+ **********************************************************************************************************************/
+public interface PostRepositoryQuerydsl {
+
+    public Page<Post> findAllByQueryDsl(Predicate predicate, Pageable pageable);
+}
+
+/**    
+ * @since       2018.10.03
+ * @author      lucas
+ * @description post repository impl 
+ **********************************************************************************************************************/
+public class PostRepositoryImpl extends QuerydslRepositorySupport implements PostRepositoryQuerydsl {
+
+    public Page<Post> findAllByQueryDsl(Predicate predicate, Pageable pageable){
+        JPQLQuery<Post> query =  from    (post)
+                                .distinct()
+                                .leftJoin(post.comments, comment).fetchJoin()
+                                .where   (predicate)
+                                .orderBy (post.postNo.desc(), comment.commentNo.desc());
+        
+        return new PageImpl<>(getQuerydsl().applyPagination(pageable, query).fetch(), pageable, query.fetchCount());
+    } 
+    
+    public PostRepositoryImpl() {
+        super(Post.class);
+    }
+    
+    private QPost    post    = QPost.post;
+    private QComment comment = QComment.comment;
+}
+```
+
+
+  ## test helper
+  * api 요청/응답을 별도로 작성한 이유는 white box test, black box test 모두를 위한 정책
+  * 각 api 별로 구성하여 black box test 시 조합하여 사용 할 수 있도록 제공
+  * newXXX(test case 작성 시 조합하여 사용하므로 테스트 데이터도 helper 안에 작성)
+    * 사용자 정의는 lombok.builder 자유롭게 설정하고 빠르게 테스트를 하기 위함이라면  default value 사용(super.getDefaultInstance)
+
+       | type                | default value            |
+       | --------            | --------                 |
+       | Long.class          | NumberUtils.LONG_ZERO    |
+       | Integer.class       | NumberUtils.INTEGER_ZERO |
+       | BigDecimal.class    | NumberUtils.DOUBLE_ZERO  |
+       | Boolean.class       | Boolean.TRUE             |
+       | String.class        | field.getName()          |
+       | LocalTime.class     | LocalDate.now()          |
+       | LocalDate.class     | LocalDate.now()          |
+       | LocalDateTime.class | LocalDate.now()          |  
+       
+```java
+/**
+ * @since       2018.10.03
+ * @author      lucas
+ * @description post test helper
+ **********************************************************************************************************************/
+public class PostTestHelper extends TestHelper {
+
+    @SneakyThrows
+    public static void getAll(Find find) {
+        mock.perform(MockMvcRequestBuilders.get        ("/api/samples/posts")
+                                           .content    (ObjectHelper.getJsonForInstance(find))
+                                           .contentType(MediaType.APPLICATION_JSON))
+                                           .andExpect  (status().isOk())
+                                           .andDo      (print());
+    }
+
+    @SneakyThrows
+    public static void getAllByEntityGraph(Find find) {
+        mock.perform(MockMvcRequestBuilders.get        ("/api/samples/posts/entity-graph")
+                                           .content    (ObjectHelper.getJsonForInstance(find))
+                                           .contentType(MediaType.APPLICATION_JSON))
+                                           .andExpect  (status().isOk())
+                                           .andDo      (print());
+    }
+
+    @SneakyThrows
+    public static void getAllByQueryDsl(Find find) {
+        mock.perform(MockMvcRequestBuilders.get        ("/api/samples/posts/query-dsl")
+                                           .content    (ObjectHelper.getJsonForInstance(find))
+                                           .contentType(MediaType.APPLICATION_JSON))
+                                           .andExpect  (status().isOk())
+                                           .andDo      (print());
+    }
+
+    @SneakyThrows
+    public static void getAllByPredicate(Find find) {
+        mock.perform(MockMvcRequestBuilders.get        ("/api/samples/posts/predicate")
+                                           .content    (ObjectHelper.getJsonForInstance(find))
+                                           .contentType(MediaType.APPLICATION_JSON))
+                                           .andExpect  (status().isOk())
+                                           .andDo      (print());
+    }
+
+    @SneakyThrows
+    public static void get(Long postNo) {
+        mock.perform(MockMvcRequestBuilders.get        ("/api/samples/posts/{postNo}", postNo)
+                                           .contentType(MediaType.APPLICATION_JSON))
+                                           .andExpect  (status().isOk())
+                                           .andDo      (print());
+    }
+
+    @SneakyThrows
+    public static ResultActions add(Add add) {
+        return mock.perform(MockMvcRequestBuilders.post       ("/api/samples/posts")
+                                                  .content    (ObjectHelper.getJsonForInstance(add))
+                                                  .contentType(MediaType.APPLICATION_JSON))
+                                                  .andExpect  (status().isOk())
+                                                  .andDo      (print());
+    }
+
+    @SneakyThrows
+    public static void modify(Long postNo, Modify modify) {
+        mock.perform(MockMvcRequestBuilders.put        ("/api/samples/posts/{postNo}", postNo)
+                                           .content    (ObjectHelper.getJsonForInstance(modify))
+                                           .contentType(MediaType.APPLICATION_JSON))
+                                           .andExpect  (status().isOk())
+                                           .andDo      (print());
+    }
+
+    @SneakyThrows
+    public static void remove(Long postNo) {
+        mock.perform(MockMvcRequestBuilders.delete     ("/api/samples/posts/{postNo}", postNo)
+                                           .contentType(MediaType.APPLICATION_JSON))
+                                           .andExpect  (status().isOk())
+                                           .andDo      (print());
+    }
+
+    @SneakyThrows
+    public static void get_NotFound(Long postNo) {
+        mock.perform(MockMvcRequestBuilders.get        ("/api/samples/posts/{postNo}", postNo)
+                                           .contentType(MediaType.APPLICATION_JSON))
+                                           .andExpect  (status().isNotFound())
+                                           .andDo      (print());
+    }
+
+    @SneakyThrows
+    public static void modify_NotFound(Long postNo, Modify modify) {
+        mock.perform(MockMvcRequestBuilders.put        ("/api/samples/posts/{postNo}", postNo)
+                                           .content    (ObjectHelper.getJsonForInstance(modify))
+                                           .contentType(MediaType.APPLICATION_JSON))
+                                           .andExpect  (status().isNotFound())
+                                           .andDo      (print());
+    }
+
+    @SneakyThrows
+    public static void remove_NotFound(Long postNo) {
+        mock.perform(MockMvcRequestBuilders.delete     ("/api/samples/posts/{postNo}", postNo)
+                                           .contentType(MediaType.APPLICATION_JSON))
+                                           .andExpect  (status().isNotFound())
+                                           .andDo      (print());
+    }
+
+
+    public static Find newFind() {
+        return getDefaultInstance(PostForm.Request.Find.class);
+    }
+
+    public static Add newAdd() {
+        return getDefaultInstance(PostForm.Request.Add.class);
+    }
+
+    public static Modify newModify() {
+        return Modify.builder().userId ("userId")
+                .title  ("title")
+                .content("content").build();
+    }
+}
+```
+
+
+  ## test
+  * 각 api 별로 테스트 진행
+  * 예외 처리에 대한 테스트 진행
+  * black box test 시 각 test helper 릅 조합하여 구성
+  * 모든 api 는 해당 테스트 케이스가 만들어져야 하며 해당 테스트 케이스는 배포 시 자동진행되어 최소한의 side effect 를 감지
+```java
+/**
+ * @since       2018.10.03
+ * @author      lucas
+ * @description post test
+ * <pre>
+ *                1. 정의
+ *                   api 
+ *                2. 테스트 케이스
+ * 				     - t01. 성공 - 목록 - standard
+ * 				     - t02. 성공 - 목록 - entity graph
+ * 				     - t03. 성공 - 목록 - query dsl(fetch join)
+ * 				     - t04. 성공 - 목록 - predicate
+ * 				     - t05. 성공 - 조회 - by id
+ * 				     - t06. 성공 - 등록
+ * 				     - t07. 성공 - 수정
+ * 				     - t08. 성공 - 삭제
+ * 				     - t09. 실패 - 상세 - response status code 404
+ * 				     - t10. 실패 - 수정 - response status code 404
+ * 				     - t11. 실패 - 삭제 - response status code 404
+ * </pre>
+ **********************************************************************************************************************/
+@SpringBootTest	
+@RunWith(SpringRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+@Transactional
+public class PostTest {
+
+    @Test
+    public void t01_getAll() {
+        PostTestHelper.add(PostTestHelper.newAdd());
+        PostTestHelper.add(PostTestHelper.newAdd());
+        PostTestHelper.getAll(PostTestHelper.newFind());
+    }
+    
+    @Test
+    public void t02_getAllByEntityGraph() {
+        PostTestHelper.add(PostTestHelper.newAdd());
+        PostTestHelper.add(PostTestHelper.newAdd());
+        PostTestHelper.getAllByEntityGraph(PostTestHelper.newFind());
+    }
+    
+    @Test
+    public void t03_getAllByQueryDsl() {
+    	PostTestHelper.add(PostTestHelper.newAdd());
+    	PostTestHelper.add(PostTestHelper.newAdd());
+    	PostTestHelper.getAllByQueryDsl(PostTestHelper.newFind());
+    }
+    
+    @Test
+    public void t04_getAllByPredicate() {
+    	PostTestHelper.add(PostTestHelper.newAdd());
+    	PostTestHelper.add(PostTestHelper.newAdd());
+    	PostTestHelper.getAllByPredicate(PostTestHelper.newFind());
+    }
+
+    @Test 
+    public void t05_get() {
+    	FindOne response = TestHelper.getInstance(PostTestHelper.add(PostTestHelper.newAdd()), FindOne.class);
+    	PostTestHelper.get(response.getPostNo());
+    }
+
+    @Test 
+    public void t06_add() {
+    	PostTestHelper.add(PostTestHelper.newAdd());
+    } 
+ 
+    @Test 
+    public void t07_modify() {
+    	FindOne response = TestHelper.getInstance(PostTestHelper.add(PostTestHelper.newAdd()), FindOne.class);
+    	PostTestHelper.modify(response.getPostNo(), PostTestHelper.newModify());
+    } 
+
+    @Test 
+    public void t08_remove() {
+    	FindOne response = TestHelper.getInstance(PostTestHelper.add(PostTestHelper.newAdd()), FindOne.class);
+    	PostTestHelper.remove(response.getPostNo());
+    } 
+
+    @Test 
+    public void t09_get_NotFound() {
+        PostTestHelper.get_NotFound(Long.MIN_VALUE);
+    } 
+
+    @Test
+    public void t10_modify_NotFound() {
+        PostTestHelper.modify_NotFound(Long.MIN_VALUE, PostTestHelper.newModify());
+    }
+
+    @Test 
+    public void t11_remove_NotFound() {
+        PostTestHelper.remove_NotFound(Long.MIN_VALUE);
+    } 
+}
+```

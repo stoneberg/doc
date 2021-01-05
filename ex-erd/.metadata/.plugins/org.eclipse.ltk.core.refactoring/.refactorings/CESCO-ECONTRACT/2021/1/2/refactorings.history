@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="자원 &apos;CESCO-ECONTRACT/study.exerd&apos;을(를) &apos;cesco-econtract.exerd&apos;(으)로 이름 바꾸기" description="&apos;study.exerd&apos; 자원 이름 바꾸기" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="study.exerd" name="cesco-econtract.exerd" stamp="1609725919385" updateReferences="true"/>
+</session>

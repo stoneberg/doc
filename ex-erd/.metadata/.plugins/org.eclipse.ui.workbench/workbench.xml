@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
+<workbench progressCount="5" version="2.0">
+<workbenchAdvisor/>
+<window height="768" maximized="true" width="1024" x="192" y="192">
+=======
 <workbench progressCount="8" version="2.0">
 <workbenchAdvisor/>
 <window height="768" maximized="true" width="1024" x="52" y="52">
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="160"/>
@@ -27,11 +33,21 @@
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
 <part id="1"/>
+<<<<<<< HEAD
+=======
 <part id="2"/>
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 </presentation>
 </folder>
 </info>
 </editorArea>
+<<<<<<< HEAD
+<editor activePart="true" focus="true" id="com.tomato.exerd.editor.DiagramEditor" name="contract.exerd" partName="contract.exerd" path="D:/DOC/ex-erd/CESCO-ECONTRACT/contract.exerd" title="contract.exerd" tooltip="CESCO-ECONTRACT/contract.exerd" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/CESCO-ECONTRACT/contract.exerd"/>
+</editor>
+<editor id="com.tomato.exerd.editor.DiagramEditor" name="study.exerd" partName="study.exerd" path="D:/DOC/ex-erd/eXERD-Samples/study.exerd" title="study.exerd" tooltip="eXERD-Samples/study.exerd" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/eXERD-Samples/study.exerd"/>
+=======
 <editor id="com.tomato.exerd.editor.DiagramEditor" name="04-DSWC-DS-IAPR-논리 ERD_v0.4_20200910(수정자 ID 추가).exerd" partName="04-DSWC-DS-IAPR-논리 ERD_v0.4_20200910(수정자 ID 추가).exerd" title="04-DSWC-DS-IAPR-논리 ERD_v0.4_20200910(수정자 ID 추가).exerd" tooltip="D:\DOC\ex-erd\04-DSWC-DS-IAPR-논리 ERD_v0.4_20200910(수정자 ID 추가).exerd" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/D:/DOC/ex-erd/04-DSWC-DS-IAPR-논리%20ERD_v0.4_20200910(수정자%20ID%20추가).exerd"/>
 </editor>
@@ -40,6 +56,7 @@
 </editor>
 <editor activePart="true" focus="true" id="com.tomato.exerd.editor.DiagramEditor" name="04-DSWC-DS-ISGN-논리 ERD_v0.6_20201026.exerd" partName="04-DSWC-DS-ISGN-논리 ERD_v0.6_20201026.exerd" title="04-DSWC-DS-ISGN-논리 ERD_v0.6_20201026.exerd" tooltip="D:\DOC\ex-erd\04-DSWC-DS-ISGN-논리 ERD_v0.6_20201026.exerd" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" uri="file:/D:/DOC/ex-erd/04-DSWC-DS-ISGN-논리%20ERD_v0.6_20201026.exerd"/>
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 </editor>
 </editors>
 <views>
@@ -51,6 +68,16 @@
 <filters>
 <filter element=".*" isEnabled="false"/>
 </filters>
+<<<<<<< HEAD
+<expanded>
+<element path="/CESCO-ECONTRACT"/>
+<element path="/eXERD-Samples"/>
+</expanded>
+<selection>
+<element path="/CESCO-ECONTRACT/contract.exerd"/>
+</selection>
+=======
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 </viewState>
 </view>
 <view id="org.eclipse.ui.console.ConsoleView" partName="콘솔"/>
@@ -61,7 +88,13 @@
 <viewState/>
 </view>
 <view id="com.tomato.exerd.validate.ui.ValidateView" partName="검토"/>
+<<<<<<< HEAD
+<view id="org.eclipse.ui.views.ContentOutline" partName="아웃라인">
+<viewState/>
+</view>
+=======
 <view id="org.eclipse.ui.views.ContentOutline" partName="아웃라인"/>
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 <view id="com.tomato.exerd.ui.views.thumbnail" partName="썸네일">
 <viewState/>
 </view>
@@ -111,16 +144,27 @@
 </presentation>
 </folder>
 </info>
+<<<<<<< HEAD
+<info folder="true" part="stickyFolderRight" ratio="0.749499" ratioLeft="748" ratioRight="250" relationship="2" relative="leftFolder">
+=======
 <info folder="true" part="org.eclipse.ui.internal.ViewStack@675d0e" ratio="0.75" ratioLeft="750" ratioRight="250" relationship="2" relative="leftFolder">
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 <folder appearance="2" expanded="2">
 <page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
 <page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
 <page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
+<<<<<<< HEAD
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.1382923" ratioLeft="264" ratioRight="1645" relationship="2" relative="leftFolder"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@da1da3" ratio="0.82886726" ratioLeft="1361" ratioRight="281" relationship="2" relative="org.eclipse.ui.editorss">
+=======
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
 </info>
 <info part="org.eclipse.ui.editorss" ratio="0.18" ratioLeft="180" ratioRight="820" relationship="2" relative="leftFolder"/>
 <info folder="true" part="org.eclipse.ui.internal.ViewStack@72719f" ratio="0.77926826" ratioLeft="639" ratioRight="181" relationship="2" relative="org.eclipse.ui.editorss">
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 <folder activePageID="com.tomato.exerd.ui.views.thumbnail" appearance="2" expanded="2">
 <page content="com.tomato.exerd.ui.views.thumbnail" label="썸네일"/>
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
@@ -128,8 +172,13 @@
 </presentation>
 </folder>
 </info>
+<<<<<<< HEAD
+<info folder="true" part="rightFolder" ratio="0.24960506" ratioLeft="158" ratioRight="475" relationship="4" relative="org.eclipse.ui.internal.ViewStack@da1da3">
+<folder activePageID="org.eclipse.ui.views.ContentOutline" appearance="2" expanded="2">
+=======
 <info folder="true" part="rightFolder" ratio="0.249226" ratioLeft="161" ratioRight="485" relationship="4" relative="org.eclipse.ui.internal.ViewStack@72719f">
 <folder activePageID="com.tomato.exerd.modelview3.ModelView3" appearance="2" expanded="2">
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 <page content="com.tomato.exerd.modelview3.ModelView3" label="모델"/>
 <page content="org.eclipse.ui.views.ContentOutline" label="아웃라인"/>
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
@@ -138,7 +187,11 @@
 </presentation>
 </folder>
 </info>
+<<<<<<< HEAD
+<info folder="true" part="bottomFolder" ratio="0.6444683" ratioLeft="600" ratioRight="331" relationship="4" relative="org.eclipse.ui.editorss">
+=======
 <info folder="true" part="bottomFolder" ratio="0.6996904" ratioLeft="452" ratioRight="194" relationship="4" relative="org.eclipse.ui.editorss">
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 <folder activePageID="com.tomato.exerd.ui.views.domain" appearance="2" expanded="2">
 <page content="com.tomato.exerd.ui.views.domain" label="도메인"/>
 <page content="com.tomato.exerd.validate.ui.ValidateView" label="검토"/>
@@ -151,7 +204,11 @@
 </presentation>
 </folder>
 </info>
+<<<<<<< HEAD
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@ce2106" ratio="0.61546725" ratioLeft="573" ratioRight="358" relationship="4" relative="leftFolder">
+=======
 <info folder="true" part="org.eclipse.ui.internal.ViewStack@595366" ratio="0.2987616" ratioLeft="193" ratioRight="453" relationship="4" relative="leftFolder">
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 <folder activePageID="org.eclipse.gef.ui.palette_view" appearance="2" expanded="2">
 <page content="org.eclipse.gef.ui.palette_view" label="Palette"/>
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
@@ -166,6 +223,20 @@
 <workingSets/>
 <navigationHistory>
 <editors>
+<<<<<<< HEAD
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" path="/eXERD-Samples/study.exerd"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" path="/eXERD-Samples/pos.exerd"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" path="/CESCO-ECONTRACT/contract.exerd"/>
+</editors>
+<item historyLabel="study.exerd" index="0"/>
+<item historyLabel="pos.exerd" index="1"/>
+<item historyLabel="study.exerd" index="0"/>
+<item historyLabel="contract.exerd" index="2"/>
+<item historyLabel="study.exerd" index="0"/>
+<item historyLabel="contract.exerd" index="2"/>
+<item historyLabel="study.exerd" index="0"/>
+<item active="true" historyLabel="contract.exerd" index="2"/>
+=======
 <editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" uri="file:/D:/DOC/ex-erd/04-DSWC-DS-IAPR-논리%20ERD_v0.4_20200910(수정자%20ID%20추가).exerd"/>
 <editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" uri="file:/D:/DOC/ex-erd/04-DSWC-DS-IPRJ-논리%20ERD_v0.5_20201105.exerd"/>
 <editor factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" uri="file:/D:/DOC/ex-erd/04-DSWC-DS-ISGN-논리%20ERD_v0.6_20201026.exerd"/>
@@ -173,6 +244,7 @@
 <item historyLabel="04-DSWC-DS-IAPR-논리 ERD_v0.4_20200910(수정자 ID 추가).exerd" index="0"/>
 <item historyLabel="04-DSWC-DS-IPRJ-논리 ERD_v0.5_20201105.exerd" index="1"/>
 <item active="true" historyLabel="04-DSWC-DS-ISGN-논리 ERD_v0.6_20201026.exerd" index="2"/>
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
 </page>
@@ -190,6 +262,13 @@
 </trimLayout>
 </window>
 <mruList>
+<<<<<<< HEAD
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="study.exerd" tooltip="eXERD-Samples/study.exerd">
+<persistable path="/eXERD-Samples/study.exerd"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="contract.exerd" tooltip="CESCO-ECONTRACT/contract.exerd">
+<persistable path="/CESCO-ECONTRACT/contract.exerd"/>
+=======
 <file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="04-DSWC-DS-ISGN-논리 ERD_v0.6_20201026.exerd" tooltip="D:\DOC\ex-erd\04-DSWC-DS-ISGN-논리 ERD_v0.6_20201026.exerd">
 <persistable uri="file:/D:/DOC/ex-erd/04-DSWC-DS-ISGN-논리%20ERD_v0.6_20201026.exerd"/>
 </file>
@@ -198,6 +277,7 @@
 </file>
 <file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="com.tomato.exerd.editor.DiagramEditor" name="04-DSWC-DS-IAPR-논리 ERD_v0.4_20200910(수정자 ID 추가).exerd" tooltip="D:\DOC\ex-erd\04-DSWC-DS-IAPR-논리 ERD_v0.4_20200910(수정자 ID 추가).exerd">
 <persistable uri="file:/D:/DOC/ex-erd/04-DSWC-DS-IAPR-논리%20ERD_v0.4_20200910(수정자%20ID%20추가).exerd"/>
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 </file>
 </mruList>
 </workbench>

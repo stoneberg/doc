@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+#Mon Jan 04 19:08:38 KST 2021
+eclipse.preferences.version=1
+com.tomato.exerd.preference.product.lastSelectedProductId=com.tomato.db.db2
+=======
 #Sat Nov 21 00:20:50 KST 2020
 eclipse.preferences.version=1
+>>>>>>> 8af89f1daf2bae7fb70bbe50bc2d5a1855d38829
 last-known-version=2.4.7.20160519-1702

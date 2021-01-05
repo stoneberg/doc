@@ -51,7 +51,10 @@ public interface ChangeCarStatusMapper {
 -------------------------------------------------------------------------
 
 
-
+@Select(value= "{CALL getPersonByProc(#{personId,
+  mode=IN, jdbcType=INTEGER})}")
+@Options(statementType = StatementType.CALLABLE)
+public Person getPersonByProc(Integer personId);
 
 
 
