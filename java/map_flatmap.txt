@@ -1,0 +1,44 @@
+public class FlatMapTest {
+
+	public static void main(String[] args) {
+	
+		List<User> users = Arrays.asList(
+			new User("Peter", 20, Arrays.asList("01011112222", "01011113333")),
+ 			new User("James", 30, Arrays.asList("01022221111", "01022223333")),	
+			new User("Macflay", 30, Arrays.asList("01044443333", "01044445555")),
+			new User("Dutch", 40, Arrays.asList("01066662222", "01066667777"))
+	}
+	
+	List<String> phones = users.stream
+		.flatMap(user -> user.getPhones().stream())
+		.collect(Collectors.toList());
+		
+	System.out.println(phones);
+	
+	Optional<String> stringOptional = users.stream()
+			.map(user -> user.getPhones().stream())
+			.flatMap(stringStream -> stringStream.filter(phone -> phone.equals("01044443333")))
+			.findAny();
+			
+	stringOptional.ifPresent(System.out::println);
+	
+		
+	// self reference "this"	
+	public void notify(List<URL> urls) {
+		List<URL> categoryUrls = urls.stream()
+		.filter(this::isValidCategory)
+		.filter(this::isNotCompatibleFor26x)
+		.collect(Collectors.toList());	
+	}
+	
+	// use ifPresent
+	public void addAllStages(Optional<StageInfo> stageInfo, ImmutableList.Builder<StageInfo> collector) {
+	  stageInfo.ifPresent(stage -> {
+		collector.add(stage);
+		stage.getSubStages().stream()
+			.forEach(subStage -> addAllStages(Optional.ofNullable(subStage), collector));
+	  });
+	}
+	
+
+}
