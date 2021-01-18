@@ -1,0 +1,214 @@
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.TeeOutputStream;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.*;
+
+/**
+ * @author - GreenLearner(https://www.youtube.com/c/greenlearner)
+ */
+@Component
+@Slf4j
+@Order(1)
+public class RequestResponseLoggers implements Filter {
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+
+        LogCustomHttpRequestWrapper requestWrapper = new LogCustomHttpRequestWrapper((HttpServletRequest) request);
+        log.info("Requeust URI: {}", requestWrapper.getRequestURI());
+        log.info("Requeust Method: {}", requestWrapper.getMethod());
+        log.info("Requeust Body: {}", new String(requestWrapper.getByteArray()).replaceAll("\n", " "));
+
+        LogCustomHttpResponseWrapper responseWrapper = new LogCustomHttpResponseWrapper((HttpServletResponse)response);
+
+        chain.doFilter(requestWrapper, responseWrapper);
+
+        log.info("Response status - {}", responseWrapper.getStatus());
+        log.info("Response Body - {}", new String(responseWrapper.getBaos().toByteArray()));
+    }
+
+
+    private class LogCustomHttpRequestWrapper extends HttpServletRequestWrapper {
+
+        private byte[] byteArray;
+
+        public LogCustomHttpRequestWrapper(HttpServletRequest request) {
+            super(request);
+            try {
+                byteArray = IOUtils.toByteArray(request.getInputStream());
+            } catch (IOException e) {
+                throw new RuntimeException("Issue while reading request stream");
+            }
+        }
+
+        @Override
+        public ServletInputStream getInputStream() throws IOException {
+
+            return new LogDelegatingServletInputStream(new ByteArrayInputStream(byteArray));
+
+        }
+
+        public byte[] getByteArray() {
+            return byteArray;
+        }
+    }
+
+    private class LogCustomHttpResponseWrapper extends HttpServletResponseWrapper {
+
+        private ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        private PrintStream printStream = new PrintStream(baos);
+
+        public ByteArrayOutputStream getBaos() {
+            return baos;
+        }
+
+        public LogCustomHttpResponseWrapper(HttpServletResponse response) {
+            super(response);
+        }
+
+        @Override
+        public ServletOutputStream getOutputStream() throws IOException {
+            return new LogDelegatingServletOutputStream(new TeeOutputStream(super.getOutputStream(), printStream));
+        }
+
+        @Override
+        public PrintWriter getWriter() throws IOException {
+            return new PrintWriter(new TeeOutputStream(super.getOutputStream(), printStream));
+        }
+    }
+
+
+import org.springframework.util.Assert;
+
+import javax.servlet.ReadListener;
+import javax.servlet.ServletInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * @author - GreenLearner(https://www.youtube.com/c/greenlearner)
+ */
+public class LogDelegatingServletInputStream extends ServletInputStream {
+
+    private final InputStream sourceStream;
+
+    private boolean finished = false;
+
+
+    /**
+     * Create a DelegatingServletInputStream for the given source stream.
+     * @param sourceStream the source stream (never {@code null})
+     */
+    public LogDelegatingServletInputStream(InputStream sourceStream) {
+        Assert.notNull(sourceStream, "Source InputStream must not be null");
+        this.sourceStream = sourceStream;
+    }
+
+    /**
+     * Return the underlying source stream (never {@code null}).
+     */
+    public final InputStream getSourceStream() {
+        return this.sourceStream;
+    }
+
+
+    @Override
+    public int read() throws IOException {
+        int data = this.sourceStream.read();
+        if (data == -1) {
+            this.finished = true;
+        }
+        return data;
+    }
+
+    @Override
+    public int available() throws IOException {
+        return this.sourceStream.available();
+    }
+
+    @Override
+    public void close() throws IOException {
+        super.close();
+        this.sourceStream.close();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return this.finished;
+    }
+
+    @Override
+    public boolean isReady() {
+        return true;
+    }
+
+    @Override
+    public void setReadListener(ReadListener readListener) {
+        throw new UnsupportedOperationException();
+    }
+
+}
+
+
+import org.springframework.util.Assert;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
+import java.io.IOException;
+import java.io.OutputStream;
+
+
+public class LogDelegatingServletOutputStream extends ServletOutputStream {
+
+    private final OutputStream targetStream;
+
+
+    public LogDelegatingServletOutputStream(OutputStream targetStream) {
+        Assert.notNull(targetStream, "Target OutputStream must not be null");
+        this.targetStream = targetStream;
+    }
+
+    /**
+     * Return the underlying target stream (never {@code null}).
+     */
+    public final OutputStream getTargetStream() {
+        return this.targetStream;
+    }
+
+
+    @Override
+    public void write(int b) throws IOException {
+        this.targetStream.write(b);
+    }
+
+    @Override
+    public void flush() throws IOException {
+        super.flush();
+        this.targetStream.flush();
+    }
+
+    @Override
+    public void close() throws IOException {
+        super.close();
+        this.targetStream.close();
+    }
+
+    @Override
+    public boolean isReady() {
+        return true;
+    }
+
+    @Override
+    public void setWriteListener(WriteListener writeListener) {
+        throw new UnsupportedOperationException();
+    }
+
+}
