@@ -14,3 +14,5 @@ ifconfig
 grep . /etc/*-release
 cat /etc/*-release | uniq
 
+# 파일 찾기
+find / -name target_file
