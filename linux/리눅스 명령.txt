@@ -1,0 +1,11 @@
+@리눅스 명령어
+
+
+
+apt install net-tools && ifconfig
+
+netstat -nlpt
+
+
+
+
