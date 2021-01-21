@@ -1,11 +1,16 @@
 @리눅스 명령어
 
 
-
+# 네트워크 유틸 설치
 apt install net-tools && ifconfig
 
+# 온픈 포트 확인
 netstat -nlpt
 
+# 네트워크 확인
+ifconfig
 
-
+# 리눅스 종류 및 버전 확인
+grep . /etc/*-release
+cat /etc/*-release | uniq
 
