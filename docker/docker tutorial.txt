@@ -128,28 +128,77 @@ cd /etc/gitlab
 vi gitlab.rb
 
 
+
 docker logs container_id -f
 
 
 
+###################### mysql 5.x
+docker ps --format "table {{.Image}}\t{{.Command}}\t{{.Names}}"
+
+
+docker run -d -p 3306:3306 \
+  -e MYSQL_ALLOW_EMPTY_PASSWORD=true \
+  --name mysql \
+  mysql:5.7
+
+docker exec -it mysql mysql
+create database wp CHARACTER SET utf8;
+grant all privileges on wp.* to wp@'%' identified by 'wp';
+flush privileges;
+quit
+
+
+########### 컨테이너 내부 정보(아이피) 확인
+
+
+docker inspect CONTAINER_ID
+
+
+
+###################### app-network
+
+네트워크 생성
+
+docker network create app-network
+
+1.mongdb
+
+docker run -d --name=mongdb --network=app-network mongo:4
+
+
+2.backend
+docker run -d --name=backend --network=app-network -e PORT=8000 -e GUESTBOOK_DB_ADDR=mongdb:27017 subicura/guestbook-backend:latest
+
+
+3.frontend
+docker run -d -p 3000:8000 --network=app-network -e PORT=8000 -e GUESTBOOK_API_ADDR=backend:8000 subicura/guestbook-frontend:latest
+
+
+## docker-compose
+
+version: '3'
+services:
+  frontend:
+    image: subicura/guestbook-frontend:latest
+    environment:
+      PORT: 8000
+      GUESTBOOK_API_ADDR: backend:8000
+    ports:
+     - "3000:8000"
+  backend:
+    image: subicura/guestbook-backend:latest
+    environment:
+      PORT: 8000
+      GUESTBOOK_DB_ADDR: mongodb:27017
+    restart: always
+  mongodb:
+    image: mongo:4
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+docker-compose logs -f
 
 
 

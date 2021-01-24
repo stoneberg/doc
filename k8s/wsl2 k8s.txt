@@ -1,0 +1,42 @@
+
+
+### WSL2 Kubernates
+
+$ kubectl version
+
+$ ls $HOME/.kube
+
+$ kubectl cluster-info
+
+open Kubernates master
+
+https://127.0.0.1:32772
+
+
+kubernetes.docker.internal
+
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+## 알리아스 설정
+alias k='kubectl'
+
+---------------------------------
+@install kubeval
+​
+https://www.kubeval.com/installation/
+​
+ 
+wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz
+tar xf kubeval-linux-amd64.tar.gz
+sudo cp kubeval /usr/local/bin​
+
+kubeval whoami-pod.yml
+
+-------------------------------------------
+#레이블 표시
+kubectl get po --show-labels
+
+
+Deployement > ReplicaSet > Pod
+
+
