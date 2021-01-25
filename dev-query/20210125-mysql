@@ -1,0 +1,14 @@
+alter database devops default character set utf8 collate utf8_general_ci;
+
+select * from Test;
+
+INSERT INTO devops.Test
+	(ID, Name, ReserveDate, RoomNum)
+VALUES 
+	(1, '¿Ã¿Ø∆Ú', now(), 123456789);
+	
+
+
+
+
+

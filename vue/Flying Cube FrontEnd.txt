@@ -1,0 +1,46 @@
+################### Vue Project
+
+
+npm install -g @vue/cli
+
+vue -V
+
+vue create hello-world
+
+cd hello-world
+
+code .
+
+npm run server
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
