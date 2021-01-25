@@ -9,12 +9,12 @@ services:
     image: mysql:5.7
     container_name: db
     environment:
-      MYSQL_ROOT_PASSWORD: my_secret_password
-      MYSQL_DATABASE: app_db
-      MYSQL_USER: db_user
-      MYSQL_PASSWORD: db_user_pass
+      MYSQL_ROOT_PASSWORD: new1234@
+      MYSQL_DATABASE: devops
+      MYSQL_USER: devops
+      MYSQL_PASSWORD: new1234@
     ports:
-      - "6033:3306"
+      - "3306:3306"
     volumes:
       - ./data/db:/var/lib/mysql
 	  
@@ -23,5 +23,7 @@ services:
 
 $ docker-compose up -d
 
-$ ls -l ./data/db	  
+$ ls -l ./data/db	
+
+alter database devops default character set utf8 collate utf8_general_ci;  
 	  
