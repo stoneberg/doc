@@ -63,3 +63,33 @@ services:
 (네트워크와 관련된 더 자세한 내용은 Networking in Compose를 참고하세요.)
 
 
+도커가 직접 volume을 관리하도록 선언한
+
+version: '3'
+
+# 변경 부분!
+volumes:
+  django_sample_db_dev: {}   <===== services 레벨에 volumes 선언
+
+services:
+  db:
+    image: postgres
+    volumes:
+      # 여기도!
+      - django_sample_db_dev:/var/lib/postgresql/data  <===== services 레벨에 선언된 volumes 변수에 연결
+    environment:
+      ...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
