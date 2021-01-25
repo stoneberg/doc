@@ -26,7 +26,7 @@ services:
       args: 
         JDK_VERSION: 11
       dockerfile: Dockerfile  
-    image: dailycodebuffer/user  
+    image: dailycodebuffer/user   # image name 지정 혹은 image pull
     ports:
       - 8081:8081
   department:
@@ -95,6 +95,29 @@ local               django_sample_db_dev
 - 가상디스크_이름:컨테이너_속_디렉터리처럼 지정합니다. 이후로는 모든 데이터베이스 데이터가  
 django_sample_db_dev 볼륨에 저장됩니다. 
 (이 볼륨을 지우려면  docker volume rm django_sample_db_dev 명령을 사용합니다.)
+
+
+docker-compose up -d --build
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
