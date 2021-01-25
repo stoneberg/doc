@@ -49,3 +49,17 @@ services:
     image: dailycodebuffer/department_new
     ports:
       - 8084:8082
+	  
+
+#########################################################	  
+services:
+  django:
+    links:
+      - db
+	  
+도커 컴포즈 파일 버전 3으로 와서는 links 항목을 사용하지 않더라도 한 네트워크 안에 있는 서비스끼리 서로 통신을 할 수 있기 때문에, 
+이 항목을 사용하지 않았습니다. (관련 문서인 Links topic in Networking in Compose도 참고하세요.) 한 네트워크로 선언한 적이 없다고요? 
+한 docker-compose.yml 안에 있는 서비스들은 별도로 지정하지 않으면 하나의 네트워크에 속합니다. 
+(네트워크와 관련된 더 자세한 내용은 Networking in Compose를 참고하세요.)
+
+
