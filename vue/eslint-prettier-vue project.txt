@@ -50,3 +50,49 @@ module.exports = {
   },
 };
 
+
+
+---- setting.json full
+
+
+{
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.fontFamily": "JetBrains Mono",
+    "eslint.validate": [
+        "vue",
+        "javascript",
+        "javascriptreact"
+      ],
+      "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+      },
+    "vetur.validation.template": false,
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "editor.formatOnSave": false,
+    "files.eol": "\n",
+    "eslint.alwaysShowStatus": true,
+    "prettier.jsxSingleQuote": true,
+    "prettier.printWidth": 120,
+    "prettier.singleQuote": true,
+    "prettier.useTabs": true,
+    "prettier.tabWidth": 4,
+    "prettier.arrowParens": "avoid",
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Sunset Theme",
+    "vsicons.dontShowNewVersionMessage": true,
+    "editor.wordWrapColumn": 100,
+    "eslint.format.enable": true,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "editor.detectIndentation": false,
+    "editor.tabSize": 4,
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe",
+    "editor.formatOnSaveMode": "modifications",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "explorer.confirmDelete": false,
+    "yaml.schemas": {
+        "file:///toc.schema.json": "/toc\\.yml/i"
+    },
+  }
