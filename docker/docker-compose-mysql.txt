@@ -26,4 +26,19 @@ $ docker-compose up -d
 $ ls -l ./data/db	
 
 alter database devops default character set utf8 collate utf8_general_ci;  
+
+
+
+version: '3'
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=devops
+      - POSTGRES_USER=devops
+      - POSTGRES_PASSWORD=new1234@
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
 	  
