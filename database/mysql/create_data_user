@@ -1,3 +1,6 @@
 CREATE database ipccp;
-CREATE USER 'ipcapp'@'localhost' IDENTIFIED BY 'New1234!';
-GRANT ALL PRIVILEGES ON  ipccp.* TO 'ipcapp'@'localhost';
+CREATE USER 'ipcapp'@'%' IDENTIFIED BY 'New1234!';
+GRANT ALL PRIVILEGES ON  ipccp.* TO 'ipcapp'@'%';
+
+
+alter database devops default character set utf8 collate utf8_general_ci;
