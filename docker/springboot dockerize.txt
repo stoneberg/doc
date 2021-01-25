@@ -51,7 +51,10 @@ services:
       - 8084:8082
 	  
 
-#########################################################	  
+#########################################################	
+
+https://www.44bits.io/ko/post/almost-perfect-development-environment-with-docker-and-docker-compose
+  
 services:
   django:
     links:
@@ -81,7 +84,17 @@ services:
       ...
 
 
+처음 바뀐 부분에서는 django_sample_db_dev라는 이름으로 볼륨을 하나 만듭니다. 
+이렇게 만들어진 볼륨은 docker volume ls 명령으로 확인할 수 있습니다. 
+(볼륨은 도커가 관리하는 가상 디스크라고 생각하면 됩니다.)
 
+$ docker volume ls
+local               django_sample_db_dev
+
+이렇게 만든 볼륨을 db 서비스에서 사용하려면, db 서비스 선언부 안에 volumes 항목을 넣고  
+- 가상디스크_이름:컨테이너_속_디렉터리처럼 지정합니다. 이후로는 모든 데이터베이스 데이터가  
+django_sample_db_dev 볼륨에 저장됩니다. 
+(이 볼륨을 지우려면  docker volume rm django_sample_db_dev 명령을 사용합니다.)
 
 
 
