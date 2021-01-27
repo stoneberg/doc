@@ -38,6 +38,21 @@ docker ps
 3. docker-compose 명령어 alias 등록
 ~/.bashrc 에 아래의 내용을 등록하고 source ~/.bashrc 하면 alias 가 등록된다
 
+
+Create First Admin User
+
+계정명:	
+admin
+암호:	
+new1234@
+암호 확인:	
+new1234@
+이름:	
+stoneberg
+이메일 주소:	
+stoneberg73@gmail.com
+
+
 alias dco='docker-compose'
 alias dcb='docker-compose build'
 alias dce='docker-compose exec'
@@ -51,7 +66,16 @@ alias dcc='docker-compose config'
 alias dcpa='docker-compose ps -a'
 alias dcud='docker-compose up -d'
 
+---------------------
 
+docker + gitlab + jenkins
 
+https://hackernoon.com/setting-up-gitlab-jenkins-ci-with-docker-da74c67373ac
 
+sudo docker run --detach \ 
+--hostname gitlab.example.com \ 
+--publish 443:443 --publish 80:80 
+--publish 22:22 \ --name gitlab \ 
+--restart always \ 
+gitlab/gitlab-ce:latest
 
