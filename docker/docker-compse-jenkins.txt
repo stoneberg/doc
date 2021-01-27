@@ -146,9 +146,36 @@ services:
       - 8090:80
     restart: always
     volumes:
-      - ./httpd/apache2:/usr/local/apache2
-      - ./httpd/conf:/usr/local/apache2/conf
-      - ./httpd/logs:/usr/local/apache2/logs
+      - ./html:/htdocs
 	  
 	  
+========================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	 
