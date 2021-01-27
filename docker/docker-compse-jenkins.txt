@@ -79,3 +79,37 @@ sudo docker run --detach \
 --restart always \ 
 gitlab/gitlab-ce:latest
 
+
+
+
+=================================================== Gitlab
+https://insight.infograb.net/docs/install/install_with_docker_compose/
+
+https://hackernoon.com/setting-up-gitlab-jenkins-ci-with-docker-da74c67373ac
+
+version: '3'
+  services:
+    gitlab:
+	  container_name: devops-gitlab
+      image: "gitlab/gitlab-ce:12.2.5-ce.0"
+      restart: always
+      hostname: "gitlab.example.com"
+      environment:
+    	GITLAB_OMNIBUS_CONFIG: |
+    	  external_url 'https://gitlab.example.com'
+    	  # Add any other gitlab.rb configuration here, each on its own line
+      ports:
+    	- "80:80"
+    	- "443:443"
+    	- "22:22"
+      volumes:
+    	- .data/etc/gitlab:/etc/gitlab"
+    	- .data/log/gitlab:/var/log/gitlab"
+    	- .data/opt/gitlab:/var/opt/gitlab"
+
+
+external_url로 설정했던 https://gitlab.example.com에 접속합니다. 
+처음 접속하면 Admin 계정의 비밀번호 변경 페이지로 리다이렉트(Redirect) 됩니다.
+
+
+Now go to https://localhost:80/

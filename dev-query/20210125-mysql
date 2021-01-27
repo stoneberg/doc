@@ -38,6 +38,21 @@ VALUES
 	
 
 
+INSERT INTO roles(name) VALUES('ROLE_USER');
+INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
+INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+
+
+select * from users;
+
+select * from user_roles ur join users u
+on ur.user_id = u.id
+join roles r
+on ur.role_id = r.id;
+
+select * from roles;
+
+select * from user_roles;
 
 
 
