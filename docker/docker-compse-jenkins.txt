@@ -1,0 +1,57 @@
+
+### 젠킨스 Docker Compose
+
+https://velog.io/@sdg9670/Docker%EB%A1%9C-Jenkins-%EA%B5%AC%EB%8F%99
+https://dev.to/andresfmoya/install-jenkins-using-docker-compose-4cab
+
+version: '3'
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+	privileged: true
+    user: root
+    container_name: devops-jenkins
+    restart: always
+    volumes:
+      - ./jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/local/bin/docker	  
+    ports:
+      - 8100:8080
+      - 50000:50000
+    environment:
+      TZ: "Asia/Seoul"
+
+
+
+# Start the my-jenkins-3 container
+docker-compose up -d
+
+# Get the initial admin password
+docker exec devops-jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+
+# Confirm the my-jenkins-3 container is running
+docker ps
+
+
+
+3. docker-compose 명령어 alias 등록
+~/.bashrc 에 아래의 내용을 등록하고 source ~/.bashrc 하면 alias 가 등록된다
+
+alias dco='docker-compose'
+alias dcb='docker-compose build'
+alias dce='docker-compose exec'
+alias dcps='docker-compose ps'
+alias dcr='docker-compose run'
+alias dcup='docker-compose up'
+alias dcdn='docker-compose down'
+alias dcl='docker-compose logs'
+alias dclf='docker-compose logs -f'
+alias dcc='docker-compose config'
+alias dcpa='docker-compose ps -a'
+alias dcud='docker-compose up -d'
+
+
+
+
+
