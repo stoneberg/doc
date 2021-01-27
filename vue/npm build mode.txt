@@ -1,0 +1,25 @@
+
+
+
+
+npm run build -- --mode staging
+
+
+npm run build -- --mode local
+
+
+npm run build -- --mode development
+
+
+npm run build ===> default production build
+
+
+
+  "scripts": {
+    "local": "vue-cli-service serve --mode local",
+    "dev": "vue-cli-service serve --mode development",
+    "prod": "vue-cli-service serve --mode production",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
