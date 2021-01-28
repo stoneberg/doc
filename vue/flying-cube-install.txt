@@ -2,6 +2,73 @@
 
 
 npm i axios
+---------------------------------------------
 
 npm install primevue@^3.2.0-rc.1 --save
 npm install primeicons --save
+
+import {createApp} from 'vue';
+import PrimeVue from 'primevue/config';
+import Dialog from 'primevue/dialog';
+const app = createApp(App);
+
+app.use(PrimeVue);
+
+app.component('Dialog', Dialog);
+
+
+----------------------------------------------------
+npm install moment --save
+
+<template>
+  <div id="app">
+    <p>{{currentDateTime()}}</p>
+  </div>
+</template>
+
+<script>
+import moment from 'moment'
+
+export default {
+  methods: {
+    currentDateTime() {
+      return moment().format('MMMM Do YYYY, h:mm:ss a')
+    }
+  }
+};
+</script>
+
+-------------------------------------------------------
+npm install vue-underscore
+
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import PrimeVue from 'primevue/config';
+//import Dialog from 'primevue/dialog';
+import underscore from 'vue-underscore';
+
+createApp(App)
+	.use(store)
+	.use(router)
+	.use(PrimeVue)
+	.use(underscore)
+	//.component('Dialog', Dialog)
+	.mount('#app');
+
+
+<script>
+import {_} from 'vue-underscore';
+
+export default {
+  methods: {
+    test () {
+      let testArr = [{id: 1}, {id:2}];
+  
+      let foundInfo = this.$_.findWhere(testArr, {id:1});
+    
+    }
+  }
+}
+</script> 
