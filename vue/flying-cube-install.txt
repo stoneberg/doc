@@ -1,0 +1,7 @@
+#
+
+
+npm i axios
+
+npm install primevue@^3.2.0-rc.1 --save
+npm install primeicons --save
