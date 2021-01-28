@@ -1,10 +1,10 @@
 #
 
 
-npm i axios
+npm i axios --save
 ---------------------------------------------
 
-npm install primevue@^3.2.0-rc.1 --save
+npm install primevue@^3.2.0-rc.1 --save   // --save: Package will appear in your dependencies
 npm install primeicons --save
 
 import {createApp} from 'vue';
@@ -18,7 +18,7 @@ app.component('Dialog', Dialog);
 
 
 ----------------------------------------------------
-npm install moment --save
+npm install moment --save   // --save: Package will appear in your dependencies
 
 <template>
   <div id="app">
@@ -39,36 +39,43 @@ export default {
 </script>
 
 -------------------------------------------------------
-npm install vue-underscore
 
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
-import PrimeVue from 'primevue/config';
-//import Dialog from 'primevue/dialog';
-import underscore from 'vue-underscore';
+npm i underscore --save
 
-createApp(App)
-	.use(store)
-	.use(router)
-	.use(PrimeVue)
-	.use(underscore)
-	//.component('Dialog', Dialog)
-	.mount('#app');
-
+<template>
+  <div class="home">
+    <img alt="Vue logo" src="../assets/logo.png" />
+    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <p>Current Time : {{ currentDateTime() }}</p>
+    <p>Even Numbers : {{ getEven() }}</p>
+  </div>
+</template>
 
 <script>
-import {_} from 'vue-underscore';
+// @ is an alias to /src
+import HelloWorld from '@/components/HelloWorld.vue';
+import moment from 'moment';
+import _ from 'underscore';
 
 export default {
+  name: 'Home',
+  components: {
+    HelloWorld
+  },
+  data() {
+    return {
+      numbers: [1, 2, 3, 4, 5, 6]
+    };
+  },
   methods: {
-    test () {
-      let testArr = [{id: 1}, {id:2}];
-  
-      let foundInfo = this.$_.findWhere(testArr, {id:1});
-    
+    currentDateTime() {
+      return moment().format('MMMM Do YYYY, h:mm:ss a');
+    },
+    getEven() {
+      return _.filter(this.numbers, function(num) {
+        return num % 2 == 0;
+      });
     }
   }
-}
-</script> 
+};
+</script>
