@@ -4,17 +4,25 @@
 npm i axios --save
 ---------------------------------------------
 
-npm install primevue@^3.2.0-rc.1 --save   // --save: Package will appear in your dependencies
+npm install primevue --save // --save: Package will appear in your dependencies
 npm install primeicons --save
+npm install primeflex --save
 
 import {createApp} from 'vue';
 import PrimeVue from 'primevue/config';
 import Dialog from 'primevue/dialog';
+import 'primevue/resources/themes/saga-blue/theme.css'       //theme
+import 'primevue/resources/primevue.min.css'                 //core css
+import 'primeicons/primeicons.css'                           //icons
+import 'primeflex/primeflex.css';
+
 const app = createApp(App);
 
 app.use(PrimeVue);
 
 app.component('Dialog', Dialog);
+
+app.mount('#app');
 
 
 ----------------------------------------------------
@@ -79,3 +87,19 @@ export default {
   }
 };
 </script>
+
+
+----------------------------------------------------------
+
+$ npm install vuex-composition-helpers
+
+
+----------------------------------------------------------
+
+$ npm install --save vuex-persist
+
+----------------------------------------------------------
+
+$ npm install mitt --save
+
+
