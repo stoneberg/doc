@@ -1,0 +1,14 @@
+import store from '@/store
+
+Axios.interceptors.response.use(null, error => {
+  if (error.config && error.response && error.response.status === 401) {
+    return getRefreshedToken().then(response => {
+      store.dispatch("refresh", response.data).then(response => {
+        error.config.headers = authHeader();
+        return Axios.request(error.config);
+      });
+    });
+  }
+
+  return Promise.reject(error);
+});
