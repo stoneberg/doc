@@ -48,3 +48,51 @@ authRefresh(context) {
 
 
 
+axios.interceptors.response.use((response) => {
+    return response;
+}, (error) => {
+    if (error.response.status === 429) {
+        // If the error has status code 429, retry the request
+        return axios.request(error.config);
+    }
+    return Promise.reject(error);
+});
+
+
+const store = new Vuex.Store({
+   // define store...
+})
+
+axios.interceptors.response.use((response) => {
+    return response;
+}, (error) => {
+    if (error.response.status === 429) {
+        store.dispatch("YOUR_ACTION");
+        return axios.request(error.config);
+    }
+    return Promise.reject(error);
+});
+
+
+
+
+export default store;const store = new Vuex.Store({
+   // define store...
+})
+
+
+// 토큰 만료 여부로 오리지널 리트라인지 확인?
+
+axios.interceptors.response.use((response) => {
+    return response;
+}, (error) => {
+    if (error.response.status === 429) {
+        store.dispatch("YOUR_ACTION");
+        return axios.request(error.config);
+    }
+    return Promise.reject(error);
+});
+
+export default store;
+
+
