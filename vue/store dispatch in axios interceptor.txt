@@ -12,3 +12,11 @@ Axios.interceptors.response.use(null, error => {
 
   return Promise.reject(error);
 });
+
+
+
+쿠키 설정 참고
+
+https://velog.io/@sdsdsrd/%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%8B%9C-user-%EC%A0%95%EB%B3%B4-%EC%BF%A0%ED%82%A4%EC%97%90-%EB%8B%B4%EA%B8%B0
+
+
