@@ -1,0 +1,105 @@
+#
+
+
+npm i axios --save
+---------------------------------------------
+
+npm install primevue --save // --save: Package will appear in your dependencies
+npm install primeicons --save
+npm install primeflex --save
+
+import {createApp} from 'vue';
+import PrimeVue from 'primevue/config';
+import Dialog from 'primevue/dialog';
+import 'primevue/resources/themes/saga-blue/theme.css'       //theme
+import 'primevue/resources/primevue.min.css'                 //core css
+import 'primeicons/primeicons.css'                           //icons
+import 'primeflex/primeflex.css';
+
+const app = createApp(App);
+
+app.use(PrimeVue);
+
+app.component('Dialog', Dialog);
+
+app.mount('#app');
+
+
+----------------------------------------------------
+npm install moment --save   // --save: Package will appear in your dependencies
+
+<template>
+  <div id="app">
+    <p>{{currentDateTime()}}</p>
+  </div>
+</template>
+
+<script>
+import moment from 'moment'
+
+export default {
+  methods: {
+    currentDateTime() {
+      return moment().format('MMMM Do YYYY, h:mm:ss a')
+    }
+  }
+};
+</script>
+
+-------------------------------------------------------
+
+npm i underscore --save
+
+<template>
+  <div class="home">
+    <img alt="Vue logo" src="../assets/logo.png" />
+    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <p>Current Time : {{ currentDateTime() }}</p>
+    <p>Even Numbers : {{ getEven() }}</p>
+  </div>
+</template>
+
+<script>
+// @ is an alias to /src
+import HelloWorld from '@/components/HelloWorld.vue';
+import moment from 'moment';
+import _ from 'underscore';
+
+export default {
+  name: 'Home',
+  components: {
+    HelloWorld
+  },
+  data() {
+    return {
+      numbers: [1, 2, 3, 4, 5, 6]
+    };
+  },
+  methods: {
+    currentDateTime() {
+      return moment().format('MMMM Do YYYY, h:mm:ss a');
+    },
+    getEven() {
+      return _.filter(this.numbers, function(num) {
+        return num % 2 == 0;
+      });
+    }
+  }
+};
+</script>
+
+
+----------------------------------------------------------
+
+$ npm install vuex-composition-helpers
+
+
+----------------------------------------------------------
+
+$ npm install --save vuex-persist
+
+----------------------------------------------------------
+
+$ npm install mitt --save
+
+

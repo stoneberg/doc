@@ -1,0 +1,29 @@
+version: '3'
+services:
+    redis:
+      image: redis
+      command: redis-server --requirepass new1234@ --port 6379
+      container_name: devops-redis
+      hostname: redis
+      labels:
+        - "name=redis"
+        - "mode=standalone"
+      ports:
+        - 6379:6379
+		
+		
+https://gblee1987.tistory.com/158
+
+medis
+
+git clone https://github.com/luin/medis.git
+npm install
+npm run build
+npm start
+ github를 클론한다.
+npm install 명령어로 디펜던시를 설치한다.
+run build로 빌드한다.
+npm start로 medis를 시작한다.
+
+
+https://github.com/x2jia/medis/releases/tag/win

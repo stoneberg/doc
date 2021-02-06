@@ -1,0 +1,26 @@
+
+########### vuejs build mode 설정
+
+
+npm run build -- --mode staging
+vue-cli-service build --mode staging
+​
+npm run build -- --mode local
+vue-cli-service build --mode local​​
+​
+npm run build -- --mode development
+vue-cli-service build --mode development​​
+​
+npm run build ===> default production build
+vue-cli-service build --mode production
+
+
+
+  "scripts": {
+    "local": "vue-cli-service serve --mode local",
+    "dev": "vue-cli-service serve --mode development",
+    "prod": "vue-cli-service serve --mode production",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },

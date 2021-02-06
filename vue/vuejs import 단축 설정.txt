@@ -1,0 +1,18 @@
+##### vuejs component 절대경로 import 설정
+
+
+const path = require('path');
+
+module.exports = {
+    configureWebpack: {
+        resolve: {
+            alias: {
+                '@': path.join(__dirname, 'src/')
+            }
+        }
+    }
+}
+
+
+
+import { router } from '@/routes/index.js'

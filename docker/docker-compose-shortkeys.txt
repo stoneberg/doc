@@ -1,0 +1,14 @@
+3. docker-compose 명령어 alias 등록
+~/.bashrc 에 아래의 내용을 등록하고 source ~/.bashrc 하면 alias 가 등록된다
+
+alias dco='docker-compose'
+alias dcb='docker-compose build'
+alias dce='docker-compose exec'
+alias dcps='docker-compose ps'
+alias dcr='docker-compose run'
+alias dcup='docker-compose up'
+alias dcdn='docker-compose down'
+alias dcl='docker-compose logs'
+alias dclf='docker-compose logs -f'
+alias dcc='docker-compose config'
+alias dcpa='docker-compose ps -a'

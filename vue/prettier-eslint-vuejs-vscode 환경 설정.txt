@@ -1,59 +1,6 @@
-@vscode setting.json
-
-"eslint.validate": [
-  "vue",
-  "javascript",
-  "javascriptreact"
-],
-"editor.codeActionsOnSave": {
-  "source.fixAll.eslint": true
-},
-"vetur.validation.template": false,
-"editor.formatOnPaste": true,
-"editor.formatOnType": true,
-"editor.formatOnSave": false,
-"files.eol": "\n"
 
 
-npm install -D eslint prettier babel-eslint eslint-config-airbnb-base eslint-plugin-import eslint-config-prettier eslint-plugin-prettier eslint-plugin-vue
-
-
-@project .eslintrc.js
-
-module.exports = {
-  root: true,
-  env: {
-    browser: true,
-  },
-  parserOptions: {
-    parser: 'babel-eslint',
-    sourceType: 'module',
-  },
-  extends: [
-    'airbnb-base',
-    'plugin:vue/recommended',
-    'prettier/vue',
-    'plugin:prettier/recommended'
-  ],
-  rules: {
-	'vue/no-multiple-template-root': 0,
-    'comma-dangle': 'off',
-    'class-methods-use-this': 'off',
-    'import/no-unresolved': 'off',
-    'import/extensions': 'off',
-    'implicit-arrow-linebreak': 'off',
-    'import/prefer-default-export': 'off',
-    "vue/component-name-in-template-casing": ["error", "kebab-case", {
-      "ignores": []
-    }],
-    'prettier/prettier': ['error', { 'singleQuote': true, 'endOfLine': 'auto' }]
-  },
-};
-
-
-
----- setting.json full
-
+#vscode setting.json
 
 {
     "editor.suggestSelection": "first",
@@ -95,4 +42,44 @@ module.exports = {
     "yaml.schemas": {
         "file:///toc.schema.json": "/toc\\.yml/i"
     },
+    "vetur.ignoreProjectWarning": true
   }
+
+
+# eslint 플러그인 설치
+npm install -D eslint prettier babel-eslint eslint-config-airbnb-base eslint-plugin-import eslint-config-prettier eslint-plugin-prettier eslint-plugin-vue
+
+
+
+# .eslintrc.js
+
+module.exports = {
+	root: true,
+	env: {
+		browser: true,
+	},
+	parserOptions: {
+		parser: 'babel-eslint',
+		sourceType: 'module',
+	},
+	extends: ['airbnb-base', 'plugin:vue/recommended', 'prettier/vue', 'plugin:prettier/recommended'],
+    rules: {
+        'vue/no-multiple-template-root': 0,
+		'comma-dangle': 'off',
+		'class-methods-use-this': 'off',
+		'import/no-unresolved': 'off',
+		'import/extensions': 'off',
+		'implicit-arrow-linebreak': 'off',
+		'import/prefer-default-export': 'off',
+		'vue/component-name-in-template-casing': [
+			'error',
+			{
+				ignores: [],
+			},
+		],
+		'prettier/prettier': ['error', { singleQuote: true, endOfLine: 'auto' }],
+	},
+};
+
+
+

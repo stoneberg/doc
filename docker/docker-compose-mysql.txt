@@ -7,7 +7,7 @@ version: '3'
 services:
   db:
     image: mysql:5.7
-    container_name: db
+    container_name: devops-mysql
     environment:
       MYSQL_ROOT_PASSWORD: new1234@
       MYSQL_DATABASE: devops
@@ -29,11 +29,15 @@ alter database devops default character set utf8 collate utf8_general_ci;
 
 
 
+-------------------- postgresql
+
+
 version: '3'
 
 services:
   db:
     image: postgres
+	container_name: devops-postgres
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
@@ -43,3 +47,43 @@ services:
       - POSTGRES_INITDB_ARGS=--encoding=UTF-8
 	  
 	  
+
+-------------------- mariadb
+	  
+version: '3'
+services:
+  db:
+	container_name: devops-mariadb
+	image: mariadb:latest
+	command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
+    restart: always
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: new1234@
+      MYSQL_DATABASE: devops
+      MYSQL_USER: devops
+      MYSQL_PASSWORD: new1234@
+      TZ: Asia/Seoul
+	  
+
+한글 입력 오류 방지하기 위해서 테이블 생성 시 utf-8을 지정해야 한다.
+
+CREATE TABLE devops.Test
+(ID INT,
+Name VARCHAR(25),
+ReserveDate DATETIME,
+RoomNum INT) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	  
+	  
+	  
+docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=new1234@ -v /home/stone/dockers/mariadb/data/db:/var/lib/mysql --name mariadb mariadb
+
+
+
+
+
+
+

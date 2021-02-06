@@ -1,5 +1,12 @@
 alter database devops default character set utf8 collate utf8_general_ci;
 
+CREATE TABLE devops.Test
+(ID INT,
+Name VARCHAR(25),
+ReserveDate DATETIME,
+RoomNum INT) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 select * from Test;
 
 INSERT INTO devops.Test
@@ -7,8 +14,45 @@ INSERT INTO devops.Test
 VALUES 
 	(1, '이유평', now(), 123456789);
 	
+	
+create database devops;
+
+use devops;
+
+show variables like 'c%'; 
 
 
+drop table Test;
+
+	
+CREATE TABLE devops.Test2
+(ID INT,
+Name VARCHAR(25),
+ReserveDate DATETIME,
+RoomNum INT);
+
+INSERT INTO devops.Test2
+	(ID, Name, ReserveDate, RoomNum)
+VALUES 
+	(1, '이유평', now(), 123456789);
+	
+
+
+INSERT INTO roles(name) VALUES('ROLE_USER');
+INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
+INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+
+
+select * from users;
+
+select * from user_roles ur join users u
+on ur.user_id = u.id
+join roles r
+on ur.role_id = r.id;
+
+select * from roles;
+
+select * from user_roles;
 
 
 
