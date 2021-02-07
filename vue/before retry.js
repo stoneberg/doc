@@ -20,7 +20,6 @@ Api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 // Add a response interceptor
 Api.interceptors.response.use(
   function(response) {
@@ -34,16 +33,37 @@ Api.interceptors.response.use(
     console.log('@response.error====>', error.config);
     console.log('@response.error.status====>', error.response.status);
     const originalRequest = error.config;
-    const errorStatus = error.response.status;
     const refreshToken = localStorage.getItem('refreshToken');
+    const errorStatus = error.response.status;
+    console.log('@refreshToke==========>', refreshToken);
+    console.log('@refreshToke==========>', !refreshToken);
+    console.log('@refreshToke==========>', refreshToken == 'null');
 
     if (errorStatus === 401 && !originalRequest.retry && refreshToken) {
-      console.log('401 #####################################');
+      console.log('1#####################################');
       originalRequest.retry = true;
       console.log('토큰이 이상한 오류일 경우');
-      return fetchAccessToken(refreshToken, originalRequest);
+      return fetch('http://127.0.0.1:9090/api/auth/refresh/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          refreshToken: refreshToken
+        })
+      })
+        .then(res => res.json())
+        .then(res => {
+          console.log('@retry.jwt====>', res);
+          localStorage.setItem('accessToken', res.accessToken);
+          localStorage.setItem('refreshToken', res.refreshToken);
+          originalRequest.headers['Authorization'] =
+            'Bearer ' + res.accessToken;
+          return axios(originalRequest);
+        });
     } else {
-      console.log('Else ####################################');
+      console.log('2#####################################');
+      // need else block to handle other error status
       if (errorStatus === 404) {
         console.error('404 error');
       }
@@ -51,22 +71,5 @@ Api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-async function fetchAccessToken(refreshToken, originalRequest) {
-  try {
-    const response = await Api.post('/api/auth/token/refresh/', {
-      refreshToken: refreshToken
-    });
-    const newAccessToken = response.data.accessToken;
-    const newRefreshToken = response.data.refreshToken;
-    localStorage.setItem('accessToken', newAccessToken);
-    localStorage.setItem('refreshToken', newRefreshToken);
-    originalRequest.headers['Authorization'] = 'Bearer ' + newAccessToken;
-    return await axios(originalRequest);
-  } catch (error) {
-    originalRequest.retry = false;
-    console.log(error);
-  }
-}
 
 export default Api;
