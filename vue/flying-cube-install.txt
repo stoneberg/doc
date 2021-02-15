@@ -90,6 +90,7 @@ export default {
 
 
 ----------------------------------------------------------
+vue3 에서 vuex mapGetter, mapAction을 사용할 수 있게 도와주는 plugin
 
 $ npm install vuex-composition-helpers
 
@@ -101,5 +102,33 @@ $ npm install --save vuex-persist
 ----------------------------------------------------------
 
 $ npm install mitt --save
+
+---------------------------------------------------------
+
+$ npm install vue-toast-notification
+
+
+vue3 version
+https://vuejsexamples.com/vue-js-toast-notification-plugin-for-vue-3/
+
+npm install @meforma/vue-toaster
+npm install stylus-loader@3 stylus
+
+
+npm install izitoast --save
+
+
+vue2
+npm install vue-loading-overlay 
+
+
+
+
+
+
+
+
+
+
 
 

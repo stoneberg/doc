@@ -11,6 +11,20 @@ services:
       ports:
         - 6379:6379
 		
+
+version: '3'
+services:
+    redis:
+      image: redis
+      command: redis-server --port 6379
+      container_name: devops-redis
+      hostname: redis
+      labels:
+        - "name=redis"
+        - "mode=standalone"
+      ports:
+        - 6379:6379
+
 		
 https://gblee1987.tistory.com/158
 

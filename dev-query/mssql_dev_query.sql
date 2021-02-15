@@ -165,7 +165,9 @@ VALUES
 
 select * from sales.app_users;
 
+use devops;
 
+select * from tb_deployment;
 
 
 
