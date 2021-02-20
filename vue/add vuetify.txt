@@ -1,0 +1,32 @@
+########## add vuetify in vuejs project
+
+
+1. create vuejs project
+- vue create my-vuejs-app
+
+
+2. add vuetify
+- cd my-vuejs-app
+- vue add vuetify
+
+3. add material icon
+- npm install material-design-icons-iconfont -D
+
+4. add fontawesome fontawesome
+- npm install @fortawesome/fontawsome-free -D
+
+5. run vuejs app
+- npm run serve
+
+6. open vscode
+
+7. edit src/plugins/vuetify.js
+- add this lines
+import '@fortawesome/fontawesome-free/css/all.css'
+
+
+
+
+
+
+
