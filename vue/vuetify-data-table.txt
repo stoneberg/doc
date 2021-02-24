@@ -1,0 +1,440 @@
+  바디수정
+  
+  https://codepen.io/stoneberg/pen/qBqVLGe
+    
+  <div id="app">
+    <v-app id="inspire">
+      <v-toolbar dark color="primary" fixed>
+        <v-toolbar-title class="white--text">Nutrition</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <v-menu offset-y :nudge-left="170" :close-on-content-click="false">
+            <v-btn icon slot="activator">
+                <v-icon>more_vert</v-icon>
+              </v-btn>
+            <v-list>
+              <v-list-tile  v-for="(item, index) in headers"  :key="item.value"   @click="changeSort(item.value)">
+                <v-list-tile-title>{{ item.text }}<v-icon v-if="pagination.sortBy === item.value">{{pagination.descending ? 'arrow_downward':'arrow_upward'}}</v-icon></v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+      </v-toolbar>
+          <v-layout v-resize="onResize" column style="padding-top:56px">
+            <v-data-table :headers="headers" :items="desserts" :search="search" :pagination.sync="pagination" :hide-headers="isMobile" :class="{mobile: isMobile}">
+              <template slot="items" slot-scope="props">
+                <tr v-if="!isMobile">
+                  <td>{{ props.item.name }}</td>
+                  <td class="text-xs-right">
+                    <v-chip :color="getColor(props.item.calories)" dark >
+                      {{ props.item.calories }}
+                    </v-chip>  
+                  </td>
+                  <td class="text-xs-right">{{ props.item.fat }}</td>
+                  <td class="text-xs-right">{{ props.item.carbs }}</td>
+                  <td class="text-xs-right">{{ props.item.protein }}</td>
+                  <td class="text-xs-right">{{ props.item.iron }}</td>
+                </tr>
+                <tr v-else>
+                  <td>
+                    <ul class="flex-content">
+                      <li class="flex-item" data-label="Name">{{ props.item.name }}</li>
+                      <li class="flex-item" data-label="Calories">{{ props.item.calories }}</li>
+                      <li class="flex-item" data-label="Fat (g)">{{ props.item.fat }}</li>
+                      <li class="flex-item" data-label="Carbs (g)">{{ props.item.carbs }}</li>
+                      <li class="flex-item" data-label="Protein (g)">{{ props.item.protein }}</li>
+                      <li class="flex-item" data-label="Iron (%)">{{ props.item.iron }}</li>
+                    </ul>
+                  </td>
+                </tr>
+              </template>
+              <v-alert slot="no-results" :value="true" color="error" icon="warning">
+                Your search for "{{ search }}" found no results.
+              </v-alert>
+            </v-data-table>
+          </v-layout>
+    </v-app>
+  </div>
+  
+  new Vue({
+      el: '#app',
+      data: () => ({
+        pagination: {
+          sortBy: 'name'
+        },
+        selected: [],
+        search: '',
+        isMobile: false,
+        headers: [{
+            text: 'Dessert (100g serving)',
+            align: 'left',
+            value: 'name'
+          },
+          {
+            text: 'Calories',
+            value: 'calories'
+          },
+          {
+            text: 'Fat (g)',
+            value: 'fat'
+          },
+          {
+            text: 'Carbs (g)',
+            value: 'carbs'
+          },
+          {
+            text: 'Protein (g)',
+            value: 'protein'
+          },
+          {
+            text: 'Iron (%)',
+            value: 'iron'
+          }
+        ],
+        desserts: [{
+            value: false,
+            name: 'Frozen Yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            iron: '1%'
+          },
+          {
+            value: false,
+            name: 'Ice cream sandwich',
+            calories: 237,
+            fat: 9.0,
+            carbs: 37,
+            protein: 4.3,
+            iron: '1%'
+          },
+          {
+            value: false,
+            name: 'Eclair',
+            calories: 262,
+            fat: 16.0,
+            carbs: 23,
+            protein: 6.0,
+            iron: '7%'
+          },
+          {
+            value: false,
+            name: 'Cupcake',
+            calories: 305,
+            fat: 3.7,
+            carbs: 67,
+            protein: 4.3,
+            iron: '8%'
+          },
+          {
+            value: false,
+            name: 'Gingerbread',
+            calories: 356,
+            fat: 16.0,
+            carbs: 49,
+            protein: 3.9,
+            iron: '16%'
+          },
+          {
+            value: false,
+            name: 'Jelly bean',
+            calories: 375,
+            fat: 0.0,
+            carbs: 94,
+            protein: 0.0,
+            iron: '0%'
+          },
+          {
+            value: false,
+            name: 'Lollipop',
+            calories: 392,
+            fat: 0.2,
+            carbs: 98,
+            protein: 0,
+            iron: '2%'
+          },
+          {
+            value: false,
+            name: 'Honeycomb',
+            calories: 408,
+            fat: 3.2,
+            carbs: 87,
+            protein: 6.5,
+            iron: '45%'
+          },
+          {
+            value: false,
+            name: 'Donut',
+            calories: 452,
+            fat: 25.0,
+            carbs: 51,
+            protein: 4.9,
+            iron: '22%'
+          },
+          {
+            value: false,
+            name: 'KitKat',
+            calories: 518,
+            fat: 26.0,
+            carbs: 65,
+            protein: 7,
+            iron: '6%'
+          }
+        ]
+      }),
+
+      methods: {
+
+		getColor (calories) {
+		  if (calories > 400) return 'red'
+		  else if (calories > 200) return 'orange'
+		  else return 'green'
+		},
+
+        onResize() {
+          if (window.innerWidth < 769)
+            this.isMobile = true;
+          else
+            this.isMobile = false;
+        },
+        toggleAll() {
+          if (this.selected.length) this.selected = []
+          else this.selected = this.desserts.slice()
+        },
+        changeSort(column) {
+          console.log(column);
+          if (this.pagination.sortBy === column) {
+            this.pagination.descending = !this.pagination.descending
+          } else {
+            this.pagination.sortBy = column
+            this.pagination.descending = false
+          }
+        }
+      }
+})
+
+
+===================================================================================
+
+
+<div id="app">
+  <v-app id="inspire">
+    <v-data-table
+      :headers="headers"
+      :items="desserts"
+      :items-per-page="5"
+      class="elevation-1"
+    ></v-data-table>
+  </v-app>
+</div>
+  
+new Vue({
+  el: '#app',
+  vuetify: new Vuetify(),
+  data () {
+    return {
+      headers: [
+        {
+          text: 'Dessert (100g serving)',
+          align: 'left',
+          sortable: false,
+          value: 'name',
+          class: 'success--text title',
+        },
+        { text: 'Calories', value: 'calories' },
+        { text: 'Fat (g)', value: 'fat' },
+        { text: 'Carbs (g)', value: 'carbs' },
+        { text: 'Protein (g)', value: 'protein' },
+        { text: 'Iron (%)', value: 'iron' },
+      ],  
+ 
+ 
+ 
+ ===================================================================================
+<div id="app">
+  <v-app id="inspire">
+    <div>
+      <v-select
+        v-model="enabled"
+        :items="slots"
+        label="Slot"
+        clearable
+      ></v-select>
+      <v-data-table
+        :headers="headerArray"
+        :items="itemsArray"
+        :search="search"
+        :hide-default-header="hideHeaders"
+        :show-select="showSelect"
+        :loading="isLoading"
+        hide-default-footer
+        item-key="name"
+        class="elevation-1"
+      >
+        <template
+          v-if="isEnabled('top')"
+          v-slot:top
+        >
+          <div>This is content above the actual table</div>
+        </template>
+  
+        <template
+          v-if="isEnabled('header.data-table-select')"
+          v-slot:header.data-table-select="{ on, props }"
+        >
+          <v-simple-checkbox
+            color="purple"
+            v-bind="props"
+            v-on="on"
+          ></v-simple-checkbox>
+        </template>
+  
+        <template
+          v-if="isEnabled('header')"
+          v-slot:header="{ props: { headers } }"
+        >
+          <thead>
+            <tr>
+            <template v-for="header in headers" :key="header.text">
+              <th v-if="header.text === 'Calories'">
+                <v-chip color="yellow">{{ header.text }}</v-chip>
+              </th>
+              <th v-else>
+                {{ header.text }}
+              </th>
+            </template>
+            </tr>
+          </thead>
+        </template>
+  
+        <template
+          v-if="isEnabled('progress')"
+          v-slot:progress
+        >
+          <v-progress-linear
+            color="purple"
+            :height="10"
+            indeterminate
+          ></v-progress-linear>
+        </template>
+  
+        <template
+          v-if="isEnabled('item.data-table-select')"
+          v-slot:item.data-table-select="{ isSelected, select }"
+        >
+          <v-simple-checkbox
+            color="green"
+            :value="isSelected"
+            @input="select($event)"
+          ></v-simple-checkbox>
+        </template>
+  
+        <template
+          v-if="isEnabled('item.<name>')"
+          v-slot:item.name="{ item }"
+        >
+          {{ item.name.toUpperCase() }}
+        </template>
+  
+        <template
+          v-if="isEnabled('body.prepend')"
+          v-slot:body.prepend="{ headers }"
+        >
+          <tr>
+            <td :colspan="headers.length">
+              This is a prepended row
+            </td>
+          </tr>
+        </template>
+  
+        <template
+          v-if="isEnabled('body')"
+          v-slot:body="{ items }"
+        >
+          <tbody>
+            <tr
+              v-for="item in items"
+              :key="item.name"
+            >
+              <td>{{ item.name }}</td>
+              <td>CONTENT</td>
+              <td>CONTENT</td>
+              <td>CONTENT</td>
+              <td>CONTENT</td>
+              <td>CONTENT</td>
+            </tr>
+          </tbody>
+        </template>
+  
+        <template
+          v-if="isEnabled('no-data')"
+          v-slot:no-data
+        >
+          NO DATA HERE!
+        </template>
+  
+        <template
+          v-if="isEnabled('no-results')"
+          v-slot:no-results
+        >
+          NO RESULTS HERE!
+        </template>
+  
+        <template
+          v-if="isEnabled('body.append')"
+          v-slot:body.append="{ headers }"
+        >
+          <tr>
+            <td :colspan="headers.length">
+              This is an appended row
+            </td>
+          </tr>
+        </template>
+  
+        <template
+          v-if="isEnabled('footer')"
+          v-slot:footer
+        >
+          <div>
+            This is a footer
+          </div>
+        </template>
+      </v-data-table>
+    </div>
+  </v-app>
+</div>
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  

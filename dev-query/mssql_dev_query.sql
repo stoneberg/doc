@@ -165,24 +165,28 @@ VALUES
 
 select * from sales.app_users;
 
+select * from tb_roles;
+
 use devops;
+
+
+select * from tb_user_roles;
 
 select * from tb_deployment;
 
+-- LIMIT offset, limit (careful comma!)
+select * from tb_deployment
+limit 0, 10;
 
+select * from tb_deployment
+limit 10, 10;
 
+-- LIMIT, OFFSET
+select * from tb_deployment
+limit 10 offset 0;
 
-
-
-
-
-
-
-
-
-
-
-
+select * from tb_deployment
+limit 10 offset 10;
 
 
 
