@@ -13,7 +13,7 @@
 - npm install material-design-icons-iconfont -D
 
 4. add fontawesome fontawesome
-- npm install @fortawesome/fontawsome-free -D
+- npm i @fortawesome/fontawesome-free -D
 
 5. run vuejs app
 - npm run serve
@@ -21,9 +21,17 @@
 6. open vscode
 
 7. edit src/plugins/vuetify.js
-- add this lines
+- add below lines ont the top
 import '@fortawesome/fontawesome-free/css/all.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+then
+
+export default new Vuetify({
+	icons: {
+	  iconfont: 'md' || 'fa'
+	}
+});	
 
 
 
