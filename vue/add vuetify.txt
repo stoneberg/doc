@@ -28,16 +28,54 @@ https://vuetifyjs.com/en/features/icon-fonts/#material-design-icons---js-svg
 import Vue from 'vue';
 import Vuetify from 'vuetify/lib';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/css/all.css'
 
 Vue.use(Vuetify);
 
 export default new Vuetify({
-  icon: {
+  icons: {
     iconfont: 'md' || 'fa' // md: material design, fa: fontawesome
   }
 });
 
+https://javascript.plainenglish.io/vuetify-icons-80deedda0857
+
+<template>
+  <v-container class="grey lighten-5">
+    <v-row>
+      <v-col>
+        <v-container fluid>
+          <v-row justify="space-around" class="mb-2">
+            <span class="group pa-2">
+              <v-icon>home</v-icon>
+              <v-icon>event</v-icon>
+              <v-icon>info</v-icon>
+            </span>
+          </v-row>
+        </v-container>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<template>
+  <v-container class="grey lighten-5">
+    <v-row>
+      <v-col>
+        <v-row align="center" justify="space-around">
+          <v-icon>fas fa-lock</v-icon>
+          <v-icon>fas fa-search</v-icon>
+          <v-icon>fas fa-list</v-icon>
+          <v-icon>fas fa-edit</v-icon>
+          <v-icon>fas fa-tachometer-alt</v-icon>
+          <v-icon>fas fa-circle-notch fa-spin</v-icon>
+        </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
 
 ------------------------------------------------------------------
 
@@ -79,6 +117,12 @@ depressed 버튼 테두리 그림자 없애기
 
 text 버튼 테두리 없애고 텍스트만 표시
 
+
+  <div>
+    <div class="editor-container">
+      <yaml-editor v-model="value" />
+    </div>
+  </div>
 
 
 

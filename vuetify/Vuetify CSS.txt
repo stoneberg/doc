@@ -1,0 +1,263 @@
+##### Vuetify CSS ####
+
+
+====== Typography
+
+2. 글자 사이즈 typograph
+
+class="display-1 ~ 4"
+
+.display-4
+.display-3
+.display-2
+.display-1
+.headline
+.title
+-----------
+.subtitle-1
+.subtitle-2
+.body-1
+.body-2
+.caption
+.overline
+
+
+
+https://blog-han.tistory.com/43
+<template>
+
+<div class="home">
+
+  <h1>HomePage</h1>
+
+  <p>메인 홈페이지 테스트</p>
+
+   <p class="red white--text">메인 홈페이지 테스트</p>
+
+   <p class="red lighten-3 white--text">메인 홈페이지 테스트</p>
+
+   <p class="red lighten-4 white--text">메인 홈페이지 테스트</p>
+
+   <h1 class="display-3">test Display</h1>
+
+   <h4 class="display-1">test Display</h4>
+
+</div>
+
+</template>
+
+
+======= icon
+<v-btn outline fab small color="blue-grey lighten-4">
+    <v-icon color="grey darken-4">mdi-facebook</v-icon>
+</v-btn>
+
+<v-btn outline fab small color="blue-grey lighten-4">
+    <v-icon color="grey darken-4">mdi-google-plus</v-icon>
+</v-btn>
+
+<v-btn outline fab small color="blue-grey lighten-4">
+   <v-icon color="grey darken-4">mdi-linkedin</v-icon>
+</v-btn>
+
+
+======= Spacing (마진, 패딩)
+
+* 가운데 정렬
+<v-row>
+	<h3 class="mx-auto">Here comes new hero!</h3>
+</v-row>	
+
+
+class="ml-sm-12"  ===>  xs < sm < md,  sm일 경우 이상 에만 마진이 생김
+그보다 작은  xs인 경우 마진 없음
+
+
+
+======= Buttion
+
+small large text outline rouneded block(전체 넓이 차지) depressed icon(아이콘만 나타남)
+
+
+color="warning info success error"  ==> 버튼 색깔만 바꿀때
+
+class="red white--text"
+class="버튼컬러 버튼텍스트컬러"
+
+<button v-ripple class="elevation-2 py-2 px-4>Submit</buttion>
+
+
+====== Navigation Bar
+
+
+<v-app-bar> => 옵션이 많음(큰 디자인에 사용)
+
+
+<v-toolbar> => 작은 디자인에 사용
+
+
+
+================= Grid System (그리드)
+
+<style scoped>
+.container {
+  border: 1px solid green;
+}
+
+.row {
+  border: 1px solid red;
+}
+
+.col {
+  border: 1px solid blue;  
+}
+</style>
+
+
+<v-row>
+  <v-col dense cols="12>
+  
+  
+  </v-col>
+
+
+dense => stick together
+no-gutters => remove all space(margin, padding)
+
+<v-col cols="12" sm="6" offset-sm="3">
+
+sm : sm 사이즈 이상일 경우 6 col만 차지 함 그이하는 12 차지
+offset-sm : sm 사이즈 이사일 경우에 좌우로 x 만큼 offset 이 생김 
+
+v-col 안에서 버튼 정렬할 경우 class="text-right"
+
+
+====== Card 카드
+
+<v-card
+  class="mx-auto"  ===> 카드 spacing
+  color="#26c6da" ===> 카드 바탕색
+  dark  ===>
+  max-width="400" ===> 카드 최대 길이
+  
+  
+>  
+
+<v-card-title>
+<v-card-subtitle>
+<v-card-text class="headline font-weight-bold">
+  "Vue Rocks!"
+</v-card-text>
+<v-card-actions> ==> 액션 안에 추가된 버튼은 특유의 spacing을 따로 갖는다. 
+<v-spacer>를 사용해서 버튼간의 간격을 조정할 수 있다.
+</v-card>
+
+
+
+=========== vuetify breakpoint
+
+<v-sheet v-if="$vuetify.breakpoint.smAndUp">
+  Sidebar
+</v-sheet>
+<v-expansion-panels v-else>
+  <v-expansion-panel>
+    <v-expansion-panel-header expand-icon="fa-angle-down">  
+
+
+
+
+
+
+Meaning of v-slot:activator="{ on }"
+
+
+Vue.directive('focus', {
+  // The `componentUpdated` hook get's called everytime the component & it's children has been updated.
+  componentUpdated: function(el, binding, vnode) {
+    /*
+     `binding.value` is the result of the expression passed to the directive. 
+     In this case if it's true, the textfield should be focused. 
+		 */
+    if (binding.value) {
+      el.focus();
+    }
+    // if (binding.value) {
+    //   el.focus();
+    //   let children = el.querySelectorAll('input')[0];
+    //   if (children) children.focus();
+    // }
+  }
+});
+
+
+
+
+
+
+
+import Vue from 'vue'
+import autosize from 'autosize'
+
+export default {
+  bind(el){ autosize(el) },
+  inserted(el) { autosize.update(el) },
+  update(el){ autosize.update(el) },
+  unbind(el){ autosize.destroy(el) }
+}
+
+
+
+
+import auto from '@/shared/directives/auto.js
+
+Vue.directive('focus', auto);
+
+
+my code in pin-directive.js
+
+export default {
+  bind(el) {
+    console.log('hi pin');
+    el.style.position = 'absolute';
+    el.style.bottom = '5px';
+    el.style.right = '5px';
+  },
+  inserted(el) {
+    console.log(el);
+  },
+}
+
+
+import pinDirective from '../shared/pin-directive';
+// some code here
+directives: { pin: pinDirective },
+
+<span  class="sale" v-if="selectedPart.onSale" v-pin>Sale!</span>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

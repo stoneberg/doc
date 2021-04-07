@@ -20,7 +20,13 @@
           </v-menu>
       </v-toolbar>
           <v-layout v-resize="onResize" column style="padding-top:56px">
-            <v-data-table :headers="headers" :items="desserts" :search="search" :pagination.sync="pagination" :hide-headers="isMobile" :class="{mobile: isMobile}">
+            <v-data-table 
+				:headers="headers" 
+				:items="desserts" 
+				:search="search" 
+				:pagination.sync="pagination" 
+				:hide-headers="isMobile" 
+				:class="{mobile: isMobile}">
               <template slot="items" slot-scope="props">
                 <tr v-if="!isMobile">
                   <td>{{ props.item.name }}</td>
@@ -271,28 +277,8 @@ new Vue({
         item-key="name"
         class="elevation-1"
       >
-        <template
-          v-if="isEnabled('top')"
-          v-slot:top
-        >
-          <div>This is content above the actual table</div>
-        </template>
   
-        <template
-          v-if="isEnabled('header.data-table-select')"
-          v-slot:header.data-table-select="{ on, props }"
-        >
-          <v-simple-checkbox
-            color="purple"
-            v-bind="props"
-            v-on="on"
-          ></v-simple-checkbox>
-        </template>
-  
-        <template
-          v-if="isEnabled('header')"
-          v-slot:header="{ props: { headers } }"
-        >
+        <template v-slot:header="{ props: { headers } }" >
           <thead>
             <tr>
             <template v-for="header in headers" :key="header.text">
@@ -306,105 +292,145 @@ new Vue({
             </tr>
           </thead>
         </template>
-  
-        <template
-          v-if="isEnabled('progress')"
-          v-slot:progress
-        >
-          <v-progress-linear
-            color="purple"
-            :height="10"
-            indeterminate
-          ></v-progress-linear>
-        </template>
-  
-        <template
-          v-if="isEnabled('item.data-table-select')"
-          v-slot:item.data-table-select="{ isSelected, select }"
-        >
-          <v-simple-checkbox
-            color="green"
-            :value="isSelected"
-            @input="select($event)"
-          ></v-simple-checkbox>
-        </template>
-  
-        <template
-          v-if="isEnabled('item.<name>')"
-          v-slot:item.name="{ item }"
-        >
-          {{ item.name.toUpperCase() }}
-        </template>
-  
-        <template
-          v-if="isEnabled('body.prepend')"
-          v-slot:body.prepend="{ headers }"
-        >
-          <tr>
-            <td :colspan="headers.length">
-              This is a prepended row
-            </td>
-          </tr>
-        </template>
-  
-        <template
-          v-if="isEnabled('body')"
-          v-slot:body="{ items }"
-        >
-          <tbody>
-            <tr
-              v-for="item in items"
-              :key="item.name"
-            >
-              <td>{{ item.name }}</td>
-              <td>CONTENT</td>
-              <td>CONTENT</td>
-              <td>CONTENT</td>
-              <td>CONTENT</td>
-              <td>CONTENT</td>
-            </tr>
-          </tbody>
-        </template>
-  
-        <template
-          v-if="isEnabled('no-data')"
-          v-slot:no-data
-        >
-          NO DATA HERE!
-        </template>
-  
-        <template
-          v-if="isEnabled('no-results')"
-          v-slot:no-results
-        >
-          NO RESULTS HERE!
-        </template>
-  
-        <template
-          v-if="isEnabled('body.append')"
-          v-slot:body.append="{ headers }"
-        >
-          <tr>
-            <td :colspan="headers.length">
-              This is an appended row
-            </td>
-          </tr>
-        </template>
-  
-        <template
-          v-if="isEnabled('footer')"
-          v-slot:footer
-        >
-          <div>
-            This is a footer
-          </div>
-        </template>
+ 
       </v-data-table>
     </div>
   </v-app>
 </div>
 
 
+============================================================================
+
+<div id="app">
+  <v-app id="inspire">
+    <v-data-table
+      :headers="headers"
+      :items="passengers"
+      :single-expand="singleExpand"
+      :expanded.sync="expanded"
+      @click:row="(item, slot) => slot.expand(!slot.isExpanded)"
+      item-key="name"
+      :options.sync="options"
+      :server-items-length="totalPassengers"
+      class="elevation-1"
+    >
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>Expandable Table</v-toolbar-title>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+      </template>
+      <template v-slot:header.name="{ header }">
+        {{ header.text.toUpperCase() }}
+      </template>
+      <template v-slot:header.trips="{ header }">
+       {{ header.text.toUpperCase() }}
+      </template> 
+        <template v-slot:header.airline[0].name="{ header }">
+       {{ header.text.toUpperCase() }}
+      </template>
+      <template v-slot:header.logo="{ header }">
+       {{ header.text.toUpperCase() }}
+      </template>
+      <template v-slot:header.website="{ header }">
+       {{ header.text.toUpperCase() }}
+      </template> 
+      <template v-slot:item.logo="{ item }">
+        <img :src="item.airline.logo" style="width: 10%;" />
+      </template>
+      <template v-slot:item.website="{ item }">
+        <a :href="item.airline.website">{{ item.airline.website }}</a>
+      </template>      
+      <template v-slot:expanded-item="{ headers, item }">
+        <td :colspan="headers.length">
+          <div class="row sp-details">
+            <div class="col-4 text-right">
+              <v-text-field
+                            v-model="item.name"
+                            label="Label"
+                            ></v-text-field>
+            </div>
+            <div class="col-4 text-right">
+              <v-text-field
+                            v-model="item.airline.name"
+                            label="Label 1"
+                            ></v-text-field>
+            </div>
+            <div class="col-4 text-right">
+              <v-text-field
+                            v-model="item.airline.country"
+                            label="Label 2"
+                            ></v-text-field>
+            </div>
+          </div>
+        </td>
+      </template>
+    </v-data-table>
+  </v-app>
+</div>
+
+new Vue({
+  el: '#app',
+  vuetify: new Vuetify(),
+  data () {
+    return {
+      expanded: [],
+      singleExpand: true,
+      page: 0,
+      totalPassengers: 0,
+      numberOfPages: 0,
+      passengers: [],
+      loading: true,
+      options: {},
+      headers: [
+        { text: "Passenger Name", value: "name" },
+        { text: "Number Of Trips", value: "trips" },
+        { text: "Airline", value: "airline[0].name" },
+        { text: "Logo", value: "logo" },
+        { text: "Website", value: "website" },
+      ]
+    }
+  },
+  //this one will populate new data set when user changes current page. 
+  watch: {
+    options: {
+      handler() {
+        this.readDataFromAPI();
+      },
+    },
+    deep: true,
+  },
+  methods: {
+    //Reading data from API method. 
+    readDataFromAPI() {
+      this.loading = true;
+      const { page = 0, itemsPerPage = 10, sortBy, sortDesc } = this.options;
+      let pageNumber = page - 1;
+      console.log("sortBy=====>", sortBy);
+      console.log("sortDesc===>", sortDesc);
+      axios
+        .get(
+          "https://api.instantwebtools.net/v1/passenger?size=" +
+            itemsPerPage +
+            "&page=" +
+            pageNumber
+        )
+        .then((response) => {
+          //Then injecting the result to datatable parameters.
+          this.loading = false;
+          this.passengers = response.data.data;
+          this.totalPassengers = response.data.totalPassengers;
+          this.numberOfPages = response.data.totalPages;
+        });
+    },
+  },
+  //this will trigger in the onReady State
+  mounted() {
+    this.readDataFromAPI();
+  },
+})
+
+======================================================================d
 
  
  

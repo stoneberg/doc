@@ -1,0 +1,6 @@
+
+
+# docker save -o runner.tar runner:v4(docker image)
+# docker save -o nginx.tar nginx:latest
+​
+# docker load -i runner.tar
