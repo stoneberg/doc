@@ -164,7 +164,7 @@ v-col 안에서 버튼 정렬할 경우 class="text-right"
     <v-expansion-panel-header expand-icon="fa-angle-down">  
 
 
-
+<v-btn depressed x-small fab class="flyingcube--text font-weight-bold">Node</v-btn>
 
 
 
