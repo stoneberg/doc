@@ -1,0 +1,17 @@
+########## git step by stepy
+
+git --version
+
+git config --list
+
+git config --global -e  // 닫기
+
+git config --global core.editor "code"
+
+git config --global core.editor "code --wait"
+
+
+
+
+
+
