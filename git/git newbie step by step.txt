@@ -43,6 +43,21 @@ git rm --cached a.txt
 
 echo *.log > .gitignore
 
+git diff --staged
+git diff --cached
+
+---------------------------
+https://rottk.tistory.com/entry/VS-Code-%EB%A5%BC-Git-%ED%8E%B8%EC%A7%91%EA%B8%B0%EB%A1%9C-%ED%99%9C%EC%9A%A9
+
+diff를 vscode와 연결
+git config --global -e
+
+[diff]
+    tool = default-difftool
+[difftool "default-difftool"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+
+
 
 
 
