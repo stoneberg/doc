@@ -4,11 +4,105 @@ git --version
 
 git config --list
 
-git config --global -e  // 닫기
+git config --global -e // 모든 config list 열기
 
 git config --global core.editor "code"
 
 git config --global core.editor "code --wait"
+
+git config --global user.name "Stoneberg"
+git config --global user.email "stoneberg@naver.com"
+
+// 확인
+git config user.email
+
+// /r/n 설정
+git config --global core.autocrlf true // 윈도
+git config --global core.autocrlf input // 리눅스, 맥
+
+// 단축키 설정
+git config --global alias.st status
+
+------------------------------------------
+echo hello world! > a.txt
+
+untracked 
+
+-- add .
+
+tracked
+
+-- commit -m "my first init"
+
+staging
+
+--------------------------------------------
+staging -> working 
+git rm --cached a.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
