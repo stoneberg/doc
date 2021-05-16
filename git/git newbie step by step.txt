@@ -41,7 +41,7 @@ staging -> working
 git rm --cached a.txt
 
 
-
+echo *.log > .gitignore
 
 
 
