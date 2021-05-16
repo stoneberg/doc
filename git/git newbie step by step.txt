@@ -40,8 +40,7 @@ staging
 staging -> working 
 git rm --cached a.txt
 
-
-echo *.log > .gitignore
+echo *.log >> .gitignore
 
 git diff --staged
 git diff --cached
