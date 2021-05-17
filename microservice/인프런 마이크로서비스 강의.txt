@@ -1,0 +1,20 @@
+
+
+####################
+여러 개의 서비스 구동하기
+
+-Dserver.port=9001
+
+인텔리J 콘솔에서 구동: 플러그인 문제가 생길 경우 .m2 디렉토리 삭제 후 재빌해볼 것!
+mvn spring-boot:run -Dspring-boot.run.jvmArguments='-Dserver.port=9001'
+mvn spring-boot:run -Dspring-boot.run.jvmArguments='-Dserver.port=9002'
+mvn spring-boot:run -Dspring-boot.run.jvmArguments='-Dserver.port=9003'
+
+mvn clean compile package
+
+
+
+java -jar -Dserver.port=9400 ./target/user-service-0.0.1-SNAPSHOT.jar
+
+
+

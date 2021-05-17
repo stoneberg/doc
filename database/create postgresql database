@@ -33,6 +33,11 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA esign TO wscadmin​;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA esign TO wscadmin​;
 
 =============================================================================
+localhost
+postgrs
+5432
+new1234@
+
 
 create database wsc_ktds;
 ​create user wscadmin password 'Wscadmin1234!' superuser;

@@ -52,11 +52,12 @@ diff를 vscode와 연결
 git config --global -e
 
 [diff]
-    tool = default-difftool
-[difftool "default-difftool"]
+    tool = code
+[difftool "code"]
     cmd = code --wait --diff $LOCAL $REMOTE
 
 
+>git difftool
 
 
 
