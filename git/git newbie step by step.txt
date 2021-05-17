@@ -22,6 +22,7 @@ git config --global core.autocrlf input // 리눅스, 맥
 
 // 단축키 설정
 git config --global alias.st status
+git config --global alias.dt difftool
 
 ------------------------------------------
 echo hello world! > a.txt
