@@ -57,10 +57,20 @@ git config --global -e
     cmd = code --wait --diff $LOCAL $REMOTE
 
 
+------------------tag
+git tag v1
+git push --tags
+git tag --list
+git checkout v1
+git checkout main or master
 
 
-
-
+------------------stash
+git stash save "description"
+gti stash list
+git stash pop
+git stash apply
+git stash drop
 
 
 
