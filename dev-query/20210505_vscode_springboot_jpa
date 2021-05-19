@@ -1,0 +1,9 @@
+
+
+select * from jpa.cities;
+
+INSERT INTO jpa.cities city_name) VALUES ('New York');
+INSERT INTO jpa.cities( city_name) VALUES ('Seoul');
+INSERT INTO jpa.cities(city_name) VALUES ('Tokyo');
+INSERT INTO jpa.cities( city_name) VALUES ('Bangkok');
+
