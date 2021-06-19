@@ -1,0 +1,135 @@
+
+    // 1. Shorthand for if with multiple || conditions
+    if (fruit === 'apple' || fruit === 'orange' || fruit === 'banana' || fruit ==='grapes') {
+        //code
+    }
+    // Instead of using multiple || (OR) conditions, we can use an array with the values and use the includes() method.
+    if (['apple', 'orange', 'banana', 'grapes'].includes(fruit)) {
+    //code
+    }
+
+    // 2. Shorthand for if with multiple && conditions
+    if(obj && obj.address && obj.address.postalCode) {
+        console.log(obj.address.postalCode)
+    }
+    //Use optional chaining (?.) to replace this snippet.
+    console.log(obj?.address?.postalCode);
+
+    // 3. Shorthand for null, undefined, and empty if checks
+    if (first !== null || first !== undefined || first !== '') {
+        let second = first;
+    }
+    // Instead of writing so many checks, we can write it better this way using || (OR) operator.
+    const second = first || '';
+
+    // 4. Shorthand for switch case
+    // https://enmascript.com/articles/2018/10/22/why-I-prefer-objects-over-switch-statements
+    switch ('first') {
+        case 'first':
+            let position = 'first';
+            console.log(position);
+        case 'second':
+            console.log(`second has access to ${position}`);
+            position = 'second';
+            console.log(position);
+        default:
+            console.log('infinite');
+    }
+    // Use a map/ object to write it in a cleaner way.
+    const getPosition = position =>
+        ({
+            first: 'first',
+            second: 'second',
+            third: 'third'
+        }[position] || 'infinite');
+
+    const positionValue = getPosition('first'); // Returns 'first'
+    const otherValue = getPosition('fourth'); // Returns default 'infinite'
+
+    // 5. Shorthand for functions with a single line
+    function doubleOf(value) {
+    return 2 * value;
+    }
+    // Use the arrow function to shorten it.
+    const doubleOf = (value) => 2 * value
+
+    // 6. Shorthand for calling functions conditionally
+    function area() {
+        console.log('area');
+    }
+    function volume() {
+        console.log('volume');
+    }
+    if(type === 'square') {
+        area();
+    } else {
+        volume();
+    }
+    // Instead of using if to conditionally call the function you can write it this way.
+    (type === 'square' ? area : volume)()
+
+    // 7. Shorthand for using if to set a default value
+    if(amount === null) {
+        amount = 0;
+    }
+    if(value === undefined) {
+        value = 0;
+    }
+    console.log(amount); //0
+    console.log(value); //0
+
+    // You can simply write the same using || (OR) operator.
+    console.log(amount || 0); //0
+    console.log(value || 0); //0
+
+    // 8. Shorthand for if…else
+    let value;
+    if (num > 0) {
+        value = 'positive';
+    } else {
+        value = 'negative';
+    }
+
+    // If the if…else condition isn’t that complex then we can replace it with a ternary operator.
+    const value = num > 0 ? 'positive' : 'negative';
+
+    // 9. Shorthand for traditional for loop while looping through an array
+    const arr = [11, 22, 33];
+    for(let i=0; i<arr.length; i++) {
+        console.log(arr[i]);
+    }
+
+    // Replace this normal for with forEach .
+    const arr = [11, 22, 33];
+    arr.forEach((val) => console.log(val));
+
+
+    // 10. Shorthand for converting string number to number
+    const num1 = parseInt("100");
+    const num2 =  parseFloat("11.11");
+    // Instead of using parseInt and parseFloat and other similar methods, we can use a simple + operator.
+    const num1 = +"100";
+    const num2 =  +"11.11";
+
+
+    // 11. update specific array of object item using map function and destruction operator
+    const data = [
+        { fieldName: 'title', valid: false }, 
+        { fieldName: 'description', valid: true },
+        { fieldName: 'cityId', valid: false }, // old data
+        { fieldName: 'hostDescription', valid: false },
+    ]
+
+    const newData = data.map(obj => {
+        if (obj.fieldName === 'cityId') // check if fieldName equals to cityId
+            // return Object.assign({}, el, {valid:true})
+            return {
+                ...obj,
+                valid: true,
+                description: 'You can also add more values here' // Example of data extra fields
+            };
+        return obj;
+    });
+
+    const result = { data: newData }; 
+    console.log(result);
