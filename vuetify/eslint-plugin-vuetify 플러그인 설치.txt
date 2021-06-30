@@ -1,0 +1,25 @@
+eslint-plugin-vuetify 플러그인 설정
+
+npm install eslint-plugin-vuetify --save-dev
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
